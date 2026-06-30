@@ -3,73 +3,109 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
 
   body {
-    @apply bg-fluno-bg text-fluno-ink font-body antialiased;
+    @apply bg-fluno-light text-fluno-ink font-body antialiased;
   }
 
-  h1, h2, h3, h4 {
-    @apply font-display;
-  }
+  h1, h2, h3, h4 { @apply font-display; }
 
-  *:focus-visible {
-    @apply outline-2 outline-offset-2 outline-fluno-teal;
-  }
+  *:focus-visible { @apply outline-2 outline-offset-2 outline-fluno-purple; }
 
-  ::selection {
-    background-color: #1E5C5630;
-  }
+  ::selection { background-color: #BD7EFA30; }
 }
 
 @layer components {
+  /* ── Buttons ── */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 bg-fluno-teal text-white font-body font-medium px-6 py-3 rounded-sm
-           hover:bg-fluno-teal-light transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fluno-teal
-           focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2
+           bg-gradient-to-r from-fluno-purple to-fluno-purple-dark
+           text-white font-body font-semibold px-6 py-3 rounded-full
+           hover:opacity-90 hover:shadow-lg hover:shadow-fluno-purple/30
+           active:scale-95 transition-all duration-200
+           focus-visible:ring-2 focus-visible:ring-fluno-purple focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 border border-fluno-teal text-fluno-teal font-body font-medium
-           px-6 py-3 rounded-sm hover:bg-fluno-teal hover:text-white transition-colors duration-200;
+    @apply inline-flex items-center justify-center gap-2
+           border-2 border-fluno-purple text-fluno-purple font-body font-semibold
+           px-6 py-3 rounded-full
+           hover:bg-fluno-purple hover:text-white
+           active:scale-95 transition-all duration-200;
+  }
+
+  .btn-outline-white {
+    @apply inline-flex items-center justify-center gap-2
+           border-2 border-white/30 text-white font-body font-semibold
+           px-6 py-3 rounded-full
+           hover:border-fluno-purple hover:bg-fluno-purple/20
+           active:scale-95 transition-all duration-200;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 text-fluno-ink font-body font-medium
-           px-4 py-2 rounded-sm hover:bg-fluno-stone/40 transition-colors duration-200;
+    @apply inline-flex items-center justify-center gap-2 text-fluno-ink/70 font-body font-medium
+           px-4 py-2 rounded-full hover:bg-fluno-lavender hover:text-fluno-purple transition-all duration-200;
   }
 
-  .section-title {
-    @apply font-display text-3xl md:text-4xl text-fluno-ink leading-tight;
-  }
+  /* ── Typography ── */
+  .section-title       { @apply font-display text-3xl md:text-4xl lg:text-5xl text-fluno-ink leading-tight; }
+  .section-title-white { @apply font-display text-3xl md:text-4xl lg:text-5xl text-white leading-tight; }
+  .section-sub         { @apply font-body text-base text-fluno-ink/60 mt-3 leading-relaxed; }
+  .section-sub-white   { @apply font-body text-base text-white/50 mt-3 leading-relaxed; }
+  .eyebrow             { @apply font-mono text-xs tracking-widest uppercase; }
 
-  .section-sub {
-    @apply font-body text-base text-fluno-ink/60 mt-2;
-  }
-
+  /* ── Cards ── */
   .card {
-    @apply bg-white border border-fluno-stone/50 rounded-sm overflow-hidden
-           hover:shadow-md transition-shadow duration-200;
+    @apply bg-white rounded-2xl overflow-hidden border border-fluno-lavender/60
+           hover:shadow-xl hover:shadow-fluno-purple/10 transition-all duration-300;
   }
 
+  .card-dark {
+    @apply bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10
+           hover:bg-white/10 transition-all duration-300;
+  }
+
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl;
+  }
+
+  .glass-light {
+    @apply bg-white/80 backdrop-blur-md border border-fluno-lavender/60 rounded-2xl;
+  }
+
+  /* ── Inputs ── */
   .input {
-    @apply w-full border border-fluno-stone bg-white px-4 py-3 rounded-sm font-body text-sm
-           placeholder:text-fluno-ink/40 focus:outline-none focus:border-fluno-teal transition-colors;
+    @apply w-full border border-fluno-lavender bg-white px-4 py-3 rounded-xl font-body text-sm
+           placeholder:text-fluno-muted/50 focus:outline-none focus:border-fluno-purple
+           focus:ring-2 focus:ring-fluno-purple/20 transition-all;
   }
 
-  .badge {
-    @apply inline-block font-mono text-xs bg-fluno-teal/10 text-fluno-teal px-2 py-0.5 rounded-sm;
+  .input-dark {
+    @apply w-full border border-white/20 bg-white/10 backdrop-blur-sm text-white px-4 py-3 rounded-xl font-body text-sm
+           placeholder:text-white/30 focus:outline-none focus:border-fluno-purple/60 transition-all;
   }
 
-  .divider {
-    @apply border-t border-fluno-stone/60;
+  /* ── Badges ── */
+  .badge      { @apply inline-block font-mono text-xs bg-fluno-purple/10 text-fluno-purple px-2.5 py-1 rounded-full; }
+  .badge-dark { @apply inline-block font-mono text-xs bg-white/10 text-fluno-glow px-2.5 py-1 rounded-full; }
+
+  /* ── Dividers ── */
+  .divider      { @apply border-t border-fluno-lavender/60; }
+  .divider-dark { @apply border-t border-white/10; }
+
+  /* ── Glow utilities ── */
+  .glow-purple {
+    box-shadow: 0 0 40px rgba(189,126,250,0.35), 0 0 80px rgba(189,126,250,0.12);
+  }
+  .text-glow {
+    text-shadow: 0 0 60px rgba(189,126,250,0.6), 0 0 120px rgba(189,126,250,0.2);
   }
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #F4F6F5; }
-::-webkit-scrollbar-thumb { background: #D8D5CF; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #1E5C56; }
+/* ── Scrollbar ── */
+::-webkit-scrollbar             { width: 6px; }
+::-webkit-scrollbar-track       { background: #FAF7FF; }
+::-webkit-scrollbar-thumb       { background: #BD7EFA60; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #BD7EFA; }

@@ -1,19 +1,24 @@
 import { AuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider   from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDB } from "@/lib/mongodb";
-import { User } from "@/lib/models/User";
+import { User }      from "@/lib/models/User";
 
 export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientId:     process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    FacebookProvider({
+      clientId:     process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
     CredentialsProvider({
       name: "Email",
       credentials: {
-        email: { label: "Email", type: "email" },
+        email:    { label: "Email",    type: "email"    },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -27,11 +32,16 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (account?.provider === "google") {
+      if (account?.provider === "google" || account?.provider === "facebook") {
         await connectDB();
         const existing = await User.findOne({ email: user.email });
         if (!existing) {
-          await User.create({ name: user.name, email: user.email, image: user.image });
+          await User.create({
+            name:     user.name,
+            email:    user.email,
+            image:    user.image,
+            provider: account.provider,
+          });
         }
       }
       return true;
@@ -47,7 +57,7 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
-  pages: { signIn: "/login", error: "/login" },
+  pages:   { signIn: "/login", error: "/login" },
   session: { strategy: "jwt" },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret:  process.env.NEXTAUTH_SECRET,
 };
