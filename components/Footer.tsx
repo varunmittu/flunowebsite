@@ -18,7 +18,6 @@ const shop = [
 ];
 
 const company = [
-  { label: "About Us", href: "/about" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
   { label: "Amazon Store", href: "https://www.amazon.in", target: "_blank" },
@@ -182,7 +181,7 @@ export default function Footer() {
             © 2025 by Parvar Enterprise. All rights reserved.
           </p>
           <p className="text-xs text-white/20 font-mono">
-            Grievance Officer: Avinash Mohan V — contact@myfluno.com
+            Grievance Officer: contact@myfluno.com
           </p>
         </div>
       </div>

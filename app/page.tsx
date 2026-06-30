@@ -88,9 +88,6 @@ export default function HomePage() {
                   Shop Now
                   <ArrowRight size={16} />
                 </Link>
-                <Link href="/about" className="btn-outline text-base px-8 py-3.5">
-                  Our Story
-                </Link>
               </div>
 
               {/* Social proof strip */}
@@ -230,16 +227,11 @@ export default function HomePage() {
               between safe and effective.
             </h2>
             <p className="font-body text-white/60 mt-5 leading-relaxed">
-              Founded by Avinash Mohan V and Dr. Sai Prasad MBBS, Fluno was
-              born in Hyderabad with one question: why do most personal care
-              products either cut corners on ingredients or charge luxury
-              prices? We formulated our way to the answer — and we&apos;re just
-              getting started.
+              Fluno was born in Hyderabad with one question: why do most
+              personal care products either cut corners on ingredients or charge
+              luxury prices? We formulated our way to the answer — and
+              we&apos;re just getting started.
             </p>
-            <Link href="/about" className="btn-outline mt-8 border-white/30 text-white hover:bg-white hover:text-fluno-ink">
-              Read Our Story
-              <ArrowRight size={15} />
-            </Link>
           </div>
         </div>
       </section>
