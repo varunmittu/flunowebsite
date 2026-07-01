@@ -3,6 +3,7 @@ import { google } from "googleapis";
 import { getAdminSession } from "@/lib/adminAuth";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 const REDIRECT_URI = "https://www.myfluno.com/api/admin/drive/callback";
 
