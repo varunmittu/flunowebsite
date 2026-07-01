@@ -1,8 +1,10 @@
 import { AuthOptions } from "next-auth";
 import GoogleProvider      from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectDB } from "@/lib/mongodb";
-import { User }      from "@/lib/models/User";
+import bcrypt              from "bcryptjs";
+import { connectDB }       from "@/lib/mongodb";
+import { User }            from "@/lib/models/User";
+import { logUserEvent }    from "@/lib/sheets";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -17,11 +19,20 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email) return null;
+        if (!credentials?.email || !credentials?.password) return null;
         await connectDB();
-        const user = await User.findOne({ email: credentials.email });
+        const user = await User.findOne({ email: credentials.email.toLowerCase().trim() });
         if (!user) return null;
-        return { id: user._id.toString(), name: user.name, email: user.email, image: user.image };
+        if (!user.password) return null; // Google-only account
+        const valid = await bcrypt.compare(credentials.password, user.password);
+        if (!valid) return null;
+        return {
+          id:    user._id.toString(),
+          name:  user.name,
+          email: user.email,
+          image: user.image,
+          phone: user.phone,
+        };
       },
     }),
   ],
@@ -31,19 +42,33 @@ export const authOptions: AuthOptions = {
         await connectDB();
         const existing = await User.findOne({ email: user.email });
         if (!existing) {
-          await User.create({ name: user.name, email: user.email, image: user.image, provider: "google" });
+          await User.create({
+            name:     user.name,
+            email:    user.email,
+            image:    user.image,
+            provider: "google",
+          });
+          await logUserEvent(user.name ?? "", user.email ?? "", "", "google", "signup");
+        } else {
+          await logUserEvent(user.name ?? "", user.email ?? "", "", "google", "login");
         }
+      } else if (account?.provider === "credentials") {
+        await logUserEvent(user.name ?? "", user.email ?? "", "", "email", "login");
       }
       return true;
     },
     async session({ session, token }) {
       if (session.user && token.sub) {
-        (session.user as { id?: string }).id = token.sub;
+        (session.user as { id?: string; phone?: string }).id = token.sub;
+        (session.user as { id?: string; phone?: string }).phone = token.phone as string | undefined;
       }
       return session;
     },
     async jwt({ token, user }) {
-      if (user) token.sub = user.id;
+      if (user) {
+        token.sub   = user.id;
+        token.phone = (user as { phone?: string }).phone;
+      }
       return token;
     },
   },

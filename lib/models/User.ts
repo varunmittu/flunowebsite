@@ -5,6 +5,8 @@ const UserSchema = new Schema(
     name: String,
     email: { type: String, unique: true, sparse: true },
     phone: { type: String, unique: true, sparse: true },
+    password: String,
+    provider: { type: String, default: "credentials" },
     image: String,
     emailVerified: Date,
     role: { type: String, enum: ["customer", "admin", "staff"], default: "customer" },
