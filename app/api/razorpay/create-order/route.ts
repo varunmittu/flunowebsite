@@ -6,7 +6,7 @@ import { Order } from "@/lib/models/Order";
 export async function POST(req: NextRequest) {
   try {
     const razorpay = new Razorpay({
-      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+      key_id: process.env.RAZORPAY_KEY_ID!,
       key_secret: process.env.RAZORPAY_KEY_SECRET!,
     });
     const { items, address, subtotal, shipping, total, coupon, discount } = await req.json();
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       razorpayOrderId: razorpayOrder.id,
       amount: razorpayOrder.amount,
       currency: razorpayOrder.currency,
-      keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      keyId: process.env.RAZORPAY_KEY_ID,
     });
   } catch (err) {
     console.error("Razorpay create-order error:", err);

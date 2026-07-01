@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { Quicksand, Outfit, Public_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
-import SessionProvider from "@/components/SessionProvider";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import CartDrawer from "@/components/CartDrawer";
+import { CartProvider }      from "@/context/CartContext";
+import SessionProvider       from "@/components/SessionProvider";
+import ConditionalLayout     from "@/components/ConditionalLayout";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -35,23 +33,13 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "Fluno — Care in Every Drop",
-    template: "%s | Fluno",
-  },
+  title: { default: "Fluno — Care in Every Drop", template: "%s | Fluno" },
   description:
     "Fluno is a mid-premium personal care and hygiene brand from Hyderabad, India. Clean ingredients, dermatologist-tested, repeat-worthy results.",
   metadataBase: new URL("https://myfluno.com"),
-  openGraph: {
-    siteName: "Fluno",
-    type: "website",
-    locale: "en_IN",
-  },
-  twitter: { card: "summary_large_image" },
-  keywords: [
-    "fluno", "personal care", "hand wash", "sunscreen", "hyderabad",
-    "clean beauty", "hygiene", "SPF 50", "dermatologist tested",
-  ],
+  openGraph: { siteName: "Fluno", type: "website", locale: "en_IN" },
+  twitter:    { card: "summary_large_image" },
+  keywords:   ["fluno", "personal care", "hand wash", "sunscreen", "hyderabad", "clean beauty", "hygiene", "SPF 50"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -63,10 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <SessionProvider>
           <CartProvider>
-            <Header />
-            <CartDrawer />
-            <main>{children}</main>
-            <Footer />
+            <ConditionalLayout>{children}</ConditionalLayout>
           </CartProvider>
         </SessionProvider>
       </body>

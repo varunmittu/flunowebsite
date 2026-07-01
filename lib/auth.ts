@@ -1,6 +1,5 @@
 import { AuthOptions } from "next-auth";
-import GoogleProvider   from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider      from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDB } from "@/lib/mongodb";
 import { User }      from "@/lib/models/User";
@@ -10,10 +9,6 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId:     process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    FacebookProvider({
-      clientId:     process.env.FACEBOOK_CLIENT_ID!,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
     CredentialsProvider({
       name: "Email",
@@ -32,16 +27,11 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (account?.provider === "google" || account?.provider === "facebook") {
+      if (account?.provider === "google") {
         await connectDB();
         const existing = await User.findOne({ email: user.email });
         if (!existing) {
-          await User.create({
-            name:     user.name,
-            email:    user.email,
-            image:    user.image,
-            provider: account.provider,
-          });
+          await User.create({ name: user.name, email: user.email, image: user.image, provider: "google" });
         }
       }
       return true;

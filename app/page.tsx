@@ -4,12 +4,15 @@ import { ArrowRight, ShieldCheck, RefreshCw, Leaf, Award, Sparkles } from "lucid
 import ProductCard from "@/components/ProductCard";
 import HeroSection from "@/components/HeroSection";
 import AnimateIn from "@/components/AnimateIn";
+import { connectDB } from "@/lib/mongodb";
+import { ProductModel } from "@/lib/models/Product";
 import { getFeaturedProducts } from "@/lib/products";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Fluno — Care in Every Drop",
-  description:
-    "Mid-premium personal care and hygiene from Hyderabad. Clean ingredients, dermatologist-tested, repeat-worthy.",
+  description: "Mid-premium personal care and hygiene from Hyderabad. Clean ingredients, dermatologist-tested, repeat-worthy.",
 };
 
 const whyUs = [
@@ -25,8 +28,37 @@ const testimonials = [
   { name: "Manish",  text: "Quality you can feel the moment you use it. These guys clearly know what they're doing with ingredients.", rating: 4 },
 ];
 
-export default function HomePage() {
-  const featured = getFeaturedProducts();
+interface RawProduct {
+  _id: unknown; slug: string; name: string; tagline?: string; price: number;
+  originalPrice?: number; size?: string; category?: string; rating?: number;
+  reviewCount?: number; images?: string[]; description?: string;
+  ingredients?: string[]; howToUse?: string[]; benefits?: string[];
+  badges?: string[]; inStock?: boolean; featured?: boolean;
+}
+
+export default async function HomePage() {
+  let featured: ReturnType<typeof getFeaturedProducts> = [];
+
+  try {
+    await connectDB();
+    const docs = await ProductModel.find({ active: true, featured: true }).limit(6).lean() as RawProduct[];
+    if (docs.length) {
+      featured = docs.map((p) => ({
+        id: p._id?.toString() ?? p.slug,
+        slug: p.slug, name: p.name, tagline: p.tagline ?? "",
+        price: p.price, originalPrice: p.originalPrice, size: p.size ?? "",
+        category: p.category ?? "", rating: p.rating ?? 0, reviewCount: p.reviewCount ?? 0,
+        images: p.images ?? [], description: p.description ?? "",
+        ingredients: p.ingredients ?? [], howToUse: p.howToUse ?? [],
+        benefits: p.benefits ?? [], badges: p.badges ?? [],
+        inStock: p.inStock ?? true, featured: p.featured ?? false,
+      }));
+    }
+  } catch {
+    // fallback
+  }
+
+  if (!featured.length) featured = getFeaturedProducts();
 
   return (
     <>
@@ -48,16 +80,11 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <AnimateIn className="flex items-end justify-between mb-12">
           <div>
-            <p className="eyebrow text-fluno-purple mb-3 flex items-center gap-2">
-              <Sparkles size={13} /> The Collection
-            </p>
+            <p className="eyebrow text-fluno-purple mb-3 flex items-center gap-2"><Sparkles size={13} /> The Collection</p>
             <h2 className="section-title">Our Products</h2>
             <p className="section-sub">Every formula earns your trust before it earns your repeat order.</p>
           </div>
-          <Link
-            href="/shop"
-            className="hidden sm:flex items-center gap-2 text-sm font-semibold text-fluno-purple hover:gap-3 transition-all group"
-          >
+          <Link href="/shop" className="hidden sm:flex items-center gap-2 text-sm font-semibold text-fluno-purple hover:gap-3 transition-all group">
             View All <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </AnimateIn>
@@ -71,9 +98,7 @@ export default function HomePage() {
         </div>
 
         <AnimateIn className="text-center mt-12">
-          <Link href="/shop" className="btn-outline">
-            View All Products <ArrowRight size={15} />
-          </Link>
+          <Link href="/shop" className="btn-outline">View All Products <ArrowRight size={15} /></Link>
         </AnimateIn>
       </section>
 
@@ -84,15 +109,10 @@ export default function HomePage() {
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn className="text-center mb-16">
-            <p className="eyebrow text-fluno-purple mb-3 flex items-center justify-center gap-2">
-              <Sparkles size={13} /> Why Choose Us
-            </p>
+            <p className="eyebrow text-fluno-purple mb-3 flex items-center justify-center gap-2"><Sparkles size={13} /> Why Choose Us</p>
             <h2 className="section-title-white">Why Fluno?</h2>
-            <p className="section-sub-white max-w-xl mx-auto">
-              We measure success differently — not by ad spend, but by whether you come back for a second bottle.
-            </p>
+            <p className="section-sub-white max-w-xl mx-auto">We measure success differently — not by ad spend, but by whether you come back for a second bottle.</p>
           </AnimateIn>
-
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyUs.map((w, i) => (
               <AnimateIn key={w.title} delay={i * 0.1}>
@@ -117,17 +137,13 @@ export default function HomePage() {
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimateIn>
-            <p className="eyebrow text-fluno-purple mb-6 flex items-center justify-center gap-2">
-              <Sparkles size={13} /> Our Promise
-            </p>
+            <p className="eyebrow text-fluno-purple mb-6 flex items-center justify-center gap-2"><Sparkles size={13} /> Our Promise</p>
             <blockquote className="font-brand font-bold text-4xl md:text-5xl lg:text-6xl text-fluno-ink leading-tight">
               &ldquo;You shouldn&apos;t have to{" "}
               <span className="text-fluno-purple">choose between</span> safe and effective.&rdquo;
             </blockquote>
             <p className="font-body text-lg text-fluno-muted mt-8 leading-relaxed max-w-2xl mx-auto">
-              Fluno was born in Hyderabad with one question: why do most personal care products
-              either cut corners on ingredients or charge luxury prices?
-              We formulated our way to the answer.
+              Fluno was born in Hyderabad with one question: why do most personal care products either cut corners on ingredients or charge luxury prices? We formulated our way to the answer.
             </p>
           </AnimateIn>
         </div>
@@ -137,38 +153,24 @@ export default function HomePage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn className="text-center mb-14">
-            <p className="eyebrow text-fluno-purple mb-3 flex items-center justify-center gap-2">
-              <Sparkles size={13} /> Customer Love
-            </p>
+            <p className="eyebrow text-fluno-purple mb-3 flex items-center justify-center gap-2"><Sparkles size={13} /> Customer Love</p>
             <h2 className="section-title">What Our Customers Say</h2>
             <p className="section-sub">Real reviews. No filters.</p>
           </AnimateIn>
-
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <AnimateIn key={t.name} delay={i * 0.12}>
                 <div className="card p-7 h-full flex flex-col relative overflow-hidden group">
-                  {/* Subtle glow on hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-fluno-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
                   <div className="flex mb-5">
                     {[1,2,3,4,5].map((s) => (
-                      <svg
-                        key={s}
-                        className={`w-4 h-4 ${s <= t.rating ? "fill-fluno-purple text-fluno-purple" : "fill-fluno-lavender text-fluno-lavender"}`}
-                        viewBox="0 0 20 20"
-                      >
+                      <svg key={s} className={`w-4 h-4 ${s <= t.rating ? "fill-fluno-purple text-fluno-purple" : "fill-fluno-lavender text-fluno-lavender"}`} viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     ))}
                   </div>
-
-                  <p className="font-body text-fluno-ink/70 leading-relaxed italic flex-1 relative z-10">
-                    &ldquo;{t.text}&rdquo;
-                  </p>
-                  <p className="font-brand font-semibold text-fluno-purple mt-5 relative z-10">
-                    — {t.name}
-                  </p>
+                  <p className="font-body text-fluno-ink/70 leading-relaxed italic flex-1 relative z-10">&ldquo;{t.text}&rdquo;</p>
+                  <p className="font-brand font-semibold text-fluno-purple mt-5 relative z-10">— {t.name}</p>
                 </div>
               </AnimateIn>
             ))}
@@ -184,22 +186,12 @@ export default function HomePage() {
         </div>
         <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
           <AnimateIn>
-            <p className="eyebrow text-fluno-purple mb-4 flex items-center justify-center gap-2">
-              <Sparkles size={13} /> Join the Fluno family
-            </p>
-            <h2 className="section-title-white text-5xl md:text-6xl">
-              Ready to make the switch?
-            </h2>
-            <p className="section-sub-white text-lg mt-4">
-              Join 1,000+ customers who chose quality over compromise.
-            </p>
+            <p className="eyebrow text-fluno-purple mb-4 flex items-center justify-center gap-2"><Sparkles size={13} /> Join the Fluno family</p>
+            <h2 className="section-title-white text-5xl md:text-6xl">Ready to make the switch?</h2>
+            <p className="section-sub-white text-lg mt-4">Join 1,000+ customers who chose quality over compromise.</p>
             <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
-              <Link href="/shop" className="btn-primary text-base px-10 py-4">
-                Shop Now <ArrowRight size={16} />
-              </Link>
-              <Link href="/contact" className="btn-outline-white text-base px-10 py-4">
-                Get in Touch
-              </Link>
+              <Link href="/shop" className="btn-primary text-base px-10 py-4">Shop Now <ArrowRight size={16} /></Link>
+              <Link href="/contact" className="btn-outline-white text-base px-10 py-4">Get in Touch</Link>
             </div>
           </AnimateIn>
         </div>
