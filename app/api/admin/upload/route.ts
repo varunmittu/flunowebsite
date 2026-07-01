@@ -1,26 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
 import { google } from "googleapis";
 import { getAdminSession } from "@/lib/adminAuth";
+import { connectDB } from "@/lib/mongodb";
+import { ConfigModel } from "@/lib/models/Config";
 import { Readable } from "stream";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
+const REDIRECT_URI = "https://www.myfluno.com/api/admin/drive/callback";
+const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
+
 export async function POST(req: NextRequest) {
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-  if (!raw) return NextResponse.json({ error: "Google Drive not configured" }, { status: 500 });
-
   try {
-    const credentials = JSON.parse(raw);
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ["https://www.googleapis.com/auth/drive"],
-    });
-    const drive = google.drive({ version: "v3", auth });
+    // Load refresh token from MongoDB (set during Drive setup)
+    await connectDB();
+    const config = await ConfigModel.findOne({ key: "google_drive_refresh_token" });
+    const refreshToken = config?.value;
+
+    if (!refreshToken) {
+      return NextResponse.json(
+        { error: "Google Drive not connected. Go to Admin → Drive Setup first." },
+        { status: 400 }
+      );
+    }
+
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      REDIRECT_URI
+    );
+    oauth2Client.setCredentials({ refresh_token: refreshToken });
+    const drive = google.drive({ version: "v3", auth: oauth2Client });
 
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
@@ -34,12 +49,11 @@ export async function POST(req: NextRequest) {
 
     const buffer = Buffer.from(await file.arrayBuffer());
     const stream = Readable.from(buffer);
-    const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 
     const uploaded = await drive.files.create({
       requestBody: {
         name: `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`,
-        ...(folderId ? { parents: [folderId] } : {}),
+        ...(FOLDER_ID ? { parents: [FOLDER_ID] } : {}),
       },
       media: { mimeType: file.type, body: stream },
       fields: "id",
