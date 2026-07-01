@@ -11,6 +11,7 @@ const BlogSchema = new Schema(
     author:     { type: String, default: "Fluno Team" },
     published:  { type: Boolean, default: false },
     readTime:   String,
+    images:     [String],
     tags:       [String],
   },
   { timestamps: true }
