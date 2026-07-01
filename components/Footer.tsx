@@ -187,7 +187,7 @@ export default function Footer() {
             © 2025 Parvar Enterprise. All rights reserved.
           </p>
           <p className="text-xs text-white/20 font-mono">
-            Grievance: contact@myfluno.com
+            contact@myfluno.com
           </p>
         </div>
       </div>

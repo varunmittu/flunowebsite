@@ -18,20 +18,52 @@ const item = {
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-fluno-dark">
-      {/* Animated orbs */}
+      {/* Cinematic animated gradient — video-like atmosphere */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="animate-orb1 absolute top-[8%] left-[5%]  w-[550px] h-[550px] rounded-full bg-fluno-purple/18 blur-[130px]" />
-        <div className="animate-orb2 absolute bottom-[5%] right-[5%] w-[650px] h-[650px] rounded-full bg-fluno-purple-deep/14 blur-[160px]" />
-        <div className="animate-orb3 absolute top-[45%] left-[40%] w-[350px] h-[350px] rounded-full bg-fluno-glow/8 blur-[90px]" />
+        {/* Primary moving orbs */}
+        <div className="animate-orb1 absolute top-[8%] left-[5%]  w-[650px] h-[650px] rounded-full bg-fluno-purple/22 blur-[140px]" />
+        <div className="animate-orb2 absolute bottom-[5%] right-[5%] w-[750px] h-[750px] rounded-full bg-fluno-purple-deep/18 blur-[180px]" />
+        <div className="animate-orb3 absolute top-[45%] left-[40%] w-[400px] h-[400px] rounded-full bg-fluno-glow/10 blur-[100px]" />
+        {/* Extra accent orbs for depth */}
+        <div
+          className="absolute top-[20%] right-[20%] w-[300px] h-[300px] rounded-full blur-[120px] opacity-60"
+          style={{
+            background: "radial-gradient(circle, rgba(189,126,250,0.25) 0%, transparent 70%)",
+            animation: "orb4 9s ease-in-out infinite alternate",
+          }}
+        />
+        <div
+          className="absolute bottom-[25%] left-[15%] w-[250px] h-[250px] rounded-full blur-[90px] opacity-50"
+          style={{
+            background: "radial-gradient(circle, rgba(116,201,191,0.2) 0%, transparent 70%)",
+            animation: "orb5 11s ease-in-out infinite alternate",
+          }}
+        />
+        {/* Sweeping light beam */}
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            background: "conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(189,126,250,0.8) 20deg, transparent 40deg)",
+            animation: "spin 18s linear infinite",
+          }}
+        />
       </div>
 
       {/* Grid lines */}
       <div
-        className="absolute inset-0 opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.035]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(189,126,250,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(189,126,250,.5) 1px, transparent 1px)",
+            "linear-gradient(rgba(189,126,250,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(189,126,250,.6) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
+        }}
+      />
+
+      {/* Film vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 120% 100% at 50% 50%, transparent 50%, rgba(9,9,15,0.6) 100%)",
         }}
       />
 

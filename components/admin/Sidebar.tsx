@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, Package, ShoppingBag, FileText,
-  Tag, FolderOpen, LogOut, Sparkles, X, Menu, HardDrive,
+  Tag, FolderOpen, LogOut, Sparkles, X, Menu, HardDrive, TicketCheck,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -12,6 +12,7 @@ const nav = [
   { label: "Dashboard",   href: "/admin/dashboard",   icon: LayoutDashboard },
   { label: "Products",    href: "/admin/products",    icon: Package          },
   { label: "Orders",      href: "/admin/orders",      icon: ShoppingBag      },
+  { label: "Tickets",     href: "/admin/tickets",     icon: TicketCheck      },
   { label: "Blog",        href: "/admin/blog",        icon: FileText         },
   { label: "Coupons",     href: "/admin/coupons",     icon: Tag              },
   { label: "Categories",  href: "/admin/categories",  icon: FolderOpen       },

@@ -61,8 +61,6 @@ export default function ContactPage() {
                 <p className="font-body text-sm font-medium text-fluno-ink">Response Time</p>
                 <p className="font-body text-sm text-fluno-ink/60">
                   We aim to respond within 24–48 hours on business days.
-                  Grievances are resolved within 30 days per Consumer
-                  Protection Rules 2020.
                 </p>
               </div>
             </div>
@@ -105,28 +103,22 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* Grievance Officer */}
-      <div className="mt-14 p-6 bg-fluno-teal/5 border border-fluno-teal/20 rounded-sm">
-        <p className="font-mono text-xs text-fluno-teal uppercase tracking-widest mb-2">
-          Grievance Officer (Consumer Protection Rules, 2020)
-        </p>
-        <p className="font-body text-sm text-fluno-ink/70">
-          <strong className="text-fluno-ink">Name:</strong> Avinash Mohan V
-          &nbsp;·&nbsp;
-          <strong className="text-fluno-ink">Email:</strong>{" "}
-          <a
-            href="mailto:contact@myfluno.com"
-            className="text-fluno-teal hover:underline"
-          >
-            contact@myfluno.com
-          </a>
-          &nbsp;·&nbsp;
-          <strong className="text-fluno-ink">Location:</strong> Hyderabad,
-          India (India-resident as required by law)
-          <br />
-          Complaints will be acknowledged within 48 hours and resolved within
-          30 days.
-        </p>
+      {/* Support Ticket CTA */}
+      <div className="mt-14 p-6 bg-fluno-teal/5 border border-fluno-teal/20 rounded-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <p className="font-mono text-xs text-fluno-teal uppercase tracking-widest mb-1">
+            Need help with an order or product?
+          </p>
+          <p className="font-body text-sm text-fluno-ink/70">
+            Raise a support ticket and our team will get back to you within 24–48 hours.
+          </p>
+        </div>
+        <a
+          href="/support"
+          className="btn-primary whitespace-nowrap shrink-0"
+        >
+          Raise a Ticket
+        </a>
       </div>
     </div>
   );

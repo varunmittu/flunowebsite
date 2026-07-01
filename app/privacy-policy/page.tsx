@@ -75,7 +75,6 @@ export default function PrivacyPolicy() {
         <section>
           <h2 className="font-display text-xl text-fluno-ink mb-3">8. Contact</h2>
           <p>For privacy concerns or to exercise your rights:<br />
-          <strong>Grievance Officer:</strong> Avinash Mohan V<br />
           <strong>Email:</strong> <a href="mailto:contact@myfluno.com" className="text-fluno-teal hover:underline">contact@myfluno.com</a><br />
           <strong>Address:</strong> Hyderabad, India 500090</p>
         </section>

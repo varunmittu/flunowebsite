@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider }      from "@/context/CartContext";
 import SessionProvider       from "@/components/SessionProvider";
 import ConditionalLayout     from "@/components/ConditionalLayout";
+import PageTracker           from "@/components/PageTracker";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <SessionProvider>
           <CartProvider>
+            <PageTracker />
             <ConditionalLayout>{children}</ConditionalLayout>
           </CartProvider>
         </SessionProvider>
