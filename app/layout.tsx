@@ -5,6 +5,7 @@ import { CartProvider }      from "@/context/CartContext";
 import SessionProvider       from "@/components/SessionProvider";
 import ConditionalLayout     from "@/components/ConditionalLayout";
 import PageTracker           from "@/components/PageTracker";
+import { SpeedInsights }     from "@vercel/speed-insights/next";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SessionProvider>
           <CartProvider>
             <PageTracker />
+            <SpeedInsights />
             <ConditionalLayout>{children}</ConditionalLayout>
           </CartProvider>
         </SessionProvider>
