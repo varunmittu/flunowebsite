@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, AlertCircle, HardDrive, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default function DriveSetupPage() {
+function DriveSetupContent() {
   const params = useSearchParams();
   const success = params.get("success");
   const error   = params.get("error");
@@ -110,5 +110,17 @@ export default function DriveSetupPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function DriveSetupPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex-1 p-6 lg:p-10 bg-fluno-light min-h-screen flex items-center justify-center">
+        <Loader2 size={28} className="animate-spin text-fluno-purple" />
+      </div>
+    }>
+      <DriveSetupContent />
+    </Suspense>
   );
 }
