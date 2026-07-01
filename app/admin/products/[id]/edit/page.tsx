@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Plus, X, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 function toSlug(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -38,12 +39,11 @@ export default function EditProduct() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState("");
-  const [imgDraft, setImgDraft] = useState("");
   const [form, setForm] = useState({
     name: "", slug: "", tagline: "", description: "", price: "", originalPrice: "",
     size: "", category: "", images: [] as string[], ingredients: [] as string[],
     howToUse: [] as string[], benefits: [] as string[], badges: [] as string[],
-    inStock: true, featured: false, isNew: false,
+    inStock: true, featured: false, newArrival: false,
   });
 
   useEffect(() => {
@@ -56,7 +56,8 @@ export default function EditProduct() {
         size: p.size ?? "", category: p.category ?? "",
         images: p.images ?? [], ingredients: p.ingredients ?? [],
         howToUse: p.howToUse ?? [], benefits: p.benefits ?? [], badges: p.badges ?? [],
-        inStock: p.inStock ?? true, featured: p.featured ?? false, isNew: p.isNew ?? false,
+        inStock: p.inStock ?? true, featured: p.featured ?? false,
+        newArrival: p.newArrival ?? false,
       });
       setFetching(false);
     });
@@ -66,17 +67,29 @@ export default function EditProduct() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (form.images.length === 0) {
+      setError("Please upload at least one product image");
+      return;
+    }
     setLoading(true); setError("");
     const res = await fetch(`/api/admin/products/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, price: parseFloat(form.price) || 0, originalPrice: form.originalPrice ? parseFloat(form.originalPrice) : undefined }),
+      body: JSON.stringify({
+        ...form,
+        price: parseFloat(form.price) || 0,
+        originalPrice: form.originalPrice ? parseFloat(form.originalPrice) : undefined,
+      }),
     });
     if (res.ok) { router.push("/admin/products"); }
     else { const d = await res.json(); setError(d.error || "Failed"); setLoading(false); }
   }
 
-  if (fetching) return <div className="flex-1 flex items-center justify-center min-h-screen bg-fluno-light"><Loader2 size={28} className="animate-spin text-fluno-purple" /></div>;
+  if (fetching) return (
+    <div className="flex-1 flex items-center justify-center min-h-screen bg-fluno-light">
+      <Loader2 size={28} className="animate-spin text-fluno-purple" />
+    </div>
+  );
 
   return (
     <div className="flex-1 p-6 lg:p-10 bg-fluno-light min-h-screen">
@@ -95,7 +108,7 @@ export default function EditProduct() {
           <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3">Basic Info</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2"><label className="block font-body text-xs text-fluno-muted mb-1.5">Product Name *</label>
-              <input value={form.name} onChange={e => { set("name", e.target.value); }} className="input" required /></div>
+              <input value={form.name} onChange={e => { set("name", e.target.value); set("slug", toSlug(e.target.value)); }} className="input" required /></div>
             <div><label className="block font-body text-xs text-fluno-muted mb-1.5">Slug</label>
               <input value={form.slug} onChange={e => set("slug", toSlug(e.target.value))} className="input font-mono text-sm" /></div>
             <div><label className="block font-body text-xs text-fluno-muted mb-1.5">Category</label>
@@ -119,21 +132,17 @@ export default function EditProduct() {
           </div>
         </div>
 
+        {/* Images — Google Drive upload */}
         <div className="bg-white rounded-2xl border border-fluno-lavender p-6 space-y-4">
-          <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3">Images (URLs)</h2>
-          <div className="flex gap-2">
-            <input value={imgDraft} onChange={e => setImgDraft(e.target.value)} className="input text-sm flex-1" placeholder="https://..."
-              onKeyDown={e => { if (e.key === "Enter" && imgDraft.trim()) { e.preventDefault(); set("images", [...form.images, imgDraft.trim()]); setImgDraft(""); }}} />
-            <button type="button" onClick={() => { if (imgDraft.trim()) { set("images", [...form.images, imgDraft.trim()]); setImgDraft(""); }}} className="btn-outline px-3 py-2 text-sm"><Plus size={15} /></button>
+          <div className="flex items-center justify-between border-b border-fluno-lavender pb-3">
+            <h2 className="font-display text-base text-fluno-ink">Product Images</h2>
+            <span className="font-mono text-xs text-fluno-muted">{form.images.filter(Boolean).length} / 4 uploaded</span>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {form.images.map((url, i) => (
-              <div key={i} className="relative group">
-                <img src={url} alt="" className="w-20 h-20 object-cover rounded-xl border border-fluno-lavender" onError={e => { (e.target as HTMLImageElement).src = "https://placehold.co/80x80"; }} />
-                <button type="button" onClick={() => set("images", form.images.filter((_, j) => j !== i))} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><X size={10} /></button>
-              </div>
-            ))}
-          </div>
+          <ImageUploader
+            images={form.images}
+            onChange={imgs => set("images", imgs)}
+            count={4}
+          />
         </div>
 
         <div className="bg-white rounded-2xl border border-fluno-lavender p-6 space-y-5">
@@ -147,7 +156,11 @@ export default function EditProduct() {
         <div className="bg-white rounded-2xl border border-fluno-lavender p-6">
           <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3 mb-4">Settings</h2>
           <div className="grid grid-cols-3 gap-4">
-            {([["inStock","In Stock","Mark as available"],["featured","Featured","Show on homepage"],["isNew","Mark as New","Show badge"]] as [keyof typeof form,string,string][]).map(([key, label, desc]) => (
+            {([
+              ["inStock",    "In Stock",    "Mark as available"],
+              ["featured",   "Featured",    "Show on homepage"],
+              ["newArrival", "New Arrival", "Show badge"],
+            ] as [keyof typeof form, string, string][]).map(([key, label, desc]) => (
               <label key={key} className="flex items-start gap-3 cursor-pointer p-3 rounded-xl border border-fluno-lavender/60 hover:bg-fluno-light transition-colors">
                 <input type="checkbox" checked={!!form[key]} onChange={e => set(key, e.target.checked)} className="mt-0.5 accent-fluno-purple w-4 h-4" />
                 <div><p className="font-body text-sm font-medium text-fluno-ink">{label}</p><p className="font-mono text-[10px] text-fluno-muted">{desc}</p></div>

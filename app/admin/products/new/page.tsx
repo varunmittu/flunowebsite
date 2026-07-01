@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, X, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 function toSlug(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -43,20 +44,23 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
 export default function NewProduct() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState("");
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
     name: "", slug: "", tagline: "", description: "", price: "", originalPrice: "",
     size: "", category: "", images: [] as string[], ingredients: [] as string[],
     howToUse: [] as string[], benefits: [] as string[], badges: [] as string[],
-    inStock: true, featured: false, isNew: false,
+    inStock: true, featured: false, newArrival: false,
   });
 
   const set = (k: string, v: unknown) => setForm(f => ({ ...f, [k]: v }));
-  const [imgDraft, setImgDraft] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (form.images.length === 0) {
+      setError("Please upload at least one product image");
+      return;
+    }
     setLoading(true);
     setError("");
 
@@ -144,31 +148,17 @@ export default function NewProduct() {
           </div>
         </div>
 
-        {/* Images */}
+        {/* Images — Google Drive upload */}
         <div className="bg-white rounded-2xl border border-fluno-lavender p-6 space-y-4">
-          <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3">Images (URLs)</h2>
-          <div className="flex gap-2">
-            <input
-              value={imgDraft}
-              onChange={e => setImgDraft(e.target.value)}
-              className="input text-sm flex-1"
-              placeholder="https://example.com/image.jpg"
-              onKeyDown={e => { if (e.key === "Enter" && imgDraft.trim()) { e.preventDefault(); set("images", [...form.images, imgDraft.trim()]); setImgDraft(""); }}}
-            />
-            <button type="button" onClick={() => { if (imgDraft.trim()) { set("images", [...form.images, imgDraft.trim()]); setImgDraft(""); }}} className="btn-outline px-3 py-2 text-sm">
-              <Plus size={15} />
-            </button>
+          <div className="flex items-center justify-between border-b border-fluno-lavender pb-3">
+            <h2 className="font-display text-base text-fluno-ink">Product Images</h2>
+            <span className="font-mono text-xs text-fluno-muted">{form.images.filter(Boolean).length} / 4 uploaded</span>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {form.images.map((url, i) => (
-              <div key={i} className="relative group">
-                <img src={url} alt="" className="w-20 h-20 object-cover rounded-xl border border-fluno-lavender" onError={e => { (e.target as HTMLImageElement).src = "https://placehold.co/80x80"; }} />
-                <button type="button" onClick={() => set("images", form.images.filter((_, j) => j !== i))} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <X size={10} />
-                </button>
-              </div>
-            ))}
-          </div>
+          <ImageUploader
+            images={form.images}
+            onChange={imgs => set("images", imgs)}
+            count={4}
+          />
         </div>
 
         {/* Details */}
@@ -185,9 +175,9 @@ export default function NewProduct() {
           <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3 mb-4">Settings</h2>
           <div className="grid grid-cols-3 gap-4">
             {([
-              ["inStock",  "In Stock",  "Mark product as available"],
-              ["featured", "Featured",  "Show on homepage"],
-              ["isNew",    "Mark as New","Show 'New' badge"],
+              ["inStock",    "In Stock",    "Mark product as available"],
+              ["featured",   "Featured",    "Show on homepage"],
+              ["newArrival", "New Arrival", "Show 'New' badge"],
             ] as [keyof typeof form, string, string][]).map(([key, label, desc]) => (
               <label key={key} className="flex items-start gap-3 cursor-pointer p-3 rounded-xl border border-fluno-lavender/60 hover:bg-fluno-light transition-colors">
                 <input
