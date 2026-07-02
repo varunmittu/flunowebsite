@@ -1,5 +1,12 @@
 import { Schema, model, models } from "mongoose";
 
+const MessageSchema = new Schema({
+  sender:    { type: String, enum: ["customer", "admin"], required: true },
+  text:      { type: String, default: "" },
+  image:     { type: String, default: null },
+  createdAt: { type: Date, default: Date.now },
+});
+
 const TicketSchema = new Schema(
   {
     ticketId:  { type: String, required: true, unique: true },
@@ -12,6 +19,7 @@ const TicketSchema = new Schema(
     status:    { type: String, enum: ["open", "in_progress", "resolved", "closed"], default: "open" },
     priority:  { type: String, enum: ["low", "medium", "high"], default: "medium" },
     adminNote: String,
+    messages:  [MessageSchema],
   },
   { timestamps: true }
 );

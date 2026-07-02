@@ -27,7 +27,7 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
     fd.append("file", file);
 
     try {
-      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      const res  = await fetch("/api/admin/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (data.url) {
         onUpload(data.url);
@@ -46,7 +46,7 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="font-body text-xs text-fluno-muted font-medium">{label}</span>
+      <span className="font-mono text-[10px] text-white/35 uppercase tracking-wider">{label}</span>
 
       <input
         ref={inputRef}
@@ -57,7 +57,7 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
       />
 
       {url ? (
-        <div className="relative group aspect-square rounded-2xl overflow-hidden border-2 border-fluno-purple/40 hover:border-fluno-purple transition-colors">
+        <div className="relative group aspect-square rounded-2xl overflow-hidden border border-fluno-purple/40 hover:border-fluno-purple transition-colors">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={url}
@@ -65,7 +65,7 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
             className="w-full h-full object-cover"
             onError={e => { (e.target as HTMLImageElement).src = "https://placehold.co/300x300?text=Image"; }}
           />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors" />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition-colors" />
           <button
             type="button"
             onClick={onRemove}
@@ -76,7 +76,7 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/90 text-fluno-ink text-[10px] font-body px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow whitespace-nowrap"
+            className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/85 text-gray-800 text-[10px] font-body px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow whitespace-nowrap"
           >
             Replace
           </button>
@@ -91,26 +91,26 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="aspect-square rounded-2xl border-2 border-dashed border-fluno-lavender hover:border-fluno-purple hover:bg-fluno-purple/5 transition-all flex flex-col items-center justify-center gap-2 text-fluno-muted hover:text-fluno-purple disabled:opacity-50 disabled:cursor-not-allowed"
+          className="aspect-square rounded-2xl border border-dashed border-white/[0.15] hover:border-fluno-purple/60 hover:bg-fluno-purple/[0.06] transition-all flex flex-col items-center justify-center gap-2 text-white/25 hover:text-fluno-purple/70 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {uploading ? (
             <>
               <Loader2 size={22} className="animate-spin text-fluno-purple" />
-              <span className="font-body text-[11px]">Uploading…</span>
+              <span className="font-body text-[11px] text-white/50">Uploading…</span>
             </>
           ) : (
             <>
-              <div className="w-10 h-10 rounded-xl bg-fluno-lavender/60 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-white/[0.07] flex items-center justify-center">
                 {index === 0 ? <Upload size={18} /> : <ImageIcon size={18} />}
               </div>
               <span className="font-body text-[11px] text-center px-2">Click to upload</span>
-              <span className="font-mono text-[9px] text-fluno-muted/60">JPG · PNG · WebP</span>
+              <span className="font-mono text-[9px] text-white/25">JPG · PNG · WebP</span>
             </>
           )}
         </button>
       )}
 
-      {error && <p className="font-mono text-[10px] text-red-500">{error}</p>}
+      {error && <p className="font-mono text-[10px] text-red-400">{error}</p>}
     </div>
   );
 }
@@ -147,8 +147,8 @@ export default function ImageUploader({ images, onChange, count = 4 }: ImageUplo
           />
         ))}
       </div>
-      <p className="font-mono text-[10px] text-fluno-muted">
-        First image is the main product image shown in listings · Max 10 MB per image · Images saved to Google Drive
+      <p className="font-mono text-[10px] text-white/25">
+        First image is the main product image · Max 10 MB per image · Saved to Google Drive
       </p>
     </div>
   );

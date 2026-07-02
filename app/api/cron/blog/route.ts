@@ -5,6 +5,8 @@ import { Readable } from "stream";
 import { connectDB } from "@/lib/mongodb";
 import { BlogModel } from "@/lib/models/Blog";
 import { ConfigModel } from "@/lib/models/Config";
+import { PushSub } from "@/lib/models/PushSubscription";
+import { Newsletter } from "@/lib/models/Newsletter";
 
 export const runtime  = "nodejs";
 export const dynamic  = "force-dynamic";
@@ -109,16 +111,28 @@ export async function GET(req: NextRequest) {
   try {
     const ai = new GoogleGenAI({ apiKey });
 
-    // ── Pick today's topic ────────────────────────────────────────────────
+    // ── Pick today's topic (avoid repeating published posts) ─────────────
     const dayOfYear = Math.floor(
       (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000
     );
     const topic = TOPICS[dayOfYear % TOPICS.length];
 
-    // ── Generate blog content + image prompts ─────────────────────────────
-    const blogPrompt = `You are a professional content writer for Fluno — a mid-premium personal care and hygiene brand from Hyderabad, India. Fluno's products include sunscreens, hand wash, and skincare formulated against EU/UK safety standards.
+    await connectDB();
+    const recentPosts = await BlogModel.find({}, { title: 1 })
+      .sort({ createdAt: -1 })
+      .limit(60)
+      .lean() as { title: string }[];
+    const avoidList = recentPosts.map((p) => `- ${p.title}`).join("\n");
 
-Write a complete SEO-optimised blog post on the topic: "${topic}"
+    // ── Generate blog content + image prompts ─────────────────────────────
+    const blogPrompt = `You are a professional content writer for Fluno — a mid-premium personal care and hygiene brand from India. Fluno's products include sunscreens, hand wash, and skincare formulated against EU/UK safety standards.
+
+Write a complete SEO-optimised blog post for the Fluno blog.
+
+TOPIC SELECTION:
+- Choose ONE fresh, specific topic relevant to skincare, suncare, hand hygiene, or personal care for Indian readers.
+- Suggested theme for today (use only if not already covered below): "${topic}"
+${avoidList ? `- These topics are ALREADY PUBLISHED — do NOT repeat or closely rephrase any of them:\n${avoidList}` : ""}
 
 LEGAL AND BRAND RULES (strictly follow):
 - Never use words like "cures", "treats", "heals", "prevents disease" — these are medical claims
@@ -146,12 +160,24 @@ Return ONLY a valid JSON object with this exact schema (no markdown, no extra te
   "tags": ["tag1", "tag2", "tag3", "tag4"]
 }`;
 
-    const textRes = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: [{ role: "user", parts: [{ text: blogPrompt }] }],
-    });
-
-    const rawText = textRes.text ?? "";
+    // gemini-2.0-* models no longer have free-tier quota (verified July 2026).
+    // Try current free-tier models in order.
+    const TEXT_MODELS = ["gemini-2.5-flash-lite", "gemini-2.5-flash"];
+    let rawText = "";
+    let lastTextErr: unknown = null;
+    for (const model of TEXT_MODELS) {
+      try {
+        const textRes = await ai.models.generateContent({
+          model,
+          contents: [{ role: "user", parts: [{ text: blogPrompt }] }],
+        });
+        rawText = textRes.text ?? "";
+        if (rawText) break;
+      } catch (e) {
+        lastTextErr = e;
+      }
+    }
+    if (!rawText) throw lastTextErr ?? new Error("All text models failed");
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error("Gemini did not return valid JSON");
     const blog = JSON.parse(jsonMatch[0]) as {
@@ -174,8 +200,9 @@ Return ONLY a valid JSON object with this exact schema (no markdown, no extra te
         const prompt = blog.imagePrompts?.[i] ??
           `Professional skincare product photography, clean aesthetic, pastel background, no text`;
 
+        // Requires a paid Gemini plan — falls through to stock images on free tier
         const imgRes = await ai.models.generateImages({
-          model: "imagen-3.0-generate-002",
+          model: "imagen-4.0-fast-generate-001",
           prompt: `${prompt}. High quality, photorealistic, professional product photography. No text, no watermarks.`,
           config: { numberOfImages: 1, outputMimeType: "image/jpeg" },
         });
@@ -188,6 +215,39 @@ Return ONLY a valid JSON object with this exact schema (no markdown, no extra te
         if (url) imageUrls.push(url);
       } catch (imgErr) {
         console.error(`Image ${i + 1} generation error:`, imgErr instanceof Error ? imgErr.message : imgErr);
+      }
+    }
+
+    // Fallback: Pollinations.ai (FLUX) — free, unlimited, fresh AI-generated
+    // images with no API key or credits. Generated in parallel, then uploaded
+    // to our own Google Drive so nothing is hotlinked.
+    if (imageUrls.length < 3) {
+      const needed = [0, 1, 2].slice(imageUrls.length);
+      const generated = await Promise.allSettled(
+        needed.map(async (i) => {
+          const prompt = blog.imagePrompts?.[i] ??
+            "Professional skincare product photography, clean aesthetic, pastel background";
+          const pollUrl =
+            `https://image.pollinations.ai/prompt/${encodeURIComponent(
+              `${prompt}. Photorealistic, professional photography, soft studio lighting, no text, no watermark, no brand logos, unbranded packaging`
+            )}?width=1200&height=675&nologo=true&seed=${Date.now() + i * 7919}`;
+
+          const res = await fetch(pollUrl, { signal: AbortSignal.timeout(35000) });
+          if (!res.ok) throw new Error(`Pollinations HTTP ${res.status}`);
+          const buf = Buffer.from(await res.arrayBuffer());
+          if (buf.length < 5000) throw new Error("Image too small — likely an error response");
+
+          const url = await uploadBase64ToDrive(
+            buf.toString("base64"),
+            `blog-${baseSlug}-${dateStr}-${i + 1}.jpg`
+          );
+          if (!url) throw new Error("Drive upload failed");
+          return url;
+        })
+      );
+      for (const r of generated) {
+        if (r.status === "fulfilled") imageUrls.push(r.value);
+        else console.error("Pollinations image error:", r.reason instanceof Error ? r.reason.message : r.reason);
       }
     }
 
@@ -213,9 +273,83 @@ Return ONLY a valid JSON object with this exact schema (no markdown, no extra te
       tags:       blog.tags ?? [],
     });
 
+    // ── Notify subscribers (non-fatal) ────────────────────────────────────
+    let pushSent = 0;
+    let emailsSent = 0;
+
+    // Browser push notifications
+    try {
+      const subs = await PushSub.find().lean();
+      if (subs.length && process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+        const webpush = (await import("web-push")).default;
+        webpush.setVapidDetails(
+          "mailto:contact@myfluno.com",
+          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+          process.env.VAPID_PRIVATE_KEY
+        );
+        const payload = JSON.stringify({
+          title: "New on the Fluno blog ✨",
+          body:  saved.title,
+          url:   `/blog/${slug}`,
+        });
+        const results = await Promise.allSettled(
+          subs.map((s) =>
+            webpush.sendNotification(
+              { endpoint: s.endpoint, keys: s.keys } as import("web-push").PushSubscription,
+              payload
+            )
+          )
+        );
+        pushSent = results.filter((r) => r.status === "fulfilled").length;
+        const expired = results
+          .map((r, i) => (r.status === "rejected" && [(r.reason as { statusCode?: number })?.statusCode, subs[i].endpoint]))
+          .filter((x): x is [number, string] => Array.isArray(x) && (x[0] === 410 || x[0] === 404))
+          .map(([, ep]) => ep);
+        if (expired.length) await PushSub.deleteMany({ endpoint: { $in: expired } });
+      }
+    } catch (e) {
+      console.error("Blog push notify error:", e);
+    }
+
+    // Newsletter emails (Resend batch, capped to stay within free-tier limits)
+    try {
+      const resendKey = process.env.RESEND_API_KEY;
+      if (resendKey) {
+        const subscribers = await Newsletter.find().limit(90).lean() as { email: string }[];
+        if (subscribers.length) {
+          const { Resend } = await import("resend");
+          const resend = new Resend(resendKey);
+          const postUrl = `https://www.myfluno.com/blog/${slug}`;
+          const batch = subscribers.map((s) => ({
+            from:    "Fluno <contact@myfluno.com>",
+            to:      [s.email],
+            subject: `${saved.title} — new on the Fluno blog`,
+            html: `
+              <div style="font-family:sans-serif;max-width:540px;margin:0 auto;padding:28px">
+                <h1 style="color:#BD7EFA;font-size:24px;margin:0 0 20px">fluno</h1>
+                ${saved.coverImage ? `<img src="${saved.coverImage}" alt="" style="width:100%;border-radius:14px;margin-bottom:18px"/>` : ""}
+                <h2 style="color:#1A0A2E;font-size:20px;margin:0 0 10px">${saved.title}</h2>
+                <p style="color:#555;font-size:14px;line-height:1.7;margin:0 0 20px">${saved.excerpt ?? ""}</p>
+                <a href="${postUrl}" style="display:inline-block;background:#BD7EFA;color:#fff;text-decoration:none;padding:12px 26px;border-radius:12px;font-size:14px;font-weight:600">Read the Article</a>
+                <p style="font-size:11px;color:#aaa;margin-top:28px">
+                  You're receiving this because you subscribed to Fluno updates.
+                  <a href="https://www.myfluno.com/api/newsletter/unsubscribe?email=${encodeURIComponent(s.email)}" style="color:#BD7EFA">Unsubscribe</a>
+                </p>
+              </div>
+            `,
+          }));
+          const res = await resend.batch.send(batch);
+          emailsSent = res.error ? 0 : subscribers.length;
+        }
+      }
+    } catch (e) {
+      console.error("Blog newsletter email error:", e);
+    }
+
     return NextResponse.json({
       ok: true,
       blog: { id: saved._id, title: saved.title, slug, images: imageUrls.length },
+      notified: { push: pushSent, emails: emailsSent },
     });
   } catch (err) {
     console.error("Blog cron error:", err);

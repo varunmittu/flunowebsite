@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShieldCheck, ChevronRight } from "lucide-react";
+import { ShieldCheck, ChevronRight, Tag, X, Loader2, MapPin, Check } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -47,8 +47,38 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [couponInput, setCouponInput]   = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
+  const [couponError, setCouponError]   = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+
   const shipping = total >= 499 ? 0 : 49;
-  const finalTotal = total + shipping;
+  const discount = appliedCoupon?.discount ?? 0;
+  const finalTotal = Math.max(total + shipping - discount, 1);
+
+  async function applyCoupon() {
+    if (!couponInput.trim()) return;
+    setCouponLoading(true);
+    setCouponError("");
+    try {
+      const res  = await fetch("/api/coupons/validate", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ code: couponInput.trim(), subtotal: total }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setCouponError(data.error || "Invalid coupon.");
+        return;
+      }
+      setAppliedCoupon({ code: data.code, discount: data.discount });
+      setCouponInput("");
+    } catch {
+      setCouponError("Could not validate coupon. Try again.");
+    } finally {
+      setCouponLoading(false);
+    }
+  }
 
   const [form, setForm] = useState({
     name: session?.user?.name || "",
@@ -59,6 +89,40 @@ export default function CheckoutPage() {
     state: "Telangana",
     pincode: "",
   });
+
+  interface SavedAddress {
+    _id: string; label?: string; name: string; address: string;
+    city: string; state: string; pincode: string; phone?: string; isDefault?: boolean;
+  }
+  const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
+  const [selectedAddrId, setSelectedAddrId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!session?.user) return;
+    fetch("/api/addresses")
+      .then((r) => r.json())
+      .then((d) => {
+        const list: SavedAddress[] = d.addresses ?? [];
+        setSavedAddresses(list);
+        const def = list.find((a) => a.isDefault) ?? list[0];
+        if (def) applySavedAddress(def);
+      })
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.user]);
+
+  function applySavedAddress(a: SavedAddress) {
+    setSelectedAddrId(a._id);
+    setForm((f) => ({
+      ...f,
+      name:    a.name,
+      phone:   a.phone ?? f.phone,
+      address: a.address,
+      city:    a.city,
+      state:   a.state,
+      pincode: a.pincode,
+    }));
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -74,27 +138,17 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           items: items.map((i) => ({
             productId: i.id,
-            name: i.name,
-            size: i.size,
-            price: i.price,
             quantity: i.quantity,
-            image: i.image,
           })),
           address: form,
-          subtotal: total,
-          shipping,
-          total: finalTotal,
+          coupon: appliedCoupon?.code ?? null,
         }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Order creation failed");
 
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      document.body.appendChild(script);
-
-      script.onload = () => {
+      const openRazorpay = () => {
         const rzp = new window.Razorpay({
           key: data.keyId,
           amount: data.amount,
@@ -119,14 +173,28 @@ export default function CheckoutPage() {
               router.push(`/order-success?orderId=${data.orderId}`);
             } else {
               setError("Payment verification failed. Contact support.");
+              setLoading(false);
             }
           },
           prefill: { name: form.name, email: form.email, contact: form.phone },
-          theme: { color: "#1E5C56" },
+          theme: { color: "#BD7EFA" },
           modal: { ondismiss: () => setLoading(false) },
         });
         rzp.open();
       };
+
+      if (window.Razorpay) {
+        openRazorpay();
+      } else {
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.onload = openRazorpay;
+        script.onerror = () => {
+          setError("Could not load the payment gateway. Check your connection and try again.");
+          setLoading(false);
+        };
+        document.body.appendChild(script);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setLoading(false);
@@ -161,6 +229,45 @@ export default function CheckoutPage() {
           {step === "address" && (
             <div>
               <h1 className="font-display text-2xl text-fluno-ink mb-6">Delivery Address</h1>
+
+              {savedAddresses.length > 0 && (
+                <div className="mb-8">
+                  <p className="font-mono text-xs text-fluno-ink/50 uppercase tracking-wide mb-3">Your saved addresses</p>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {savedAddresses.map((a) => {
+                      const active = selectedAddrId === a._id;
+                      return (
+                        <button
+                          key={a._id}
+                          type="button"
+                          onClick={() => applySavedAddress(a)}
+                          className={`text-left p-4 rounded-xl border transition-all ${
+                            active
+                              ? "border-fluno-purple bg-fluno-purple/5 shadow-sm"
+                              : "border-fluno-lavender/60 bg-white hover:border-fluno-purple/40"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-fluno-purple">
+                              <MapPin size={11} /> {a.label ?? "Address"}
+                              {a.isDefault && <span className="text-fluno-ink/30">· default</span>}
+                            </span>
+                            {active && <Check size={14} className="text-fluno-purple" />}
+                          </div>
+                          <p className="font-body text-sm font-medium text-fluno-ink">{a.name}</p>
+                          <p className="font-body text-xs text-fluno-ink/55 leading-relaxed mt-0.5">
+                            {a.address}, {a.city}, {a.state} — {a.pincode}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="font-mono text-[10px] text-fluno-ink/35 mt-3">
+                    Selecting fills the form below — you can still edit any field.
+                  </p>
+                </div>
+              )}
+
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
                   <label className="block font-body text-sm text-fluno-ink/70 mb-1">Full Name *</label>
@@ -180,7 +287,7 @@ export default function CheckoutPage() {
                 </div>
                 <div>
                   <label className="block font-body text-sm text-fluno-ink/70 mb-1">City *</label>
-                  <input name="city" value={form.city} onChange={handleChange} className="input" placeholder="Hyderabad" />
+                  <input name="city" value={form.city} onChange={handleChange} className="input" placeholder="Your city" />
                 </div>
                 <div>
                   <label className="block font-body text-sm text-fluno-ink/70 mb-1">Pincode *</label>
@@ -254,9 +361,53 @@ export default function CheckoutPage() {
         {/* Summary */}
         <div className="card p-5 h-fit">
           <h2 className="font-display text-lg text-fluno-ink mb-4">Order Summary</h2>
+
+          {/* Coupon */}
+          <div className="mb-4">
+            {appliedCoupon ? (
+              <div className="flex items-center justify-between p-2.5 bg-green-50 border border-green-200 rounded-sm">
+                <span className="flex items-center gap-1.5 font-mono text-xs text-green-700">
+                  <Tag size={12} /> {appliedCoupon.code} applied — you save ₹{appliedCoupon.discount.toLocaleString("en-IN")}
+                </span>
+                <button
+                  onClick={() => setAppliedCoupon(null)}
+                  className="text-green-700/60 hover:text-red-500 transition-colors"
+                  aria-label="Remove coupon"
+                >
+                  <X size={13} />
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="flex gap-2">
+                  <input
+                    value={couponInput}
+                    onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
+                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
+                    placeholder="Coupon code"
+                    className="input flex-1 font-mono text-xs uppercase"
+                  />
+                  <button
+                    onClick={applyCoupon}
+                    disabled={!couponInput.trim() || couponLoading}
+                    className="btn-outline text-xs px-4 disabled:opacity-50 flex-shrink-0"
+                  >
+                    {couponLoading ? <Loader2 size={13} className="animate-spin" /> : "Apply"}
+                  </button>
+                </div>
+                {couponError && (
+                  <p className="font-body text-xs text-red-600 mt-1.5">{couponError}</p>
+                )}
+              </>
+            )}
+          </div>
+
           <div className="space-y-2 text-sm font-body text-fluno-ink/70 mb-4">
             <div className="flex justify-between"><span>Subtotal</span><span>₹{total.toLocaleString("en-IN")}</span></div>
             <div className="flex justify-between"><span>Shipping</span><span>{shipping === 0 ? <span className="text-fluno-teal">Free</span> : `₹${shipping}`}</span></div>
+            {discount > 0 && (
+              <div className="flex justify-between text-green-600"><span>Discount ({appliedCoupon?.code})</span><span>−₹{discount.toLocaleString("en-IN")}</span></div>
+            )}
           </div>
           <div className="divider mb-4" />
           <div className="flex justify-between font-display text-lg text-fluno-ink">

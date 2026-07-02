@@ -10,6 +10,8 @@ const UserSchema = new Schema(
     image: String,
     emailVerified: Date,
     role: { type: String, enum: ["customer", "admin", "staff"], default: "customer" },
+    resetToken: { type: String, default: null },
+    resetTokenExpiry: { type: Date, default: null },
     addresses: [
       {
         label: String,

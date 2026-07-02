@@ -46,9 +46,9 @@ export default function ContactPage() {
               <div>
                 <p className="font-body text-sm font-medium text-fluno-ink">Address</p>
                 <p className="font-body text-sm text-fluno-ink/60">
-                  Hyderabad, India 500090
+                  Parvar Enterprises
                   <br />
-                  Parvar Enterprise
+                  India
                 </p>
               </div>
             </div>

@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { IndianRupee, ShoppingBag, Package, Tag, FileText, TrendingUp, Loader2, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  IndianRupee, ShoppingBag, Package, Tag,
+  FileText, TrendingUp, Loader2, Zap, ArrowRight, ArrowUpRight,
+  Bell, Send, Users,
+} from "lucide-react";
 import Link from "next/link";
 
 interface Stats {
@@ -19,25 +24,81 @@ interface Stats {
 }
 
 const statusColors: Record<string, string> = {
-  pending:    "bg-yellow-500/15 text-yellow-400",
-  paid:       "bg-blue-500/15 text-blue-400",
-  processing: "bg-purple-500/15 text-purple-400",
-  shipped:    "bg-indigo-500/15 text-indigo-400",
-  delivered:  "bg-green-500/15 text-green-400",
-  cancelled:  "bg-red-500/15 text-red-400",
-  refunded:   "bg-gray-500/15 text-gray-400",
+  pending:    "bg-yellow-500/15 text-yellow-400 border border-yellow-500/25",
+  paid:       "bg-blue-500/15 text-blue-400 border border-blue-500/25",
+  processing: "bg-purple-500/15 text-purple-400 border border-purple-500/25",
+  shipped:    "bg-indigo-500/15 text-indigo-400 border border-indigo-500/25",
+  delivered:  "bg-green-500/15 text-green-400 border border-green-500/25",
+  cancelled:  "bg-red-500/15 text-red-400 border border-red-500/25",
+  refunded:   "bg-gray-500/15 text-gray-400 border border-gray-500/25",
 };
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
+const cardVariant = {
+  hidden:  { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.48, ease: [0.22, 1, 0.36, 1] } },
+};
+const fadeUp = {
+  hidden:  { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] } },
+};
+
+interface StatCard {
+  label: string;
+  value: string | number;
+  icon: React.ElementType;
+  topGradient: string;
+  iconBg: string;
+  iconColor: string;
+}
+
+const PANEL = { background: "rgba(255,255,255,0.04)" };
+
+const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3.5 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-fluno-purple/50 transition-colors font-body";
+const labelCls = "block font-mono text-[10px] text-white/35 uppercase tracking-wider mb-1.5";
+
 export default function Dashboard() {
-  const [stats, setStats]   = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [seeding, setSeeding] = useState(false);
+  const [stats,         setStats]         = useState<Stats | null>(null);
+  const [loading,       setLoading]       = useState(true);
+  const [seeding,       setSeeding]       = useState(false);
+  const [subCount,      setSubCount]      = useState<number | null>(null);
+  const [notifTitle,    setNotifTitle]    = useState("");
+  const [notifBody,     setNotifBody]     = useState("");
+  const [notifUrl,      setNotifUrl]      = useState("/");
+  const [sending,       setSending]       = useState(false);
+  const [notifResult,   setNotifResult]   = useState<{ sent: number; failed: number } | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/stats")
       .then((r) => r.json())
       .then((d) => { setStats(d); setLoading(false); });
+    fetch("/api/push/send")
+      .then((r) => r.json())
+      .then((d) => { if (d.count !== undefined) setSubCount(d.count); })
+      .catch(() => {});
   }, []);
+
+  async function sendNotification(e: React.FormEvent) {
+    e.preventDefault();
+    if (!notifTitle.trim() || !notifBody.trim()) return;
+    setSending(true);
+    setNotifResult(null);
+    try {
+      const res  = await fetch("/api/push/send", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ title: notifTitle, body: notifBody, url: notifUrl }),
+      });
+      const data = await res.json();
+      setNotifResult(data);
+      if (data.sent > 0) { setNotifTitle(""); setNotifBody(""); setNotifUrl("/"); }
+    } finally {
+      setSending(false);
+    }
+  }
 
   async function seedData() {
     setSeeding(true);
@@ -50,101 +111,299 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen bg-fluno-light">
-        <Loader2 size={32} className="animate-spin text-fluno-purple" />
+      <div className="flex items-center justify-center min-h-[calc(100vh-56px)]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+          <p className="font-mono text-xs text-white/25">Loading dashboard…</p>
+        </div>
       </div>
     );
   }
 
-  const cards = [
-    { label: "Total Revenue",    value: `₹${(stats?.revenue ?? 0).toLocaleString("en-IN")}`, icon: IndianRupee, color: "from-fluno-purple/20 to-fluno-purple-deep/10", iconBg: "bg-fluno-purple/20", iconColor: "text-fluno-purple" },
-    { label: "Paid Orders",      value: stats?.paidOrders ?? 0,    icon: ShoppingBag, color: "from-blue-500/15 to-blue-600/5",   iconBg: "bg-blue-500/20",   iconColor: "text-blue-400"   },
-    { label: "Active Products",  value: stats?.totalProducts ?? 0, icon: Package,     color: "from-green-500/15 to-green-600/5", iconBg: "bg-green-500/20",  iconColor: "text-green-400"  },
-    { label: "Active Coupons",   value: stats?.activeCoupons ?? 0, icon: Tag,         color: "from-orange-500/15 to-orange-600/5", iconBg: "bg-orange-500/20", iconColor: "text-orange-400" },
-    { label: "Published Blogs",  value: stats?.publishedBlogs ?? 0, icon: FileText,   color: "from-pink-500/15 to-pink-600/5",  iconBg: "bg-pink-500/20",   iconColor: "text-pink-400"   },
-    { label: "Total Orders",     value: stats?.totalOrders ?? 0,   icon: TrendingUp,  color: "from-teal-500/15 to-teal-600/5",  iconBg: "bg-teal-500/20",   iconColor: "text-teal-400"   },
+  const cards: StatCard[] = [
+    {
+      label: "Total Revenue",
+      value: `₹${(stats?.revenue ?? 0).toLocaleString("en-IN")}`,
+      icon: IndianRupee,
+      topGradient: "from-fluno-purple to-purple-700",
+      iconBg: "bg-fluno-purple/15",
+      iconColor: "text-fluno-purple",
+    },
+    {
+      label: "Paid Orders",
+      value: stats?.paidOrders ?? 0,
+      icon: ShoppingBag,
+      topGradient: "from-blue-400 to-blue-700",
+      iconBg: "bg-blue-500/15",
+      iconColor: "text-blue-400",
+    },
+    {
+      label: "Active Products",
+      value: stats?.totalProducts ?? 0,
+      icon: Package,
+      topGradient: "from-emerald-400 to-emerald-600",
+      iconBg: "bg-emerald-500/15",
+      iconColor: "text-emerald-400",
+    },
+    {
+      label: "Active Coupons",
+      value: stats?.activeCoupons ?? 0,
+      icon: Tag,
+      topGradient: "from-orange-400 to-orange-600",
+      iconBg: "bg-orange-500/15",
+      iconColor: "text-orange-400",
+    },
+    {
+      label: "Published Blogs",
+      value: stats?.publishedBlogs ?? 0,
+      icon: FileText,
+      topGradient: "from-pink-400 to-pink-600",
+      iconBg: "bg-pink-500/15",
+      iconColor: "text-pink-400",
+    },
+    {
+      label: "Total Orders",
+      value: stats?.totalOrders ?? 0,
+      icon: TrendingUp,
+      topGradient: "from-teal-400 to-teal-600",
+      iconBg: "bg-teal-500/15",
+      iconColor: "text-teal-400",
+    },
   ];
 
   return (
-    <div className="flex-1 p-6 lg:p-10 bg-fluno-light min-h-screen">
+    <div className="flex-1 p-6 lg:p-8">
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeUp}
+        className="flex items-start justify-between mb-8"
+      >
         <div>
-          <h1 className="font-display text-2xl text-fluno-ink">Dashboard</h1>
-          <p className="font-body text-sm text-fluno-muted mt-0.5">Welcome back, Admin</p>
+          <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-1">
+            Overview
+          </p>
+          <h1 className="font-brand font-bold text-2xl text-white">Dashboard</h1>
+          <p className="font-body text-sm text-white/35 mt-0.5">
+            {new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })}
+          </p>
         </div>
+
         <button
           onClick={seedData}
           disabled={seeding}
-          className="btn-outline text-sm gap-2"
-          title="Seed static products and categories to MongoDB"
+          className="flex items-center gap-2 font-mono text-[11px] text-white/35 hover:text-white/60 border border-white/[0.1] hover:border-white/20 px-3.5 py-2 rounded-xl transition-all disabled:opacity-50"
         >
-          {seeding ? <Loader2 size={15} className="animate-spin" /> : <Zap size={15} />}
-          Seed Initial Data
+          {seeding ? <Loader2 size={12} className="animate-spin" /> : <Zap size={12} />}
+          Seed Data
         </button>
-      </div>
+      </motion.div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {cards.map(({ label, value, icon: Icon, color, iconBg, iconColor }) => (
-          <div key={label} className={`bg-gradient-to-br ${color} border border-fluno-lavender rounded-2xl p-5 bg-white`}>
-            <div className={`w-10 h-10 ${iconBg} rounded-xl flex items-center justify-center mb-3`}>
-              <Icon size={20} className={iconColor} />
+      <motion.div
+        className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {cards.map(({ label, value, icon: Icon, topGradient, iconBg, iconColor }) => (
+          <motion.div
+            key={label}
+            variants={cardVariant}
+            className="relative rounded-2xl border border-white/[0.07] overflow-hidden group hover:-translate-y-0.5 transition-transform duration-200 cursor-default"
+            style={PANEL}
+          >
+            <div className={`h-[2px] bg-gradient-to-r ${topGradient}`} />
+            <div className="p-5 lg:p-6">
+              <div className={`w-10 h-10 ${iconBg} rounded-xl flex items-center justify-center mb-4`}>
+                <Icon size={18} className={iconColor} />
+              </div>
+              <p className="font-brand font-bold text-2xl lg:text-3xl text-white leading-none">
+                {value}
+              </p>
+              <p className="font-body text-xs text-white/38 mt-2">{label}</p>
             </div>
-            <p className="font-brand font-bold text-2xl text-fluno-ink">{value}</p>
-            <p className="font-body text-xs text-fluno-muted mt-1">{label}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
+
+      {/* Push Notifications */}
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={{ delay: 0.35 }}
+        className="rounded-2xl border border-white/[0.07] overflow-hidden mb-6"
+        style={PANEL}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-fluno-purple/15 flex items-center justify-center">
+              <Bell size={15} className="text-fluno-purple" />
+            </div>
+            <div>
+              <h2 className="font-display text-sm font-semibold text-white">Push Notifications</h2>
+              <p className="font-mono text-[10px] text-white/30 mt-0.5">Broadcast to all subscribers</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 bg-white/[0.05] px-3 py-1.5 rounded-xl">
+            <Users size={11} className="text-fluno-purple/60" />
+            <span className="font-mono text-xs text-white/50">
+              {subCount === null ? "…" : subCount} subscriber{subCount !== 1 ? "s" : ""}
+            </span>
+          </div>
+        </div>
+
+        <form onSubmit={sendNotification} className="p-6 space-y-4">
+          {notifResult && (
+            <div
+              className={`rounded-xl px-4 py-3 text-sm font-body border ${
+                notifResult.sent > 0
+                  ? "border-green-500/20 text-green-400"
+                  : "border-yellow-500/20 text-yellow-400"
+              }`}
+              style={{ background: notifResult.sent > 0 ? "rgba(34,197,94,0.08)" : "rgba(234,179,8,0.08)" }}
+            >
+              {notifResult.sent > 0
+                ? `✓ Sent to ${notifResult.sent} subscriber${notifResult.sent !== 1 ? "s" : ""}${notifResult.failed > 0 ? ` (${notifResult.failed} failed)` : ""}`
+                : "No active subscribers yet. Share your site to get subscribers!"}
+            </div>
+          )}
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>Title *</label>
+              <input
+                value={notifTitle}
+                onChange={(e) => setNotifTitle(e.target.value)}
+                className={inputCls}
+                placeholder="New Product Drop! 🛍️"
+                required
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Link URL</label>
+              <input
+                value={notifUrl}
+                onChange={(e) => setNotifUrl(e.target.value)}
+                className={inputCls}
+                placeholder="/shop"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelCls}>Message *</label>
+            <textarea
+              value={notifBody}
+              onChange={(e) => setNotifBody(e.target.value)}
+              className={inputCls + " min-h-[70px] resize-none"}
+              placeholder="Check out our latest Fluno sunscreen — now with SPF 50+…"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={sending || !notifTitle.trim() || !notifBody.trim()}
+            className="flex items-center gap-2 bg-fluno-purple text-white font-body text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-fluno-purple/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+            {sending ? "Sending…" : "Send Notification"}
+          </button>
+        </form>
+      </motion.div>
 
       {/* Recent orders */}
-      <div className="bg-white rounded-2xl border border-fluno-lavender overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-fluno-lavender">
-          <h2 className="font-display text-base text-fluno-ink">Recent Orders</h2>
-          <Link href="/admin/orders" className="text-xs text-fluno-purple hover:underline font-body">
-            View all →
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={{ delay: 0.42 }}
+        className="rounded-2xl border border-white/[0.07] overflow-hidden"
+        style={PANEL}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+          <div>
+            <h2 className="font-display text-sm font-semibold text-white">Recent Orders</h2>
+            <p className="font-mono text-[10px] text-white/30 mt-0.5">Last 10 transactions</p>
+          </div>
+          <Link
+            href="/admin/orders"
+            className="flex items-center gap-1 font-mono text-xs text-fluno-purple/65 hover:text-fluno-purple transition-colors"
+          >
+            View all <ArrowRight size={11} />
           </Link>
         </div>
 
         {!stats?.recentOrders?.length ? (
-          <p className="text-center py-12 font-body text-sm text-fluno-muted">No orders yet.</p>
+          <div className="text-center py-16">
+            <ShoppingBag size={30} className="text-white/[0.08] mx-auto mb-3" />
+            <p className="font-body text-sm text-white/25">No orders yet.</p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-fluno-lavender/60 bg-fluno-light/50">
+                <tr
+                  className="border-b border-white/[0.05]"
+                  style={{ background: "rgba(255,255,255,0.025)" }}
+                >
                   {["Order ID", "Customer", "Total", "Status", "Date"].map((h) => (
-                    <th key={h} className="px-5 py-3 text-left font-mono text-xs text-fluno-muted/70 uppercase tracking-wide">
+                    <th
+                      key={h}
+                      className="px-5 py-3 text-left font-mono text-[9px] text-white/25 uppercase tracking-widest whitespace-nowrap"
+                    >
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {stats.recentOrders.map((o) => (
-                  <tr key={o._id} className="border-b border-fluno-lavender/40 hover:bg-fluno-light/60 transition-colors">
+                {stats.recentOrders.map((o, i) => (
+                  <motion.tr
+                    key={o._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.48 + i * 0.035, duration: 0.3 }}
+                    className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors last:border-b-0 group"
+                  >
                     <td className="px-5 py-3.5">
-                      <Link href={`/admin/orders/${o._id}`} className="font-mono text-xs text-fluno-purple hover:underline">
+                      <Link
+                        href={`/admin/orders/${o._id}`}
+                        className="font-mono text-xs text-fluno-purple hover:text-fluno-purple/70 flex items-center gap-1"
+                      >
                         {o.orderId}
+                        <ArrowUpRight size={9} className="opacity-0 group-hover:opacity-60 transition-opacity" />
                       </Link>
                     </td>
-                    <td className="px-5 py-3.5 font-body text-fluno-ink/80">{o.address?.name ?? "—"}</td>
-                    <td className="px-5 py-3.5 font-brand font-semibold text-fluno-ink">₹{o.total?.toLocaleString("en-IN")}</td>
+                    <td className="px-5 py-3.5 font-body text-sm text-white/65">
+                      {o.address?.name ?? "—"}
+                    </td>
+                    <td className="px-5 py-3.5 font-brand font-semibold text-white/85">
+                      ₹{o.total?.toLocaleString("en-IN")}
+                    </td>
                     <td className="px-5 py-3.5">
-                      <span className={`inline-block text-xs font-mono px-2.5 py-1 rounded-full ${statusColors[o.status] ?? "bg-gray-100 text-gray-500"}`}>
+                      <span
+                        className={`inline-block text-[10px] font-mono px-2.5 py-0.5 rounded-full capitalize ${
+                          statusColors[o.status] ?? "bg-gray-500/15 text-gray-400 border border-gray-500/25"
+                        }`}
+                      >
                         {o.status}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 font-mono text-xs text-fluno-muted">
+                    <td className="px-5 py-3.5 font-mono text-xs text-white/32 whitespace-nowrap">
                       {new Date(o.createdAt).toLocaleDateString("en-IN")}
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

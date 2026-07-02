@@ -70,5 +70,42 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
   const related = allProducts.filter((p) => p.slug !== params.slug).slice(0, 3);
 
-  return <ProductClient product={product} related={related} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description || product.tagline,
+    image: product.images,
+    sku: product.slug,
+    brand: { "@type": "Brand", name: "Fluno" },
+    offers: {
+      "@type": "Offer",
+      url: `https://myfluno.com/product/${product.slug}`,
+      priceCurrency: "INR",
+      price: product.price,
+      availability: product.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      seller: { "@type": "Organization", name: "Parvar Enterprises" },
+    },
+    ...(product.rating > 0 && product.reviewCount > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: product.rating,
+            reviewCount: product.reviewCount,
+          },
+        }
+      : {}),
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ProductClient product={product} related={related} />
+    </>
+  );
 }

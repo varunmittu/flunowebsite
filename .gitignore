@@ -14,6 +14,9 @@
 # Env
 .env
 .env.local
+.env*.local
+.env*.tmp
+.env.verify
 .env.development.local
 .env.test.local
 .env.production.local

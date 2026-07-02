@@ -5,7 +5,13 @@ import { CartProvider }      from "@/context/CartContext";
 import SessionProvider       from "@/components/SessionProvider";
 import ConditionalLayout     from "@/components/ConditionalLayout";
 import PageTracker           from "@/components/PageTracker";
+import NotificationPrompt   from "@/components/NotificationPrompt";
+import CookieConsent         from "@/components/CookieConsent";
+import Analytics             from "@/components/Analytics";
+import WhatsAppButton        from "@/components/WhatsAppButton";
 import { SpeedInsights }     from "@vercel/speed-insights/next";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
+import { Toaster }           from "sonner";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -37,11 +43,19 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: { default: "Fluno — Care in Every Drop", template: "%s | Fluno" },
   description:
-    "Fluno is a mid-premium personal care and hygiene brand from Hyderabad, India. Clean ingredients, dermatologist-tested, repeat-worthy results.",
+    "Fluno is a mid-premium personal care and hygiene brand from India. Clean ingredients, dermatologist-tested, repeat-worthy results.",
   metadataBase: new URL("https://myfluno.com"),
   openGraph: { siteName: "Fluno", type: "website", locale: "en_IN" },
   twitter:    { card: "summary_large_image" },
-  keywords:   ["fluno", "personal care", "hand wash", "sunscreen", "hyderabad", "clean beauty", "hygiene", "SPF 50"],
+  keywords:   ["fluno", "myfluno", "personal care", "hand wash", "sunscreen", "india", "clean beauty", "hygiene", "SPF 50"],
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
+      : {}),
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -51,10 +65,46 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${quicksand.variable} ${outfit.variable} ${publicSans.variable} ${ibmPlexMono.variable}`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Fluno",
+              legalName: "Parvar Enterprises",
+              url: "https://myfluno.com",
+              logo: "https://myfluno.com/icon",
+              description: "Mid-premium personal care and hygiene brand from India.",
+              sameAs: ["https://instagram.com/myfluno", "https://threads.net/@myfluno"],
+              contactPoint: {
+                "@type": "ContactPoint",
+                email: "contact@myfluno.com",
+                contactType: "customer service",
+                areaServed: "IN",
+              },
+            }),
+          }}
+        />
         <SessionProvider>
           <CartProvider>
             <PageTracker />
             <SpeedInsights />
+            <VercelAnalytics />
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                style: {
+                  background: "#1A0A2E",
+                  color: "#fff",
+                  border: "1px solid rgba(189,126,250,0.3)",
+                },
+              }}
+            />
+            <NotificationPrompt />
+            <CookieConsent />
+            <Analytics />
+            <WhatsAppButton />
             <ConditionalLayout>{children}</ConditionalLayout>
           </CartProvider>
         </SessionProvider>

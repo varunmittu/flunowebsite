@@ -2,7 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── shadcn/ui CSS Variables ── */
 @layer base {
+  :root {
+    --background: 270 100% 99%;
+    --foreground: 270 35% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 270 35% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 270 35% 10%;
+    --primary: 277 92% 73%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 50% 95%;
+    --secondary-foreground: 277 92% 50%;
+    --muted: 270 30% 95%;
+    --muted-foreground: 270 15% 50%;
+    --accent: 270 50% 95%;
+    --accent-foreground: 277 92% 50%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 270 40% 90%;
+    --input: 270 40% 90%;
+    --ring: 277 92% 73%;
+    --radius: 0.75rem;
+  }
+
   html { scroll-behavior: smooth; }
 
   body {
@@ -84,7 +108,8 @@
 
   .input-dark {
     @apply w-full border border-white/20 bg-white/10 backdrop-blur-sm text-white px-4 py-3 rounded-xl font-body text-sm
-           placeholder:text-white/30 focus:outline-none focus:border-fluno-purple/60 transition-all;
+           placeholder:text-white/30 focus:outline-none focus:border-fluno-purple/60
+           focus:ring-2 focus:ring-fluno-purple/20 transition-all;
   }
 
   /* ── Badges ── */
@@ -102,6 +127,33 @@
   .text-glow {
     text-shadow: 0 0 60px rgba(189,126,250,0.6), 0 0 120px rgba(189,126,250,0.2);
   }
+
+  /* ── Prose blog content ── */
+  .prose-fluno {
+    @apply font-body text-fluno-ink/80 leading-relaxed;
+  }
+  .prose-fluno h2 {
+    @apply font-display text-2xl font-bold text-fluno-ink mt-10 mb-4;
+  }
+  .prose-fluno h3 {
+    @apply font-display text-xl font-semibold text-fluno-ink mt-8 mb-3;
+  }
+  .prose-fluno p {
+    @apply mb-5 leading-8 text-base;
+  }
+  .prose-fluno ul {
+    @apply list-none mb-5 space-y-2;
+  }
+  .prose-fluno li {
+    @apply flex gap-3 items-start;
+  }
+  .prose-fluno li::before {
+    content: "◆";
+    @apply text-fluno-purple text-xs mt-1.5 flex-shrink-0;
+  }
+  .prose-fluno strong {
+    @apply font-semibold text-fluno-ink;
+  }
 }
 
 /* ── Scrollbar ── */
@@ -110,7 +162,7 @@
 ::-webkit-scrollbar-thumb       { background: #BD7EFA60; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #BD7EFA; }
 
-/* ── Extra hero keyframes ── */
+/* ── Keyframes ── */
 @keyframes orb4 {
   0%   { transform: translate(0, 0) scale(1); }
   50%  { transform: translate(-30px, 50px) scale(1.12); }
@@ -124,4 +176,28 @@
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes tilt {
+  0%, 50%, 100% { transform: rotate(-1deg); }
+  25%, 75%      { transform: rotate(1deg); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Tilt card effect ── */
+.card-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+/* ── Sonner customization ── */
+[data-sonner-toast] {
+  font-family: var(--font-public-sans), system-ui, sans-serif !important;
+  border-radius: 14px !important;
 }

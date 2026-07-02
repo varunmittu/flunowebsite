@@ -12,6 +12,7 @@ const ReviewSchema = new Schema(
     comment:     { type: String, required: true },
     verified:    { type: Boolean, default: false },
     helpful:     { type: Number, default: 0 },
+    ip:          { type: String, default: null },
   },
   { timestamps: true }
 );

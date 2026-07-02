@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Ticket } from "@/lib/models/Ticket";
-import { cookies } from "next/headers";
+import { getAdminSession } from "@/lib/adminAuth";
 
 export const dynamic = "force-dynamic";
 
-async function checkAdmin() {
-  const cookieStore = cookies();
-  return cookieStore.get("admin_token")?.value === "flunoAdmin2024";
-}
-
 export async function GET(req: NextRequest) {
-  if (!(await checkAdmin())) {
+  if (!(await getAdminSession())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   await connectDB();
@@ -22,17 +17,27 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  if (!(await checkAdmin())) {
+  if (!(await getAdminSession())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json();
-  const { id, status, priority, adminNote } = body;
+  const { id, status, priority, adminNote, addMessage, text } = body;
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
 
   await connectDB();
+
+  // Admin sends a chat message
+  if (addMessage && text) {
+    const ticket = await Ticket.findById(id);
+    if (!ticket) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    ticket.messages.push({ sender: "admin", text: text.trim() });
+    await ticket.save();
+    return NextResponse.json({ ok: true, ticket });
+  }
+
   const update: Record<string, unknown> = {};
-  if (status)    update.status    = status;
-  if (priority)  update.priority  = priority;
+  if (status)                  update.status    = status;
+  if (priority)                update.priority  = priority;
   if (adminNote !== undefined) update.adminNote = adminNote;
 
   const ticket = await Ticket.findByIdAndUpdate(id, update, { new: true });

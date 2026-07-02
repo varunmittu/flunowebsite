@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, X, Loader2, ArrowLeft } from "lucide-react";
+import { Plus, X, Loader2, ArrowLeft, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import ImageUploader from "@/components/admin/ImageUploader";
 
@@ -10,33 +10,56 @@ function toSlug(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+const PANEL   = { background: "rgba(255,255,255,0.04)" };
+const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3.5 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-fluno-purple/50 transition-colors font-body";
+const labelCls = "block font-mono text-[10px] text-white/35 uppercase tracking-wider mb-1.5";
+
 function ListEditor({ label, items, onChange }: { label: string; items: string[]; onChange: (v: string[]) => void }) {
   const [draft, setDraft] = useState("");
   return (
     <div>
-      <label className="block font-body text-xs text-fluno-muted mb-1.5">{label}</label>
-      <div className="flex gap-2 mb-2">
+      <label className={labelCls}>{label}</label>
+      <div className="flex gap-2 mb-2.5">
         <input
           value={draft}
           onChange={e => setDraft(e.target.value)}
-          onKeyDown={e => { if (e.key === "Enter" && draft.trim()) { e.preventDefault(); onChange([...items, draft.trim()]); setDraft(""); }}}
-          className="input text-sm flex-1"
+          onKeyDown={e => {
+            if (e.key === "Enter" && draft.trim()) {
+              e.preventDefault();
+              onChange([...items, draft.trim()]);
+              setDraft("");
+            }
+          }}
+          className={inputCls}
           placeholder={`Add ${label.toLowerCase()} and press Enter`}
         />
-        <button type="button" onClick={() => { if (draft.trim()) { onChange([...items, draft.trim()]); setDraft(""); }}} className="btn-outline px-3 py-2 text-sm">
-          <Plus size={15} />
+        <button
+          type="button"
+          onClick={() => { if (draft.trim()) { onChange([...items, draft.trim()]); setDraft(""); } }}
+          className="flex-shrink-0 border border-white/[0.1] text-white/40 hover:text-white hover:border-white/25 px-3 py-2.5 rounded-xl transition-all"
+        >
+          <Plus size={14} />
         </button>
       </div>
-      <div className="flex flex-wrap gap-1.5">
-        {items.map((item, i) => (
-          <span key={i} className="inline-flex items-center gap-1.5 bg-fluno-lavender text-fluno-ink text-xs px-3 py-1 rounded-full">
-            {item}
-            <button type="button" onClick={() => onChange(items.filter((_, j) => j !== i))} className="text-fluno-muted hover:text-red-500">
-              <X size={11} />
-            </button>
-          </span>
-        ))}
-      </div>
+      {items.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {items.map((item, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-1.5 bg-white/[0.07] text-white/65 text-xs px-3 py-1 rounded-full"
+            >
+              {item}
+              <button
+                type="button"
+                onClick={() => onChange(items.filter((_, j) => j !== i))}
+                className="text-white/30 hover:text-red-400 transition-colors"
+              >
+                <X size={10} />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -44,7 +67,7 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
 export default function NewProduct() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error,   setError]   = useState("");
 
   const [form, setForm] = useState({
     name: "", slug: "", tagline: "", description: "", price: "", originalPrice: "",
@@ -57,15 +80,11 @@ export default function NewProduct() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (form.images.length === 0) {
-      setError("Please upload at least one product image");
-      return;
-    }
-    setLoading(true);
-    setError("");
+    if (form.images.length === 0) { setError("Please upload at least one product image"); return; }
+    setLoading(true); setError("");
 
     const res = await fetch("/api/admin/products", {
-      method: "POST",
+      method:  "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
@@ -84,75 +103,135 @@ export default function NewProduct() {
   }
 
   return (
-    <div className="flex-1 p-6 lg:p-10 bg-fluno-light min-h-screen">
-      <div className="flex items-center gap-4 mb-8">
-        <Link href="/admin/products" className="p-2 rounded-xl text-fluno-muted hover:bg-fluno-lavender transition-colors">
-          <ArrowLeft size={20} />
+    <div className="flex-1 p-6 lg:p-8 min-h-screen">
+
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-7">
+        <Link
+          href="/admin/products"
+          className="p-2 rounded-xl text-white/30 hover:text-white/70 hover:bg-white/[0.06] transition-all"
+        >
+          <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 className="font-display text-2xl text-fluno-ink">Add Product</h1>
-          <p className="font-body text-sm text-fluno-muted mt-0.5">Fill in the details below</p>
+          <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-0.5">
+            Products
+          </p>
+          <h1 className="font-brand font-bold text-xl text-white">Add Product</h1>
         </div>
       </div>
 
-      <form onSubmit={submit} className="space-y-6 max-w-3xl">
-        {error && <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600">{error}</div>}
+      <form onSubmit={submit} className="space-y-5 max-w-3xl">
 
-        {/* Basic info */}
-        <div className="bg-white rounded-2xl border border-fluno-lavender p-6 space-y-4">
-          <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3">Basic Info</h2>
+        {/* Error */}
+        {error && (
+          <div
+            className="flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm text-red-300 border border-red-500/20"
+            style={{ background: "rgba(239,68,68,0.08)" }}
+          >
+            <AlertCircle size={15} className="flex-shrink-0" />
+            {error}
+          </div>
+        )}
+
+        {/* Basic Info */}
+        <div className="rounded-2xl border border-white/[0.07] p-6 space-y-4" style={PANEL}>
+          <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
+            Basic Info
+          </h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block font-body text-xs text-fluno-muted mb-1.5">Product Name *</label>
+              <label className={labelCls}>Product Name *</label>
               <input
                 value={form.name}
                 onChange={e => { set("name", e.target.value); set("slug", toSlug(e.target.value)); }}
-                className="input" placeholder="Fluno Hand Wash" required
+                className={inputCls}
+                placeholder="Fluno Hand Wash"
+                required
               />
             </div>
             <div>
-              <label className="block font-body text-xs text-fluno-muted mb-1.5">Slug *</label>
-              <input value={form.slug} onChange={e => set("slug", toSlug(e.target.value))} className="input font-mono text-sm" required />
+              <label className={labelCls}>Slug *</label>
+              <input
+                value={form.slug}
+                onChange={e => set("slug", toSlug(e.target.value))}
+                className={inputCls + " font-mono"}
+                required
+              />
             </div>
             <div>
-              <label className="block font-body text-xs text-fluno-muted mb-1.5">Category</label>
-              <input value={form.category} onChange={e => set("category", e.target.value)} className="input" placeholder="Hand Care" />
+              <label className={labelCls}>Category</label>
+              <input
+                value={form.category}
+                onChange={e => set("category", e.target.value)}
+                className={inputCls}
+                placeholder="Hand Care"
+              />
             </div>
             <div className="col-span-2">
-              <label className="block font-body text-xs text-fluno-muted mb-1.5">Tagline</label>
-              <input value={form.tagline} onChange={e => set("tagline", e.target.value)} className="input" placeholder="Short product tagline" />
+              <label className={labelCls}>Tagline</label>
+              <input
+                value={form.tagline}
+                onChange={e => set("tagline", e.target.value)}
+                className={inputCls}
+                placeholder="Short product tagline"
+              />
             </div>
             <div className="col-span-2">
-              <label className="block font-body text-xs text-fluno-muted mb-1.5">Description</label>
-              <textarea value={form.description} onChange={e => set("description", e.target.value)} className="input min-h-[100px] resize-y" placeholder="Product description..." />
+              <label className={labelCls}>Description</label>
+              <textarea
+                value={form.description}
+                onChange={e => set("description", e.target.value)}
+                className={inputCls + " min-h-[90px] resize-y"}
+                placeholder="Product description…"
+              />
             </div>
           </div>
         </div>
 
         {/* Pricing */}
-        <div className="bg-white rounded-2xl border border-fluno-lavender p-6 space-y-4">
-          <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3">Pricing & Size</h2>
+        <div className="rounded-2xl border border-white/[0.07] p-6 space-y-4" style={PANEL}>
+          <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
+            Pricing & Size
+          </h2>
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block font-body text-xs text-fluno-muted mb-1.5">Price (₹) *</label>
-              <input type="number" value={form.price} onChange={e => set("price", e.target.value)} className="input" placeholder="80" required min="0" step="0.01" />
+              <label className={labelCls}>Price (₹) *</label>
+              <input
+                type="number" value={form.price}
+                onChange={e => set("price", e.target.value)}
+                className={inputCls}
+                placeholder="80" required min="0" step="0.01"
+              />
             </div>
             <div>
-              <label className="block font-body text-xs text-fluno-muted mb-1.5">Original Price (₹)</label>
-              <input type="number" value={form.originalPrice} onChange={e => set("originalPrice", e.target.value)} className="input" placeholder="120" min="0" step="0.01" />
+              <label className={labelCls}>Original Price (₹)</label>
+              <input
+                type="number" value={form.originalPrice}
+                onChange={e => set("originalPrice", e.target.value)}
+                className={inputCls}
+                placeholder="120" min="0" step="0.01"
+              />
             </div>
             <div>
-              <label className="block font-body text-xs text-fluno-muted mb-1.5">Size</label>
-              <input value={form.size} onChange={e => set("size", e.target.value)} className="input" placeholder="250ml" />
+              <label className={labelCls}>Size</label>
+              <input
+                value={form.size}
+                onChange={e => set("size", e.target.value)}
+                className={inputCls}
+                placeholder="250ml"
+              />
             </div>
           </div>
         </div>
 
-        {/* Images — Google Drive upload */}
-        <div className="bg-white rounded-2xl border border-fluno-lavender p-6 space-y-4">
-          <div className="flex items-center justify-between border-b border-fluno-lavender pb-3">
-            <h2 className="font-display text-base text-fluno-ink">Product Images</h2>
-            <span className="font-mono text-xs text-fluno-muted">{form.images.filter(Boolean).length} / 4 uploaded</span>
+        {/* Images */}
+        <div className="rounded-2xl border border-white/[0.07] p-6 space-y-4" style={PANEL}>
+          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+            <h2 className="font-display text-sm font-semibold text-white">Product Images</h2>
+            <span className="font-mono text-[10px] text-white/30">
+              {form.images.filter(Boolean).length} / 4 uploaded
+            </span>
           </div>
           <ImageUploader
             images={form.images}
@@ -162,44 +241,63 @@ export default function NewProduct() {
         </div>
 
         {/* Details */}
-        <div className="bg-white rounded-2xl border border-fluno-lavender p-6 space-y-5">
-          <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3">Product Details</h2>
-          <ListEditor label="Ingredients"  items={form.ingredients} onChange={v => set("ingredients", v)} />
-          <ListEditor label="How to Use"   items={form.howToUse}    onChange={v => set("howToUse", v)}    />
-          <ListEditor label="Benefits"     items={form.benefits}    onChange={v => set("benefits", v)}    />
-          <ListEditor label="Badges/Tags"  items={form.badges}      onChange={v => set("badges", v)}      />
+        <div className="rounded-2xl border border-white/[0.07] p-6 space-y-5" style={PANEL}>
+          <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
+            Product Details
+          </h2>
+          <ListEditor label="Ingredients" items={form.ingredients} onChange={v => set("ingredients", v)} />
+          <ListEditor label="How to Use"  items={form.howToUse}    onChange={v => set("howToUse", v)}    />
+          <ListEditor label="Benefits"    items={form.benefits}    onChange={v => set("benefits", v)}    />
+          <ListEditor label="Badges / Tags" items={form.badges}   onChange={v => set("badges", v)}      />
         </div>
 
-        {/* Flags */}
-        <div className="bg-white rounded-2xl border border-fluno-lavender p-6">
-          <h2 className="font-display text-base text-fluno-ink border-b border-fluno-lavender pb-3 mb-4">Settings</h2>
-          <div className="grid grid-cols-3 gap-4">
+        {/* Settings */}
+        <div className="rounded-2xl border border-white/[0.07] p-6" style={PANEL}>
+          <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-4">
+            Settings
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {([
-              ["inStock",    "In Stock",    "Mark product as available"],
+              ["inStock",    "In Stock",    "Mark as available to buy"],
               ["featured",   "Featured",    "Show on homepage"],
-              ["newArrival", "New Arrival", "Show 'New' badge"],
+              ["newArrival", "New Arrival", "Display 'New' badge"],
             ] as [keyof typeof form, string, string][]).map(([key, label, desc]) => (
-              <label key={key} className="flex items-start gap-3 cursor-pointer p-3 rounded-xl border border-fluno-lavender/60 hover:bg-fluno-light transition-colors">
+              <label
+                key={key}
+                className="flex items-start gap-3 cursor-pointer p-3.5 rounded-xl border border-white/[0.08] hover:bg-white/[0.04] hover:border-white/[0.14] transition-all"
+              >
                 <input
                   type="checkbox"
                   checked={!!form[key]}
                   onChange={e => set(key, e.target.checked)}
-                  className="mt-0.5 accent-fluno-purple w-4 h-4"
+                  className="mt-0.5 accent-fluno-purple w-4 h-4 flex-shrink-0"
                 />
                 <div>
-                  <p className="font-body text-sm font-medium text-fluno-ink">{label}</p>
-                  <p className="font-mono text-[10px] text-fluno-muted">{desc}</p>
+                  <p className="font-body text-sm font-medium text-white/80">{label}</p>
+                  <p className="font-mono text-[10px] text-white/30 mt-0.5">{desc}</p>
                 </div>
               </label>
             ))}
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button type="submit" disabled={loading} className="btn-primary px-8 py-3">
-            {loading ? <><Loader2 size={16} className="animate-spin" /> Saving…</> : "Save Product"}
+        {/* Actions */}
+        <div className="flex items-center gap-3 pb-8">
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary px-8 py-3"
+          >
+            {loading
+              ? <><Loader2 size={15} className="animate-spin" /> Saving…</>
+              : "Save Product"}
           </button>
-          <Link href="/admin/products" className="btn-ghost">Cancel</Link>
+          <Link
+            href="/admin/products"
+            className="px-4 py-2 text-sm text-white/40 hover:text-white/70 transition-colors"
+          >
+            Cancel
+          </Link>
         </div>
       </form>
     </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Loader2, ShoppingBag } from "lucide-react";
+import { Loader2, ShoppingBag, ArrowRight } from "lucide-react";
 
 interface Order {
   _id: string; orderId: string; total: number; status: string;
@@ -13,20 +13,22 @@ interface Order {
 const statuses = ["all","pending","paid","processing","shipped","delivered","cancelled","refunded"];
 
 const statusColors: Record<string, string> = {
-  pending:    "bg-yellow-100 text-yellow-700",
-  paid:       "bg-blue-100 text-blue-700",
-  processing: "bg-purple-100 text-purple-700",
-  shipped:    "bg-indigo-100 text-indigo-700",
-  delivered:  "bg-green-100 text-green-700",
-  cancelled:  "bg-red-100 text-red-700",
-  refunded:   "bg-gray-100 text-gray-600",
+  pending:    "bg-yellow-500/15 text-yellow-400 border border-yellow-500/25",
+  paid:       "bg-blue-500/15 text-blue-400 border border-blue-500/25",
+  processing: "bg-purple-500/15 text-purple-400 border border-purple-500/25",
+  shipped:    "bg-indigo-500/15 text-indigo-400 border border-indigo-500/25",
+  delivered:  "bg-green-500/15 text-green-400 border border-green-500/25",
+  cancelled:  "bg-red-500/15 text-red-400 border border-red-500/25",
+  refunded:   "bg-gray-500/15 text-gray-400 border border-gray-500/25",
 };
 
+const PANEL = { background: "rgba(255,255,255,0.04)" };
+
 export default function AdminOrders() {
-  const [orders, setOrders]     = useState<Order[]>([]);
-  const [total, setTotal]       = useState(0);
-  const [loading, setLoading]   = useState(true);
-  const [status, setStatus]     = useState("all");
+  const [orders, setOrders]   = useState<Order[]>([]);
+  const [total,  setTotal]    = useState(0);
+  const [loading,setLoading]  = useState(true);
+  const [status, setStatus]   = useState("all");
 
   const load = (s: string) => {
     setLoading(true);
@@ -38,20 +40,25 @@ export default function AdminOrders() {
   useEffect(() => { load(status); }, [status]);
 
   return (
-    <div className="flex-1 p-6 lg:p-10 bg-fluno-light min-h-screen">
-      <div className="mb-8">
-        <h1 className="font-display text-2xl text-fluno-ink">Orders</h1>
-        <p className="font-body text-sm text-fluno-muted mt-0.5">{total} orders</p>
+    <div className="flex-1 p-6 lg:p-8 min-h-screen">
+
+      {/* Header */}
+      <div className="mb-6">
+        <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-1">Management</p>
+        <h1 className="font-brand font-bold text-2xl text-white">Orders</h1>
+        <p className="font-body text-sm text-white/35 mt-0.5">{total} total orders</p>
       </div>
 
-      {/* Filter tabs */}
-      <div className="flex gap-2 flex-wrap mb-6">
+      {/* Status filter tabs */}
+      <div className="flex gap-2 flex-wrap mb-5">
         {statuses.map(s => (
           <button
             key={s}
             onClick={() => setStatus(s)}
-            className={`px-4 py-2 rounded-full text-xs font-semibold font-body capitalize transition-all ${
-              status === s ? "bg-fluno-purple text-white shadow-lg shadow-fluno-purple/20" : "bg-white text-fluno-muted border border-fluno-lavender hover:border-fluno-purple hover:text-fluno-purple"
+            className={`px-3.5 py-1.5 rounded-lg text-[11px] font-mono capitalize transition-all ${
+              status === s
+                ? "bg-fluno-purple/20 text-fluno-purple border border-fluno-purple/30"
+                : "text-white/35 border border-white/[0.08] hover:border-white/20 hover:text-white/60 hover:bg-white/[0.04]"
             }`}
           >
             {s === "all" ? "All" : s}
@@ -59,44 +66,71 @@ export default function AdminOrders() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl border border-fluno-lavender overflow-hidden">
+      {/* Table */}
+      <div className="rounded-2xl border border-white/[0.07] overflow-hidden" style={PANEL}>
         {loading ? (
-          <div className="flex justify-center py-16"><Loader2 size={28} className="animate-spin text-fluno-purple" /></div>
+          <div className="flex justify-center py-16">
+            <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+          </div>
         ) : orders.length === 0 ? (
           <div className="text-center py-16">
-            <ShoppingBag size={36} className="text-fluno-lavender mx-auto mb-3" />
-            <p className="font-body text-sm text-fluno-muted">No orders found.</p>
+            <ShoppingBag size={32} className="text-white/[0.07] mx-auto mb-3" />
+            <p className="font-body text-sm text-white/25">No orders found.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-fluno-lavender/60 bg-fluno-light/50">
-                  {["Order ID","Customer","Items","Total","Status","Date",""].map(h => (
-                    <th key={h} className="px-5 py-3 text-left font-mono text-xs text-fluno-muted/70 uppercase tracking-wide whitespace-nowrap">{h}</th>
+                <tr
+                  className="border-b border-white/[0.05]"
+                  style={{ background: "rgba(255,255,255,0.025)" }}
+                >
+                  {["Order ID","Customer","Items","Total","Status","Date",""].map((h, i) => (
+                    <th
+                      key={i}
+                      className="px-5 py-3 text-left font-mono text-[9px] text-white/25 uppercase tracking-widest whitespace-nowrap"
+                    >
+                      {h}
+                    </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {orders.map(o => (
-                  <tr key={o._id} className="border-b border-fluno-lavender/40 hover:bg-fluno-light/60 transition-colors">
-                    <td className="px-5 py-3.5 font-mono text-xs text-fluno-purple font-semibold">{o.orderId}</td>
-                    <td className="px-5 py-3.5">
-                      <p className="font-body font-medium text-fluno-ink">{o.address?.name}</p>
-                      <p className="font-mono text-[10px] text-fluno-muted">{o.address?.city}</p>
+                  <tr
+                    key={o._id}
+                    className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors last:border-b-0 group"
+                  >
+                    <td className="px-5 py-3.5 font-mono text-xs text-fluno-purple font-semibold">
+                      {o.orderId}
                     </td>
-                    <td className="px-5 py-3.5 font-mono text-xs text-fluno-muted">{o.items?.length ?? 0} item{o.items?.length !== 1 ? "s" : ""}</td>
-                    <td className="px-5 py-3.5 font-brand font-bold text-fluno-ink">₹{o.total?.toLocaleString("en-IN")}</td>
                     <td className="px-5 py-3.5">
-                      <span className={`inline-block text-xs font-mono px-2.5 py-1 rounded-full capitalize ${statusColors[o.status] ?? "bg-gray-100 text-gray-500"}`}>
+                      <p className="font-body font-medium text-white/80">{o.address?.name}</p>
+                      <p className="font-mono text-[10px] text-white/35">{o.address?.city}</p>
+                    </td>
+                    <td className="px-5 py-3.5 font-mono text-xs text-white/45">
+                      {o.items?.length ?? 0} item{o.items?.length !== 1 ? "s" : ""}
+                    </td>
+                    <td className="px-5 py-3.5 font-brand font-semibold text-white/85">
+                      ₹{o.total?.toLocaleString("en-IN")}
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <span className={`inline-block text-[10px] font-mono px-2.5 py-0.5 rounded-full capitalize ${
+                        statusColors[o.status] ?? "bg-gray-500/15 text-gray-400 border border-gray-500/25"
+                      }`}>
                         {o.status}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 font-mono text-xs text-fluno-muted whitespace-nowrap">
+                    <td className="px-5 py-3.5 font-mono text-xs text-white/30 whitespace-nowrap">
                       {new Date(o.createdAt).toLocaleDateString("en-IN")}
                     </td>
                     <td className="px-5 py-3.5">
-                      <Link href={`/admin/orders/${o._id}`} className="text-xs text-fluno-purple hover:underline font-semibold">View →</Link>
+                      <Link
+                        href={`/admin/orders/${o._id}`}
+                        className="flex items-center gap-1 text-xs font-mono text-white/30 hover:text-fluno-purple transition-colors"
+                      >
+                        View <ArrowRight size={10} />
+                      </Link>
                     </td>
                   </tr>
                 ))}

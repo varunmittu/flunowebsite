@@ -38,6 +38,9 @@ const OrderSchema = new Schema(
     paymentId: { type: String, default: null },
     razorpayOrderId: { type: String, default: null },
     razorpaySignature: { type: String, default: null },
+    courier: { type: String, default: null },
+    trackingId: { type: String, default: null },
+    trackingUrl: { type: String, default: null },
   },
   { timestamps: true }
 );
