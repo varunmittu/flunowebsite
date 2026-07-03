@@ -45,9 +45,9 @@ export default function AdminProducts() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-1">Management</p>
-          <h1 className="font-brand font-bold text-2xl text-white">Products</h1>
-          <p className="font-body text-sm text-white/35 mt-0.5">{products.length} total</p>
+          <p className="font-mono text-[9px] text-fig-terracotta/45 tracking-[0.22em] uppercase mb-1">Management</p>
+          <h1 className="font-fig font-bold text-2xl text-white">Products</h1>
+          <p className="font-fig-body text-sm text-white/35 mt-0.5">{products.length} total</p>
         </div>
         <Link href="/admin/products/new" className="btn-primary text-sm gap-2">
           <Plus size={15} /> Add Product
@@ -58,12 +58,12 @@ export default function AdminProducts() {
       <div className="rounded-2xl border border-white/[0.07] overflow-hidden" style={PANEL}>
         {loading ? (
           <div className="flex justify-center py-16">
-            <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+            <Loader2 size={26} className="animate-spin text-fig-terracotta/60" />
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-16">
             <Package size={32} className="text-white/[0.07] mx-auto mb-3" />
-            <p className="font-body text-sm text-white/25">No products yet.</p>
+            <p className="font-fig-body text-sm text-white/25">No products yet.</p>
             <Link href="/admin/products/new" className="btn-primary text-sm mt-4 inline-flex">
               Add your first product
             </Link>
@@ -109,12 +109,12 @@ export default function AdminProducts() {
                           </div>
                         )}
                         <div>
-                          <p className="font-body font-medium text-white/85">{p.name}</p>
+                          <p className="font-fig-body font-medium text-white/85">{p.name}</p>
                           <p className="font-mono text-[10px] text-white/30">{p.slug}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 font-brand font-semibold text-fluno-purple">
+                    <td className="px-5 py-3.5 font-fig font-bold font-semibold text-fig-terracotta">
                       ₹{p.price}
                     </td>
                     <td className="px-5 py-3.5">
@@ -140,7 +140,7 @@ export default function AdminProducts() {
                         className="flex"
                       >
                         {p.featured
-                          ? <ToggleRight size={22} className="text-fluno-purple" />
+                          ? <ToggleRight size={22} className="text-fig-terracotta" />
                           : <ToggleLeft  size={22} className="text-white/20"     />}
                       </button>
                     </td>
@@ -159,7 +159,7 @@ export default function AdminProducts() {
                       <div className="flex items-center gap-1">
                         <Link
                           href={`/admin/products/${p._id}/edit`}
-                          className="p-2 rounded-lg text-white/30 hover:text-fluno-purple hover:bg-fluno-purple/10 transition-all"
+                          className="p-2 rounded-lg text-white/30 hover:text-fig-terracotta hover:bg-fig-terracotta/10 transition-all"
                         >
                           <Pencil size={14} />
                         </Link>

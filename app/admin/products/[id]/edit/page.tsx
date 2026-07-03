@@ -11,7 +11,7 @@ function toSlug(s: string) {
 }
 
 const PANEL    = { background: "rgba(255,255,255,0.04)" };
-const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3.5 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-fluno-purple/50 transition-colors font-body";
+const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3.5 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-fig-terracotta/50 transition-colors font-fig-body";
 const labelCls = "block font-mono text-[10px] text-white/35 uppercase tracking-wider mb-1.5";
 
 function ListEditor({ label, items, onChange }: { label: string; items: string[]; onChange: (v: string[]) => void }) {
@@ -132,7 +132,7 @@ export default function EditProduct() {
   if (fetching) {
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-56px)]">
-        <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+        <Loader2 size={26} className="animate-spin text-fig-terracotta/60" />
       </div>
     );
   }
@@ -149,11 +149,11 @@ export default function EditProduct() {
           <ArrowLeft size={18} />
         </Link>
         <div>
-          <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-0.5">
+          <p className="font-mono text-[9px] text-fig-terracotta/45 tracking-[0.22em] uppercase mb-0.5">
             Products
           </p>
-          <h1 className="font-brand font-bold text-xl text-white">Edit Product</h1>
-          <p className="font-body text-sm text-white/35 mt-0.5 truncate max-w-xs">{form.name}</p>
+          <h1 className="font-fig font-bold text-xl text-white">Edit Product</h1>
+          <p className="font-fig-body text-sm text-white/35 mt-0.5 truncate max-w-xs">{form.name}</p>
         </div>
       </div>
 
@@ -172,7 +172,7 @@ export default function EditProduct() {
 
         {/* Basic Info */}
         <div className="rounded-2xl border border-white/[0.07] p-6 space-y-4" style={PANEL}>
-          <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
+          <h2 className="font-fig font-bold text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
             Basic Info
           </h2>
           <div className="grid grid-cols-2 gap-4">
@@ -222,7 +222,7 @@ export default function EditProduct() {
 
         {/* Pricing */}
         <div className="rounded-2xl border border-white/[0.07] p-6 space-y-4" style={PANEL}>
-          <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
+          <h2 className="font-fig font-bold text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
             Pricing & Size
           </h2>
           <div className="grid grid-cols-3 gap-4">
@@ -258,7 +258,7 @@ export default function EditProduct() {
         {/* Images */}
         <div className="rounded-2xl border border-white/[0.07] p-6 space-y-4" style={PANEL}>
           <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-            <h2 className="font-display text-sm font-semibold text-white">Product Images</h2>
+            <h2 className="font-fig font-bold text-sm font-semibold text-white">Product Images</h2>
             <span className="font-mono text-[10px] text-white/30">
               {form.images.filter(Boolean).length} / 4 uploaded
             </span>
@@ -272,7 +272,7 @@ export default function EditProduct() {
 
         {/* Details */}
         <div className="rounded-2xl border border-white/[0.07] p-6 space-y-5" style={PANEL}>
-          <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
+          <h2 className="font-fig font-bold text-sm font-semibold text-white border-b border-white/[0.06] pb-3">
             Product Details
           </h2>
           <ListEditor label="Ingredients"   items={form.ingredients} onChange={v => set("ingredients", v)} />
@@ -283,7 +283,7 @@ export default function EditProduct() {
 
         {/* Settings */}
         <div className="rounded-2xl border border-white/[0.07] p-6" style={PANEL}>
-          <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-4">
+          <h2 className="font-fig font-bold text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-4">
             Settings
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -300,10 +300,10 @@ export default function EditProduct() {
                   type="checkbox"
                   checked={!!form[key]}
                   onChange={e => set(key, e.target.checked)}
-                  className="mt-0.5 accent-fluno-purple w-4 h-4 flex-shrink-0"
+                  className="mt-0.5 accent-fig-terracotta w-4 h-4 flex-shrink-0"
                 />
                 <div>
-                  <p className="font-body text-sm font-medium text-white/80">{label}</p>
+                  <p className="font-fig-body text-sm font-medium text-white/80">{label}</p>
                   <p className="font-mono text-[10px] text-white/30 mt-0.5">{desc}</p>
                 </div>
               </label>

@@ -14,7 +14,7 @@ const blank = { code: "", type: "percent" as const, value: "", minOrder: "0", ma
 const PANEL  = { background: "rgba(255,255,255,0.04)"  };
 const FORM_BG = { background: "rgba(255,255,255,0.035)" };
 
-const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3 py-2.5 placeholder:text-white/25 focus:outline-none focus:border-fluno-purple/50 transition-colors font-body";
+const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3 py-2.5 placeholder:text-white/25 focus:outline-none focus:border-fig-terracotta/50 transition-colors font-fig-body";
 const labelCls = "block font-mono text-[10px] text-white/35 uppercase tracking-wider mb-1.5";
 
 export default function AdminCoupons() {
@@ -70,9 +70,9 @@ export default function AdminCoupons() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-1">Content</p>
-          <h1 className="font-brand font-bold text-2xl text-white">Coupons</h1>
-          <p className="font-body text-sm text-white/35 mt-0.5">{coupons.length} coupons</p>
+          <p className="font-mono text-[9px] text-fig-terracotta/45 tracking-[0.22em] uppercase mb-1">Content</p>
+          <h1 className="font-fig font-bold text-2xl text-white">Coupons</h1>
+          <p className="font-fig-body text-sm text-white/35 mt-0.5">{coupons.length} coupons</p>
         </div>
         <button
           onClick={() => setAdding(!adding)}
@@ -89,7 +89,7 @@ export default function AdminCoupons() {
           style={FORM_BG}
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-display text-sm font-semibold text-white">New Coupon</h3>
+            <h3 className="font-fig font-bold text-sm font-semibold text-white">New Coupon</h3>
             <button
               onClick={() => setAdding(false)}
               className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/[0.06] transition-all"
@@ -185,12 +185,12 @@ export default function AdminCoupons() {
       <div className="rounded-2xl border border-white/[0.07] overflow-hidden" style={PANEL}>
         {loading ? (
           <div className="flex justify-center py-16">
-            <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+            <Loader2 size={26} className="animate-spin text-fig-terracotta/60" />
           </div>
         ) : coupons.length === 0 ? (
           <div className="text-center py-16">
             <Tag size={32} className="text-white/[0.07] mx-auto mb-3" />
-            <p className="font-body text-sm text-white/25">No coupons yet.</p>
+            <p className="font-fig-body text-sm text-white/25">No coupons yet.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -216,7 +216,7 @@ export default function AdminCoupons() {
                     key={c._id}
                     className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors last:border-b-0"
                   >
-                    <td className="px-5 py-3.5 font-mono font-bold text-fluno-purple">
+                    <td className="px-5 py-3.5 font-mono font-bold text-fig-terracotta">
                       {c.code}
                     </td>
                     <td className="px-5 py-3.5">
@@ -224,10 +224,10 @@ export default function AdminCoupons() {
                         {c.type}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 font-brand font-semibold text-white/85">
+                    <td className="px-5 py-3.5 font-fig font-bold font-semibold text-white/85">
                       {c.type === "percent" ? `${c.value}%` : `₹${c.value}`}
                     </td>
-                    <td className="px-5 py-3.5 font-body text-white/45">
+                    <td className="px-5 py-3.5 font-fig-body text-white/45">
                       {c.minOrder ? `₹${c.minOrder}` : "—"}
                     </td>
                     <td className="px-5 py-3.5 font-mono text-xs text-white/45">

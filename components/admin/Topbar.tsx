@@ -28,14 +28,14 @@ export default function Topbar() {
   return (
     <header
       className="sticky top-0 z-30 h-14 flex items-center justify-between px-6 border-b border-white/[0.06] flex-shrink-0"
-      style={{ background: "rgba(8,5,16,0.88)", backdropFilter: "blur(16px)" }}
+      style={{ background: "rgba(17,21,39,0.88)", backdropFilter: "blur(16px)" }}
     >
       {/* Left */}
       <div className="flex items-center gap-2 min-w-0">
         <span className="hidden sm:block font-mono text-[9px] text-white/[0.16] tracking-[0.2em] uppercase">
           FLUNO /
         </span>
-        <h1 className="font-display text-sm font-semibold text-white/90 truncate">
+        <h1 className="font-fig font-bold text-sm font-semibold text-white/90 truncate">
           {getTitle(path)}
         </h1>
       </div>
@@ -50,8 +50,8 @@ export default function Topbar() {
           View Site <ExternalLink size={10} />
         </Link>
         <div className="ml-2 pl-3 border-l border-white/[0.07] flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-fluno-purple/20 border border-fluno-purple/25 flex items-center justify-center">
-            <ShieldCheck size={13} className="text-fluno-purple/75" />
+          <div className="w-7 h-7 rounded-lg bg-fig-terracotta/20 border border-fig-terracotta/25 flex items-center justify-center">
+            <ShieldCheck size={13} className="text-fig-terracotta/75" />
           </div>
           <span className="hidden md:block font-mono text-[10px] text-white/[0.28]">Admin</span>
         </div>

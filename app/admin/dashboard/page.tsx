@@ -57,7 +57,7 @@ interface StatCard {
 
 const PANEL = { background: "rgba(255,255,255,0.04)" };
 
-const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3.5 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-fluno-purple/50 transition-colors font-body";
+const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3.5 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-fig-terracotta/50 transition-colors font-fig-body";
 const labelCls = "block font-mono text-[10px] text-white/35 uppercase tracking-wider mb-1.5";
 
 export default function Dashboard() {
@@ -113,7 +113,7 @@ export default function Dashboard() {
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-56px)]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+          <Loader2 size={26} className="animate-spin text-fig-terracotta/60" />
           <p className="font-mono text-xs text-white/25">Loading dashboard…</p>
         </div>
       </div>
@@ -125,9 +125,9 @@ export default function Dashboard() {
       label: "Total Revenue",
       value: `₹${(stats?.revenue ?? 0).toLocaleString("en-IN")}`,
       icon: IndianRupee,
-      topGradient: "from-fluno-purple to-purple-700",
-      iconBg: "bg-fluno-purple/15",
-      iconColor: "text-fluno-purple",
+      topGradient: "from-fig-terracotta to-purple-700",
+      iconBg: "bg-fig-terracotta/15",
+      iconColor: "text-fig-terracotta",
     },
     {
       label: "Paid Orders",
@@ -182,11 +182,11 @@ export default function Dashboard() {
         className="flex items-start justify-between mb-8"
       >
         <div>
-          <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-1">
+          <p className="font-mono text-[9px] text-fig-terracotta/45 tracking-[0.22em] uppercase mb-1">
             Overview
           </p>
-          <h1 className="font-brand font-bold text-2xl text-white">Dashboard</h1>
-          <p className="font-body text-sm text-white/35 mt-0.5">
+          <h1 className="font-fig font-bold text-2xl text-white">Dashboard</h1>
+          <p className="font-fig-body text-sm text-white/35 mt-0.5">
             {new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })}
           </p>
         </div>
@@ -220,10 +220,10 @@ export default function Dashboard() {
               <div className={`w-10 h-10 ${iconBg} rounded-xl flex items-center justify-center mb-4`}>
                 <Icon size={18} className={iconColor} />
               </div>
-              <p className="font-brand font-bold text-2xl lg:text-3xl text-white leading-none">
+              <p className="font-fig font-bold text-2xl lg:text-3xl text-white leading-none">
                 {value}
               </p>
-              <p className="font-body text-xs text-white/38 mt-2">{label}</p>
+              <p className="font-fig-body text-xs text-white/38 mt-2">{label}</p>
             </div>
           </motion.div>
         ))}
@@ -240,16 +240,16 @@ export default function Dashboard() {
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-fluno-purple/15 flex items-center justify-center">
-              <Bell size={15} className="text-fluno-purple" />
+            <div className="w-8 h-8 rounded-xl bg-fig-terracotta/15 flex items-center justify-center">
+              <Bell size={15} className="text-fig-terracotta" />
             </div>
             <div>
-              <h2 className="font-display text-sm font-semibold text-white">Push Notifications</h2>
+              <h2 className="font-fig font-bold text-sm font-semibold text-white">Push Notifications</h2>
               <p className="font-mono text-[10px] text-white/30 mt-0.5">Broadcast to all subscribers</p>
             </div>
           </div>
           <div className="flex items-center gap-1.5 bg-white/[0.05] px-3 py-1.5 rounded-xl">
-            <Users size={11} className="text-fluno-purple/60" />
+            <Users size={11} className="text-fig-terracotta/60" />
             <span className="font-mono text-xs text-white/50">
               {subCount === null ? "…" : subCount} subscriber{subCount !== 1 ? "s" : ""}
             </span>
@@ -259,7 +259,7 @@ export default function Dashboard() {
         <form onSubmit={sendNotification} className="p-6 space-y-4">
           {notifResult && (
             <div
-              className={`rounded-xl px-4 py-3 text-sm font-body border ${
+              className={`rounded-xl px-4 py-3 text-sm font-fig-body border ${
                 notifResult.sent > 0
                   ? "border-green-500/20 text-green-400"
                   : "border-yellow-500/20 text-yellow-400"
@@ -308,7 +308,7 @@ export default function Dashboard() {
           <button
             type="submit"
             disabled={sending || !notifTitle.trim() || !notifBody.trim()}
-            className="flex items-center gap-2 bg-fluno-purple text-white font-body text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-fluno-purple/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 bg-fig-terracotta text-white font-fig-body text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-fig-terracotta/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
             {sending ? "Sending…" : "Send Notification"}
@@ -327,12 +327,12 @@ export default function Dashboard() {
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
           <div>
-            <h2 className="font-display text-sm font-semibold text-white">Recent Orders</h2>
+            <h2 className="font-fig font-bold text-sm font-semibold text-white">Recent Orders</h2>
             <p className="font-mono text-[10px] text-white/30 mt-0.5">Last 10 transactions</p>
           </div>
           <Link
             href="/admin/orders"
-            className="flex items-center gap-1 font-mono text-xs text-fluno-purple/65 hover:text-fluno-purple transition-colors"
+            className="flex items-center gap-1 font-mono text-xs text-fig-terracotta/65 hover:text-fig-terracotta transition-colors"
           >
             View all <ArrowRight size={11} />
           </Link>
@@ -341,7 +341,7 @@ export default function Dashboard() {
         {!stats?.recentOrders?.length ? (
           <div className="text-center py-16">
             <ShoppingBag size={30} className="text-white/[0.08] mx-auto mb-3" />
-            <p className="font-body text-sm text-white/25">No orders yet.</p>
+            <p className="font-fig-body text-sm text-white/25">No orders yet.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -373,16 +373,16 @@ export default function Dashboard() {
                     <td className="px-5 py-3.5">
                       <Link
                         href={`/admin/orders/${o._id}`}
-                        className="font-mono text-xs text-fluno-purple hover:text-fluno-purple/70 flex items-center gap-1"
+                        className="font-mono text-xs text-fig-terracotta hover:text-fig-terracotta/70 flex items-center gap-1"
                       >
                         {o.orderId}
                         <ArrowUpRight size={9} className="opacity-0 group-hover:opacity-60 transition-opacity" />
                       </Link>
                     </td>
-                    <td className="px-5 py-3.5 font-body text-sm text-white/65">
+                    <td className="px-5 py-3.5 font-fig-body text-sm text-white/65">
                       {o.address?.name ?? "—"}
                     </td>
-                    <td className="px-5 py-3.5 font-brand font-semibold text-white/85">
+                    <td className="px-5 py-3.5 font-fig font-bold font-semibold text-white/85">
                       ₹{o.total?.toLocaleString("en-IN")}
                     </td>
                     <td className="px-5 py-3.5">

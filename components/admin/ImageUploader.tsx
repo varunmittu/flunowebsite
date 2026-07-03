@@ -57,7 +57,7 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
       />
 
       {url ? (
-        <div className="relative group aspect-square rounded-2xl overflow-hidden border border-fluno-purple/40 hover:border-fluno-purple transition-colors">
+        <div className="relative group aspect-square rounded-2xl overflow-hidden border border-fig-terracotta/40 hover:border-fig-terracotta transition-colors">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={url}
@@ -76,12 +76,12 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/85 text-gray-800 text-[10px] font-body px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow whitespace-nowrap"
+            className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/85 text-gray-800 text-[10px] font-fig-body px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow whitespace-nowrap"
           >
             Replace
           </button>
           {index === 0 && (
-            <span className="absolute top-2 left-2 bg-fluno-purple text-white text-[9px] font-mono px-2 py-0.5 rounded-full">
+            <span className="absolute top-2 left-2 bg-fig-terracotta text-white text-[9px] font-mono px-2 py-0.5 rounded-full">
               MAIN
             </span>
           )}
@@ -91,19 +91,19 @@ function ImageSlot({ index, url, onUpload, onRemove }: ImageSlotProps) {
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="aspect-square rounded-2xl border border-dashed border-white/[0.15] hover:border-fluno-purple/60 hover:bg-fluno-purple/[0.06] transition-all flex flex-col items-center justify-center gap-2 text-white/25 hover:text-fluno-purple/70 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="aspect-square rounded-2xl border border-dashed border-white/[0.15] hover:border-fig-terracotta/60 hover:bg-fig-terracotta/[0.06] transition-all flex flex-col items-center justify-center gap-2 text-white/25 hover:text-fig-terracotta/70 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {uploading ? (
             <>
-              <Loader2 size={22} className="animate-spin text-fluno-purple" />
-              <span className="font-body text-[11px] text-white/50">Uploading…</span>
+              <Loader2 size={22} className="animate-spin text-fig-terracotta" />
+              <span className="font-fig-body text-[11px] text-white/50">Uploading…</span>
             </>
           ) : (
             <>
               <div className="w-10 h-10 rounded-xl bg-white/[0.07] flex items-center justify-center">
                 {index === 0 ? <Upload size={18} /> : <ImageIcon size={18} />}
               </div>
-              <span className="font-body text-[11px] text-center px-2">Click to upload</span>
+              <span className="font-fig-body text-[11px] text-center px-2">Click to upload</span>
               <span className="font-mono text-[9px] text-white/25">JPG · PNG · WebP</span>
             </>
           )}

@@ -43,9 +43,9 @@ export default function AdminBlog() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-1">Content</p>
-          <h1 className="font-brand font-bold text-2xl text-white">Blog Posts</h1>
-          <p className="font-body text-sm text-white/35 mt-0.5">{posts.length} posts</p>
+          <p className="font-mono text-[9px] text-fig-terracotta/45 tracking-[0.22em] uppercase mb-1">Content</p>
+          <h1 className="font-fig font-bold text-2xl text-white">Blog Posts</h1>
+          <p className="font-fig-body text-sm text-white/35 mt-0.5">{posts.length} posts</p>
         </div>
         <Link href="/admin/blog/new" className="btn-primary text-sm gap-2">
           <Plus size={15} /> New Post
@@ -56,12 +56,12 @@ export default function AdminBlog() {
       <div className="rounded-2xl border border-white/[0.07] overflow-hidden" style={PANEL}>
         {loading ? (
           <div className="flex justify-center py-16">
-            <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+            <Loader2 size={26} className="animate-spin text-fig-terracotta/60" />
           </div>
         ) : posts.length === 0 ? (
           <div className="text-center py-16">
             <FileText size={32} className="text-white/[0.07] mx-auto mb-3" />
-            <p className="font-body text-sm text-white/25">No blog posts yet.</p>
+            <p className="font-fig-body text-sm text-white/25">No blog posts yet.</p>
             <Link href="/admin/blog/new" className="btn-primary text-sm mt-4 inline-flex">
               Write your first post
             </Link>
@@ -91,7 +91,7 @@ export default function AdminBlog() {
                     className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors last:border-b-0"
                   >
                     <td className="px-5 py-3.5 max-w-xs">
-                      <p className="font-body font-medium text-white/85 truncate">{p.title}</p>
+                      <p className="font-fig-body font-medium text-white/85 truncate">{p.title}</p>
                       <p className="font-mono text-[10px] text-white/30 truncate">{p.slug}</p>
                     </td>
                     <td className="px-5 py-3.5">
@@ -99,7 +99,7 @@ export default function AdminBlog() {
                         {p.category || "—"}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 font-body text-sm text-white/45">
+                    <td className="px-5 py-3.5 font-fig-body text-sm text-white/45">
                       {p.author}
                     </td>
                     <td className="px-5 py-3.5">
@@ -120,7 +120,7 @@ export default function AdminBlog() {
                       <div className="flex items-center gap-1">
                         <Link
                           href={`/admin/blog/${p._id}/edit`}
-                          className="p-2 rounded-lg text-white/30 hover:text-fluno-purple hover:bg-fluno-purple/10 transition-all"
+                          className="p-2 rounded-lg text-white/30 hover:text-fig-terracotta hover:bg-fig-terracotta/10 transition-all"
                         >
                           <Pencil size={14} />
                         </Link>

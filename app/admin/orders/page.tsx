@@ -44,9 +44,9 @@ export default function AdminOrders() {
 
       {/* Header */}
       <div className="mb-6">
-        <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-1">Management</p>
-        <h1 className="font-brand font-bold text-2xl text-white">Orders</h1>
-        <p className="font-body text-sm text-white/35 mt-0.5">{total} total orders</p>
+        <p className="font-mono text-[9px] text-fig-terracotta/45 tracking-[0.22em] uppercase mb-1">Management</p>
+        <h1 className="font-fig font-bold text-2xl text-white">Orders</h1>
+        <p className="font-fig-body text-sm text-white/35 mt-0.5">{total} total orders</p>
       </div>
 
       {/* Status filter tabs */}
@@ -57,7 +57,7 @@ export default function AdminOrders() {
             onClick={() => setStatus(s)}
             className={`px-3.5 py-1.5 rounded-lg text-[11px] font-mono capitalize transition-all ${
               status === s
-                ? "bg-fluno-purple/20 text-fluno-purple border border-fluno-purple/30"
+                ? "bg-fig-terracotta/20 text-fig-terracotta border border-fig-terracotta/30"
                 : "text-white/35 border border-white/[0.08] hover:border-white/20 hover:text-white/60 hover:bg-white/[0.04]"
             }`}
           >
@@ -70,12 +70,12 @@ export default function AdminOrders() {
       <div className="rounded-2xl border border-white/[0.07] overflow-hidden" style={PANEL}>
         {loading ? (
           <div className="flex justify-center py-16">
-            <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+            <Loader2 size={26} className="animate-spin text-fig-terracotta/60" />
           </div>
         ) : orders.length === 0 ? (
           <div className="text-center py-16">
             <ShoppingBag size={32} className="text-white/[0.07] mx-auto mb-3" />
-            <p className="font-body text-sm text-white/25">No orders found.</p>
+            <p className="font-fig-body text-sm text-white/25">No orders found.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -101,17 +101,17 @@ export default function AdminOrders() {
                     key={o._id}
                     className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors last:border-b-0 group"
                   >
-                    <td className="px-5 py-3.5 font-mono text-xs text-fluno-purple font-semibold">
+                    <td className="px-5 py-3.5 font-mono text-xs text-fig-terracotta font-semibold">
                       {o.orderId}
                     </td>
                     <td className="px-5 py-3.5">
-                      <p className="font-body font-medium text-white/80">{o.address?.name}</p>
+                      <p className="font-fig-body font-medium text-white/80">{o.address?.name}</p>
                       <p className="font-mono text-[10px] text-white/35">{o.address?.city}</p>
                     </td>
                     <td className="px-5 py-3.5 font-mono text-xs text-white/45">
                       {o.items?.length ?? 0} item{o.items?.length !== 1 ? "s" : ""}
                     </td>
-                    <td className="px-5 py-3.5 font-brand font-semibold text-white/85">
+                    <td className="px-5 py-3.5 font-fig font-bold font-semibold text-white/85">
                       ₹{o.total?.toLocaleString("en-IN")}
                     </td>
                     <td className="px-5 py-3.5">
@@ -127,7 +127,7 @@ export default function AdminOrders() {
                     <td className="px-5 py-3.5">
                       <Link
                         href={`/admin/orders/${o._id}`}
-                        className="flex items-center gap-1 text-xs font-mono text-white/30 hover:text-fluno-purple transition-colors"
+                        className="flex items-center gap-1 text-xs font-mono text-white/30 hover:text-fig-terracotta transition-colors"
                       >
                         View <ArrowRight size={10} />
                       </Link>

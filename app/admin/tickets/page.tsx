@@ -133,8 +133,8 @@ export default function AdminTicketsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <TicketCheck size={22} className="text-fluno-purple" />
-          <h1 className="font-display text-2xl text-white">Support Tickets</h1>
+          <TicketCheck size={22} className="text-fig-terracotta" />
+          <h1 className="font-fig font-bold text-2xl text-white">Support Tickets</h1>
         </div>
         <button
           onClick={() => load()}
@@ -152,7 +152,7 @@ export default function AdminTicketsPage() {
             onClick={() => changeFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-colors border ${
               filter === f
-                ? "bg-fluno-purple border-fluno-purple text-white"
+                ? "bg-fig-terracotta border-fig-terracotta text-white"
                 : "bg-white/5 border-white/10 text-white/50 hover:bg-white/10"
             }`}
           >
@@ -172,12 +172,12 @@ export default function AdminTicketsPage() {
         <div className="lg:col-span-2 space-y-2">
           {loading ? (
             <div className="flex justify-center py-8">
-              <Loader2 size={24} className="animate-spin text-fluno-purple" />
+              <Loader2 size={24} className="animate-spin text-fig-terracotta" />
             </div>
           ) : tickets.length === 0 ? (
             <div className="card-dark p-8 text-center rounded-xl border border-white/8">
               <TicketCheck size={28} className="text-white/20 mx-auto mb-2" />
-              <p className="text-white/40 font-body text-sm">No tickets found.</p>
+              <p className="text-white/40 font-fig-body text-sm">No tickets found.</p>
             </div>
           ) : (
             tickets.map((t) => (
@@ -186,24 +186,24 @@ export default function AdminTicketsPage() {
                 onClick={() => selectTicket(t)}
                 className={`w-full text-left rounded-xl border p-4 transition-all ${
                   selected?._id === t._id
-                    ? "border-fluno-purple/50 bg-fluno-purple/10"
+                    ? "border-fig-terracotta/50 bg-fig-terracotta/10"
                     : "border-white/8 bg-white/3 hover:border-white/15 hover:bg-white/6"
                 }`}
               >
                 <div className="flex items-start justify-between gap-2 mb-1">
-                  <p className="font-mono text-xs text-fluno-purple">{t.ticketId}</p>
+                  <p className="font-mono text-xs text-fig-terracotta">{t.ticketId}</p>
                   <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded-full border ${STATUS_COLORS[t.status] ?? STATUS_COLORS.open}`}>
                     {t.status.replace("_", " ")}
                   </span>
                 </div>
-                <p className="font-body text-sm text-white truncate">{t.subject}</p>
+                <p className="font-fig-body text-sm text-white truncate">{t.subject}</p>
                 <p className="font-mono text-xs text-white/40 mt-1">{t.name}</p>
                 <div className="flex items-center justify-between mt-1">
                   <p className="font-mono text-[10px] text-white/25">
                     {new Date(t.createdAt).toLocaleDateString("en-IN")}
                   </p>
                   {(t.messages?.length ?? 0) > 0 && (
-                    <span className="flex items-center gap-1 font-mono text-[10px] text-fluno-purple/60">
+                    <span className="flex items-center gap-1 font-mono text-[10px] text-fig-terracotta/60">
                       <MessageSquare size={9} /> {t.messages!.length}
                     </span>
                   )}
@@ -227,8 +227,8 @@ export default function AdminTicketsPage() {
               <div className="px-6 py-4 border-b border-white/8 bg-white/3">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="font-mono text-xs text-fluno-purple mb-1">{selected.ticketId}</p>
-                    <h2 className="font-display text-base text-white leading-snug">{selected.subject}</h2>
+                    <p className="font-mono text-xs text-fig-terracotta mb-1">{selected.ticketId}</p>
+                    <h2 className="font-fig font-bold text-base text-white leading-snug">{selected.subject}</h2>
                     <p className="font-mono text-xs text-white/40 mt-1">
                       {selected.name} · {selected.email}
                       {selected.phone && ` · ${selected.phone}`}
@@ -265,9 +265,9 @@ export default function AdminTicketsPage() {
                             </div>
                           )}
                           <div className={`flex flex-col max-w-[80%] ${isAdmin ? "items-end" : "items-start"}`}>
-                            <div className={`rounded-xl text-sm font-body leading-relaxed break-words overflow-hidden ${
+                            <div className={`rounded-xl text-sm font-fig-body leading-relaxed break-words overflow-hidden ${
                               isAdmin
-                                ? "bg-fluno-purple/75 text-white rounded-tr-sm"
+                                ? "bg-fig-terracotta/75 text-white rounded-tr-sm"
                                 : "bg-white/8 text-white/80 rounded-tl-sm"
                             }`}>
                               {msg.image && (
@@ -290,8 +290,8 @@ export default function AdminTicketsPage() {
                             </span>
                           </div>
                           {isAdmin && (
-                            <div className="w-6 h-6 rounded-full bg-fluno-purple flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <span className="font-brand font-bold text-white text-[9px]">F</span>
+                            <div className="w-6 h-6 rounded-full bg-fig-terracotta flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <span className="font-fig font-bold text-white text-[9px]">F</span>
                             </div>
                           )}
                         </div>
@@ -312,7 +312,7 @@ export default function AdminTicketsPage() {
                       }}
                       rows={2}
                       placeholder="Reply to customer… (Enter to send, Shift+Enter for new line)"
-                      className="flex-1 bg-white/5 border border-white/10 text-white text-sm rounded-xl px-3 py-2.5 resize-none placeholder:text-white/20 focus:outline-none focus:border-fluno-purple/50 transition-colors"
+                      className="flex-1 bg-white/5 border border-white/10 text-white text-sm rounded-xl px-3 py-2.5 resize-none placeholder:text-white/20 focus:outline-none focus:border-fig-terracotta/50 transition-colors"
                     />
                     <button
                       onClick={sendAdminMessage}
@@ -335,7 +335,7 @@ export default function AdminTicketsPage() {
                     <select
                       value={selected.status}
                       onChange={(e) => updateTicket(selected._id, { status: e.target.value })}
-                      className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-fluno-purple/40"
+                      className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-fig-terracotta/40"
                     >
                       <option value="open">Open</option>
                       <option value="in_progress">In Progress</option>
@@ -348,7 +348,7 @@ export default function AdminTicketsPage() {
                     <select
                       value={selected.priority}
                       onChange={(e) => updateTicket(selected._id, { priority: e.target.value })}
-                      className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-fluno-purple/40"
+                      className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-fig-terracotta/40"
                     >
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
@@ -367,7 +367,7 @@ export default function AdminTicketsPage() {
                     onChange={(e) => setNote(e.target.value)}
                     rows={2}
                     placeholder="Add a private note for your team…"
-                    className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-xl px-3 py-2.5 resize-none placeholder:text-white/20 focus:outline-none focus:border-fluno-purple/40 transition-colors"
+                    className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-xl px-3 py-2.5 resize-none placeholder:text-white/20 focus:outline-none focus:border-fig-terracotta/40 transition-colors"
                   />
                   <button
                     onClick={() => updateTicket(selected._id, { adminNote: note })}
@@ -382,7 +382,7 @@ export default function AdminTicketsPage() {
           ) : (
             <div className="rounded-xl border border-white/8 bg-white/3 p-14 text-center">
               <TicketCheck size={36} className="text-white/15 mx-auto mb-3" />
-              <p className="text-white/30 font-body text-sm">Select a ticket to view the conversation</p>
+              <p className="text-white/30 font-fig-body text-sm">Select a ticket to view the conversation</p>
             </div>
           )}
         </div>

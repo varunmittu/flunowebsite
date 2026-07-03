@@ -33,13 +33,13 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-fluno-dark relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-fig-navy relative overflow-hidden">
 
       {/* Ambient orbs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="animate-orb1 absolute top-[10%] left-[10%] w-[420px] h-[420px] rounded-full bg-fluno-purple/14 blur-[130px]" />
-        <div className="animate-orb2 absolute bottom-[10%] right-[10%] w-[500px] h-[500px] rounded-full bg-fluno-purple-deep/9 blur-[150px]" />
-        <div className="animate-orb3 absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-fluno-purple/6 blur-[100px]" />
+        <div className="animate-orb1 absolute top-[10%] left-[10%] w-[420px] h-[420px] rounded-full bg-fig-terracotta/14 blur-[130px]" />
+        <div className="animate-orb2 absolute bottom-[10%] right-[10%] w-[500px] h-[500px] rounded-full bg-fig-terracotta-deep/9 blur-[150px]" />
+        <div className="animate-orb3 absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-fig-terracotta/6 blur-[100px]" />
       </div>
 
       {/* Subtle grid */}
@@ -47,7 +47,7 @@ export default function AdminLogin() {
         className="absolute inset-0 opacity-[0.025] pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(189,126,250,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(189,126,250,.6) 1px, transparent 1px)",
+            "linear-gradient(rgba(217,129,79,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(217,129,79,.6) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -61,12 +61,12 @@ export default function AdminLogin() {
         {/* Logo + Admin badge */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2.5 mb-3">
-            <Sparkles size={16} className="text-fluno-purple" />
-            <span className="font-brand font-bold text-5xl text-white text-glow">fluno</span>
+            <Sparkles size={16} className="text-fig-terracotta" />
+            <span className="font-fig font-bold text-5xl text-white text-glow">fluno</span>
           </div>
           <div className="flex items-center justify-center gap-2 mt-1">
-            <ShieldCheck size={12} className="text-fluno-purple/70" />
-            <span className="font-mono text-[10px] text-fluno-purple/60 tracking-[0.2em] uppercase">
+            <ShieldCheck size={12} className="text-fig-terracotta/70" />
+            <span className="font-mono text-[10px] text-fig-terracotta/60 tracking-[0.2em] uppercase">
               Admin Portal
             </span>
           </div>
@@ -74,8 +74,8 @@ export default function AdminLogin() {
 
         {/* Glass card */}
         <div className="glass p-8">
-          <h1 className="font-display text-2xl text-white text-center mb-1">Welcome back</h1>
-          <p className="font-body text-sm text-white/35 text-center mb-8">
+          <h1 className="font-fig font-bold text-2xl text-white text-center mb-1">Welcome back</h1>
+          <p className="font-fig-body text-sm text-white/35 text-center mb-8">
             Sign in to manage your store
           </p>
 
@@ -84,7 +84,7 @@ export default function AdminLogin() {
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-5 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/25 font-body text-sm text-red-400"
+              className="mb-5 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/25 font-fig-body text-sm text-red-400"
             >
               {error}
             </motion.div>
@@ -92,7 +92,7 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block font-body text-xs text-white/45 mb-1.5 ml-0.5">
+              <label className="block font-fig-body text-xs text-white/45 mb-1.5 ml-0.5">
                 Email address
               </label>
               <input
@@ -106,7 +106,7 @@ export default function AdminLogin() {
             </div>
 
             <div>
-              <label className="block font-body text-xs text-white/45 mb-1.5 ml-0.5">
+              <label className="block font-fig-body text-xs text-white/45 mb-1.5 ml-0.5">
                 Password
               </label>
               <div className="relative">
@@ -146,7 +146,7 @@ export default function AdminLogin() {
 
         {/* Footer note */}
         <div className="flex items-center justify-center gap-2 mt-6">
-          <ShieldCheck size={12} className="text-fluno-purple/50" />
+          <ShieldCheck size={12} className="text-fig-terracotta/50" />
           <span className="font-mono text-[10px] text-white/20">
             Restricted access — authorised personnel only
           </span>

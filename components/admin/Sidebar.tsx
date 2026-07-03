@@ -36,7 +36,7 @@ const sections = [
   },
 ];
 
-const SIDEBAR_BG = "linear-gradient(165deg, #0C0518 0%, #100720 55%, #17092A 100%)";
+const SIDEBAR_BG = "linear-gradient(165deg, #171B2E 0%, #1C2138 55%, #252B42 100%)";
 
 export default function Sidebar() {
   const path   = usePathname();
@@ -66,14 +66,14 @@ export default function Sidebar() {
           onClick={() => setOpen(false)}
           className="flex items-center gap-2.5 group"
         >
-          <div className="w-8 h-8 rounded-xl bg-fluno-purple/20 border border-fluno-purple/25 flex items-center justify-center flex-shrink-0 group-hover:bg-fluno-purple/30 transition-colors">
-            <Sparkles size={13} className="text-fluno-purple" />
+          <div className="w-8 h-8 rounded-xl bg-fig-terracotta/20 border border-fig-terracotta/25 flex items-center justify-center flex-shrink-0 group-hover:bg-fig-terracotta/30 transition-colors">
+            <Sparkles size={13} className="text-fig-terracotta" />
           </div>
           <div>
-            <span className="font-brand font-bold text-xl text-white leading-none block">
+            <span className="font-fig font-bold text-xl text-white leading-none block">
               fluno
             </span>
-            <span className="font-mono text-[8px] text-fluno-purple/40 tracking-[0.22em] uppercase">
+            <span className="font-mono text-[8px] text-fig-terracotta/40 tracking-[0.22em] uppercase">
               Admin
             </span>
           </div>
@@ -98,31 +98,31 @@ export default function Sidebar() {
                     key={href}
                     href={href}
                     onClick={() => setOpen(false)}
-                    className={`relative flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-body font-medium transition-all duration-150 group ${
+                    className={`relative flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-fig-body font-medium transition-all duration-150 group ${
                       active
-                        ? "bg-fluno-purple/[0.12] text-white"
+                        ? "bg-fig-terracotta/[0.12] text-white"
                         : "text-white/[0.36] hover:text-white/70 hover:bg-white/[0.05]"
                     }`}
                   >
                     {active && (
-                      <span className="absolute left-0 top-[22%] bottom-[22%] w-[2.5px] bg-fluno-purple rounded-r-full" />
+                      <span className="absolute left-0 top-[22%] bottom-[22%] w-[2.5px] bg-fig-terracotta rounded-r-full" />
                     )}
                     <Icon
                       size={15}
                       className={
                         active
-                          ? "text-fluno-purple flex-shrink-0"
+                          ? "text-fig-terracotta flex-shrink-0"
                           : "text-white/[0.25] group-hover:text-white/55 flex-shrink-0 transition-colors"
                       }
                     />
                     <span className="flex-1 leading-none">{label}</span>
                     {label === "Messages" && unreadMsgs > 0 && (
-                      <span className="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-fluno-purple/25 text-fluno-purple border border-fluno-purple/30 leading-none flex-shrink-0">
+                      <span className="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-fig-terracotta/25 text-fig-terracotta border border-fig-terracotta/30 leading-none flex-shrink-0">
                         {unreadMsgs}
                       </span>
                     )}
                     {active && (
-                      <ChevronRight size={11} className="text-fluno-purple/40 flex-shrink-0" />
+                      <ChevronRight size={11} className="text-fig-terracotta/40 flex-shrink-0" />
                     )}
                   </Link>
                 );
@@ -160,7 +160,7 @@ export default function Sidebar() {
       <button
         onClick={() => setOpen(true)}
         className="lg:hidden fixed top-3.5 left-4 z-50 p-2 rounded-xl text-white/50 border border-white/[0.1] hover:border-white/[0.2] transition-colors"
-        style={{ background: "rgba(8,5,16,0.92)" }}
+        style={{ background: "rgba(17,21,39,0.92)" }}
         aria-label="Open menu"
       >
         <Menu size={18} />

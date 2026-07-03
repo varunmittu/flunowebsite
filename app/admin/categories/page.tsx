@@ -17,7 +17,7 @@ const blank = { name: "", slug: "", description: "", image: "", order: "0" };
 const PANEL   = { background: "rgba(255,255,255,0.04)"  };
 const FORM_BG = { background: "rgba(255,255,255,0.035)" };
 
-const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3 py-2.5 placeholder:text-white/25 focus:outline-none focus:border-fluno-purple/50 transition-colors font-body";
+const inputCls = "w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3 py-2.5 placeholder:text-white/25 focus:outline-none focus:border-fig-terracotta/50 transition-colors font-fig-body";
 const labelCls = "block font-mono text-[10px] text-white/35 uppercase tracking-wider mb-1.5";
 
 export default function AdminCategories() {
@@ -84,7 +84,7 @@ export default function AdminCategories() {
   const FormRow = ({ onSubmit, isEdit = false }: { onSubmit: (e: React.FormEvent) => void; isEdit?: boolean }) => (
     <div className="rounded-2xl border border-white/[0.08] p-5 mb-5" style={FORM_BG}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-display text-sm font-semibold text-white">
+        <h3 className="font-fig font-bold text-sm font-semibold text-white">
           {isEdit ? "Edit Category" : "New Category"}
         </h3>
         <button
@@ -166,9 +166,9 @@ export default function AdminCategories() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="font-mono text-[9px] text-fluno-purple/45 tracking-[0.22em] uppercase mb-1">Content</p>
-          <h1 className="font-brand font-bold text-2xl text-white">Categories</h1>
-          <p className="font-body text-sm text-white/35 mt-0.5">{cats.length} categories</p>
+          <p className="font-mono text-[9px] text-fig-terracotta/45 tracking-[0.22em] uppercase mb-1">Content</p>
+          <h1 className="font-fig font-bold text-2xl text-white">Categories</h1>
+          <p className="font-fig-body text-sm text-white/35 mt-0.5">{cats.length} categories</p>
         </div>
         <button
           onClick={() => { setAdding(!adding); setEditing(null); setForm(blank); }}
@@ -185,12 +185,12 @@ export default function AdminCategories() {
       <div className="rounded-2xl border border-white/[0.07] overflow-hidden" style={PANEL}>
         {loading ? (
           <div className="flex justify-center py-16">
-            <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+            <Loader2 size={26} className="animate-spin text-fig-terracotta/60" />
           </div>
         ) : cats.length === 0 ? (
           <div className="text-center py-16">
             <FolderOpen size={32} className="text-white/[0.07] mx-auto mb-3" />
-            <p className="font-body text-sm text-white/25">No categories yet.</p>
+            <p className="font-fig-body text-sm text-white/25">No categories yet.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -216,7 +216,7 @@ export default function AdminCategories() {
                     key={c._id}
                     className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors last:border-b-0"
                   >
-                    <td className="px-5 py-3.5 font-body font-medium text-white/85">{c.name}</td>
+                    <td className="px-5 py-3.5 font-fig-body font-medium text-white/85">{c.name}</td>
                     <td className="px-5 py-3.5 font-mono text-xs text-white/35">{c.slug}</td>
                     <td className="px-5 py-3.5 font-mono text-xs text-white/35">{c.order}</td>
                     <td className="px-5 py-3.5">
@@ -230,7 +230,7 @@ export default function AdminCategories() {
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => startEdit(c)}
-                          className="p-2 rounded-lg text-white/30 hover:text-fluno-purple hover:bg-fluno-purple/10 transition-all"
+                          className="p-2 rounded-lg text-white/30 hover:text-fig-terracotta hover:bg-fig-terracotta/10 transition-all"
                         >
                           <Pencil size={14} />
                         </button>

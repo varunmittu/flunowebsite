@@ -91,14 +91,14 @@ export default function MessagesPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="font-display text-2xl text-white font-semibold">Messages</h1>
+            <h1 className="font-fig font-bold text-2xl text-white font-semibold">Messages</h1>
             {unreadCount > 0 && (
-              <span className="px-2 py-0.5 rounded-full bg-fluno-purple/20 border border-fluno-purple/30 text-fluno-purple text-xs font-mono">
+              <span className="px-2 py-0.5 rounded-full bg-fig-terracotta/20 border border-fig-terracotta/30 text-fig-terracotta text-xs font-mono">
                 {unreadCount} unread
               </span>
             )}
           </div>
-          <p className="font-body text-sm text-white/35">Contact form submissions from myfluno.com</p>
+          <p className="font-fig-body text-sm text-white/35">Contact form submissions from myfluno.com</p>
         </div>
         <button
           onClick={load}
@@ -117,7 +117,7 @@ export default function MessagesPage() {
             onClick={() => setFilter(f)}
             className={`px-4 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider transition-all ${
               filter === f
-                ? "bg-fluno-purple/20 text-fluno-purple border border-fluno-purple/30"
+                ? "bg-fig-terracotta/20 text-fig-terracotta border border-fig-terracotta/30"
                 : "text-white/30 hover:text-white/60"
             }`}
           >
@@ -153,8 +153,8 @@ export default function MessagesPage() {
                   transition={{ duration: 0.2 }}
                   className="rounded-2xl overflow-hidden"
                   style={{
-                    background: isOpen ? "rgba(189,126,250,0.06)" : PANEL,
-                    border: `1px solid ${isOpen ? "rgba(189,126,250,0.2)" : BORDER}`,
+                    background: isOpen ? "rgba(217,129,79,0.08)" : PANEL,
+                    border: `1px solid ${isOpen ? "rgba(217,129,79,0.25)" : BORDER}`,
                   }}
                 >
                   {/* Row header */}
@@ -166,23 +166,23 @@ export default function MessagesPage() {
                     <div className="flex-shrink-0 pt-0.5">
                       {msg.read
                         ? <MailOpen size={16} className="text-white/20" />
-                        : <Mail size={16} className="text-fluno-purple" />
+                        : <Mail size={16} className="text-fig-terracotta" />
                       }
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className={`font-body text-sm font-medium truncate ${msg.read ? "text-white/50" : "text-white"}`}>
+                        <span className={`font-fig-body text-sm font-medium truncate ${msg.read ? "text-white/50" : "text-white"}`}>
                           {msg.name}
                         </span>
                         <span className="font-mono text-[10px] text-white/25 flex-shrink-0">
                           {fmt(msg.createdAt)}
                         </span>
                       </div>
-                      <p className={`font-body text-xs truncate mb-0.5 ${msg.read ? "text-white/30" : "text-white/70"}`}>
+                      <p className={`font-fig-body text-xs truncate mb-0.5 ${msg.read ? "text-white/30" : "text-white/70"}`}>
                         {msg.subject}
                       </p>
-                      <p className="font-body text-xs text-white/25 truncate">{msg.message}</p>
+                      <p className="font-fig-body text-xs text-white/25 truncate">{msg.message}</p>
                     </div>
 
                     <div className="flex-shrink-0 text-white/20">
@@ -205,26 +205,26 @@ export default function MessagesPage() {
                           <div className="flex flex-wrap gap-x-6 gap-y-1 mb-4 pt-3">
                             <div>
                               <span className="font-mono text-[9px] text-white/25 uppercase tracking-widest">From</span>
-                              <p className="font-body text-sm text-white/80 mt-0.5">{msg.name}</p>
+                              <p className="font-fig-body text-sm text-white/80 mt-0.5">{msg.name}</p>
                             </div>
                             <div>
                               <span className="font-mono text-[9px] text-white/25 uppercase tracking-widest">Email</span>
-                              <p className="font-body text-sm text-fluno-purple mt-0.5">{msg.email}</p>
+                              <p className="font-fig-body text-sm text-fig-terracotta mt-0.5">{msg.email}</p>
                             </div>
                             <div>
                               <span className="font-mono text-[9px] text-white/25 uppercase tracking-widest">Subject</span>
-                              <p className="font-body text-sm text-white/60 mt-0.5">{msg.subject}</p>
+                              <p className="font-fig-body text-sm text-white/60 mt-0.5">{msg.subject}</p>
                             </div>
                             <div>
                               <span className="font-mono text-[9px] text-white/25 uppercase tracking-widest">Date</span>
-                              <p className="font-body text-sm text-white/60 mt-0.5">
+                              <p className="font-fig-body text-sm text-white/60 mt-0.5">
                                 {new Date(msg.createdAt).toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                               </p>
                             </div>
                           </div>
 
                           {/* Message body */}
-                          <div className="rounded-xl p-4 mb-4 whitespace-pre-wrap font-body text-sm text-white/70 leading-relaxed"
+                          <div className="rounded-xl p-4 mb-4 whitespace-pre-wrap font-fig-body text-sm text-white/70 leading-relaxed"
                             style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${BORDER}` }}>
                             {msg.message}
                           </div>
@@ -233,13 +233,13 @@ export default function MessagesPage() {
                           <div className="flex flex-wrap gap-2">
                             <a
                               href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject)}&body=%0A%0A----%0AOriginal message from ${encodeURIComponent(msg.name)}:%0A${encodeURIComponent(msg.message)}`}
-                              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-body font-medium bg-fluno-purple/20 text-fluno-purple border border-fluno-purple/30 hover:bg-fluno-purple/30 transition-colors"
+                              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-fig-body font-medium bg-fig-terracotta/20 text-fig-terracotta border border-fig-terracotta/30 hover:bg-fig-terracotta/30 transition-colors"
                             >
                               <Reply size={13} /> Reply
                             </a>
                             <button
                               onClick={() => toggleRead(msg)}
-                              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-body text-white/40 border border-white/[0.08] hover:text-white/70 hover:bg-white/[0.05] transition-colors"
+                              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-fig-body text-white/40 border border-white/[0.08] hover:text-white/70 hover:bg-white/[0.05] transition-colors"
                             >
                               {msg.read ? <Mail size={13} /> : <MailOpen size={13} />}
                               {msg.read ? "Mark Unread" : "Mark Read"}
@@ -247,7 +247,7 @@ export default function MessagesPage() {
                             <button
                               onClick={() => deleteMsg(msg._id)}
                               disabled={deleting === msg._id}
-                              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-body text-red-400/60 border border-red-500/[0.12] hover:text-red-400 hover:bg-red-500/[0.08] transition-colors disabled:opacity-40"
+                              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-fig-body text-red-400/60 border border-red-500/[0.12] hover:text-red-400 hover:bg-red-500/[0.08] transition-colors disabled:opacity-40"
                             >
                               {deleting === msg._id
                                 ? <Loader2 size={13} className="animate-spin" />

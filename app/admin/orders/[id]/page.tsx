@@ -80,7 +80,7 @@ export default function OrderDetail() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-56px)]">
-        <Loader2 size={26} className="animate-spin text-fluno-purple/60" />
+        <Loader2 size={26} className="animate-spin text-fig-terracotta/60" />
       </div>
     );
   }
@@ -106,7 +106,7 @@ export default function OrderDetail() {
           <ArrowLeft size={18} />
         </Link>
         <div className="flex-1 min-w-0">
-          <h1 className="font-brand font-bold text-xl text-white truncate">{order.orderId}</h1>
+          <h1 className="font-fig font-bold text-xl text-white truncate">{order.orderId}</h1>
           <p className="font-mono text-xs text-white/30 mt-0.5">
             {new Date(order.createdAt).toLocaleString("en-IN")}
           </p>
@@ -124,7 +124,7 @@ export default function OrderDetail() {
           {/* Items card */}
           <div className="rounded-2xl border border-white/[0.07] overflow-hidden" style={PANEL}>
             <div className="px-5 py-4 border-b border-white/[0.05]">
-              <h2 className="font-display text-sm font-semibold text-white">Items</h2>
+              <h2 className="font-fig font-bold text-sm font-semibold text-white">Items</h2>
             </div>
             <div>
               {order.items.map((item, i) => (
@@ -140,12 +140,12 @@ export default function OrderDetail() {
                     />
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="font-body font-medium text-white/80 truncate">{item.name}</p>
+                    <p className="font-fig-body font-medium text-white/80 truncate">{item.name}</p>
                     <p className="font-mono text-xs text-white/35">{item.size}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
                     <p className="font-mono text-xs text-white/35">×{item.quantity}</p>
-                    <p className="font-brand font-semibold text-white/85">
+                    <p className="font-fig font-bold font-semibold text-white/85">
                       ₹{(item.price * item.quantity).toLocaleString("en-IN")}
                     </p>
                   </div>
@@ -166,13 +166,13 @@ export default function OrderDetail() {
                   : []),
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between text-sm">
-                  <span className="text-white/35 font-body">{k}</span>
-                  <span className="text-white/60 font-body">{v}</span>
+                  <span className="text-white/35 font-fig-body">{k}</span>
+                  <span className="text-white/60 font-fig-body">{v}</span>
                 </div>
               ))}
               <div className="flex justify-between pt-2.5 mt-1 border-t border-white/[0.06]">
-                <span className="font-brand font-semibold text-white/80">Total</span>
-                <span className="font-brand font-bold text-lg text-fluno-purple">
+                <span className="font-fig font-bold font-semibold text-white/80">Total</span>
+                <span className="font-fig font-bold text-lg text-fig-terracotta">
                   ₹{order.total?.toLocaleString("en-IN")}
                 </span>
               </div>
@@ -181,7 +181,7 @@ export default function OrderDetail() {
 
           {/* Payment card */}
           <div className="rounded-2xl border border-white/[0.07] p-5" style={PANEL}>
-            <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-3">
+            <h2 className="font-fig font-bold text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-3">
               Payment
             </h2>
             <div className="space-y-2.5">
@@ -203,7 +203,7 @@ export default function OrderDetail() {
 
           {/* Customer card */}
           <div className="rounded-2xl border border-white/[0.07] p-5" style={PANEL}>
-            <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-3">
+            <h2 className="font-fig font-bold text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-3">
               Customer
             </h2>
             <div className="space-y-2.5">
@@ -218,7 +218,7 @@ export default function OrderDetail() {
               ].map(([k, v]) => (
                 <div key={k} className="flex gap-3">
                   <span className="text-white/30 font-mono text-[10px] w-16 flex-shrink-0 pt-0.5">{k}</span>
-                  <span className="font-body text-xs text-white/60 break-all">{v || "—"}</span>
+                  <span className="font-fig-body text-xs text-white/60 break-all">{v || "—"}</span>
                 </div>
               ))}
             </div>
@@ -226,7 +226,7 @@ export default function OrderDetail() {
 
           {/* Tracking card */}
           <div className="rounded-2xl border border-white/[0.07] p-5" style={PANEL}>
-            <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-4">
+            <h2 className="font-fig font-bold text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-4">
               Shipment Tracking
             </h2>
             <div className="space-y-3">
@@ -240,13 +240,13 @@ export default function OrderDetail() {
                   value={tracking[key]}
                   onChange={(e) => setTracking((t) => ({ ...t, [key]: e.target.value }))}
                   placeholder={placeholder}
-                  className="w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3.5 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-fluno-purple/50 transition-colors font-body"
+                  className="w-full bg-white/[0.06] border border-white/[0.1] text-white text-sm rounded-xl px-3.5 py-2.5 placeholder:text-white/20 focus:outline-none focus:border-fig-terracotta/50 transition-colors font-fig-body"
                 />
               ))}
               <button
                 onClick={saveTracking}
                 disabled={trackSaving}
-                className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-body bg-fluno-purple/20 text-fluno-purple border border-fluno-purple/30 hover:bg-fluno-purple/30 transition-colors disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-fig-body bg-fig-terracotta/20 text-fig-terracotta border border-fig-terracotta/30 hover:bg-fig-terracotta/30 transition-colors disabled:opacity-50"
               >
                 {trackSaving ? <Loader2 size={14} className="animate-spin" /> : trackSaved ? <><Check size={14} /> Saved</> : "Save Tracking"}
               </button>
@@ -258,7 +258,7 @@ export default function OrderDetail() {
 
           {/* Update status card */}
           <div className="rounded-2xl border border-white/[0.07] p-5" style={PANEL}>
-            <h2 className="font-display text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-4">
+            <h2 className="font-fig font-bold text-sm font-semibold text-white border-b border-white/[0.06] pb-3 mb-4">
               Update Status
             </h2>
             <div className="space-y-1.5">
@@ -269,14 +269,14 @@ export default function OrderDetail() {
                     key={s}
                     disabled={isActive || saving}
                     onClick={() => updateStatus(s)}
-                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-body capitalize transition-all ${
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-fig-body capitalize transition-all ${
                       isActive
-                        ? "bg-fluno-purple/20 text-white border border-fluno-purple/30 cursor-default"
+                        ? "bg-fig-terracotta/20 text-white border border-fig-terracotta/30 cursor-default"
                         : "text-white/40 border border-white/[0.06] hover:border-white/[0.15] hover:text-white/70 hover:bg-white/[0.05]"
                     }`}
                   >
                     {s}
-                    {isActive && <Check size={13} className="text-fluno-purple" />}
+                    {isActive && <Check size={13} className="text-fig-terracotta" />}
                   </button>
                 );
               })}
