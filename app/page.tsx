@@ -7,13 +7,17 @@ import { getFeaturedProducts } from "@/lib/products";
 import HomeProductCard from "@/components/fig/HomeProductCard";
 import NotifyStrip from "@/components/fig/NotifyStrip";
 import AnimateIn from "@/components/AnimateIn";
+import {
+  DoodleReveal, WavingFig, WalkingPeople, HappyTeam, ThumbsUp,
+  DoodleBottle, DoodleSun, DoodleSparkle, DoodleHeart, DoodleDrop,
+  DoodleStar, DoodleSquiggle, DoodleBlob,
+} from "@/components/doodles/Doodles";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Fluno — Care that keeps up with you",
-  description:
-    "Everyday personal care, thoughtfully formulated and honestly priced. Made in Hyderabad, India.",
+  description: "Everyday personal care, thoughtfully formulated and honestly priced.",
 };
 
 interface RawProduct {
@@ -24,72 +28,21 @@ interface RawProduct {
   badges?: string[]; inStock?: boolean; featured?: boolean;
 }
 
-const promises = [
-  { title: "Full ingredient list", body: "the complete list on every product page and pack — nothing hidden." },
-  { title: "Cruelty-free", body: "never tested on animals, full stop." },
-  { title: "Made in India", body: "formulated and made here, close to the people we make it for." },
-  { title: "Everyday pricing", body: "priced so daily care is something you can actually keep up." },
+const rules = [
+  { title: "Kind, not harsh", body: "Cleans and cares without leaving skin tight or stripped — a finish you'll happily reach for every single day.", Icon: DoodleHeart, tone: "coral" as const },
+  { title: "Made to repeat", body: "Formulated to slot into the routine you already have, so the good habit becomes the easy one.", Icon: DoodleDrop, tone: "sky" as const },
+  { title: "Honestly priced", body: "Mid-premium quality at an everyday price, because care only works when you can keep it up.", Icon: DoodleStar, tone: "sunny" as const },
 ];
 
-const rituals = [
-  {
-    title: "Kind, not harsh",
-    body: "Cleans and cares without leaving skin tight or stripped — a finish you'll happily reach for on the fiftieth day, not just the first.",
-    tone: "bg-fig-terracotta",
-  },
-  {
-    title: "Made to repeat",
-    body: "Formulated to sit easily inside the routine you already have, so the good habit becomes the easy option — tomorrow, and the day after.",
-    tone: "bg-fig-sage",
-  },
-  {
-    title: "Honestly priced",
-    body: "Mid-premium quality at an everyday price. Care only works when you can afford to repeat it, so we made sure you can.",
-    tone: "bg-fig-mustard",
-  },
-] as const;
-
-/** Non-character hero motif: a care bottle with floating droplet accents. */
-function HeroMotif() {
-  return (
-    <div className="relative w-[min(300px,66vw)] aspect-[3/4]" aria-hidden="true">
-      {/* floating accents */}
-      <span className="absolute top-6 left-2 w-4 h-4 rounded-full bg-fig-sage animate-float" style={{ animationDelay: "0s" }} />
-      <span className="absolute top-20 right-3 w-6 h-6 rounded-full bg-fig-mustard animate-float" style={{ animationDelay: "1.1s" }} />
-      <span className="absolute bottom-16 left-0 w-3 h-3 rounded-full bg-fig-cream/70 animate-float" style={{ animationDelay: "2.2s" }} />
-      {/* bottle */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="animate-float" style={{ animationDelay: "0.4s" }}>
-          <svg viewBox="0 0 160 220" className="w-[190px] h-auto drop-shadow-2xl">
-            <rect x="62" y="10" width="36" height="26" rx="7" fill="#E0A93B" stroke="#252B42" strokeWidth="4" />
-            <rect x="46" y="40" width="68" height="164" rx="26" fill="#D9814F" stroke="#252B42" strokeWidth="4" />
-            <rect x="46" y="92" width="68" height="60" fill="#F7F3EC" opacity="0.14" />
-            <circle cx="80" cy="120" r="19" fill="#F7F3EC" opacity="0.9" />
-            <path d="M80 108 v24 M68 120 h24" stroke="#252B42" strokeWidth="4" strokeLinecap="round" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/** Non-character motif for the "in the lab" card. */
-function LabMotif() {
-  return (
-    <div className="relative flex items-center justify-center h-[190px]" aria-hidden="true">
-      <span className="absolute inset-0 m-auto w-28 h-28 rounded-full bg-fig-sage/25 animate-float" style={{ animationDelay: "0.6s" }} />
-      <svg viewBox="0 0 120 120" className="relative w-24 h-24 animate-float">
-        <circle cx="60" cy="60" r="40" fill="none" stroke="#252B42" strokeWidth="4" opacity="0.5" />
-        <path d="M60 30 C 60 30, 82 56, 82 72 A 22 22 0 0 1 38 72 C 38 56, 60 30, 60 30 Z" fill="#D9814F" stroke="#252B42" strokeWidth="4" strokeLinejoin="round" />
-        <circle cx="51" cy="70" r="6" fill="#F7F3EC" opacity="0.85" />
-      </svg>
-    </div>
-  );
-}
+const promises = [
+  "Full ingredient list on every pack",
+  "Never tested on animals",
+  "Priced for daily use",
+  "Nothing hidden, ever",
+];
 
 export default async function HomePage() {
   let featured: ReturnType<typeof getFeaturedProducts> = [];
-
   try {
     await connectDB();
     const docs = await ProductModel.find({ active: true, featured: true }).limit(6).lean() as RawProduct[];
@@ -105,72 +58,87 @@ export default async function HomePage() {
         inStock: p.inStock ?? true, featured: p.featured ?? false,
       }));
     }
-  } catch {
-    // fallback to static
-  }
-
+  } catch { /* fall back to static */ }
   if (!featured.length) featured = getFeaturedProducts();
 
   return (
     <>
-      {/* ── HERO (navy) ── */}
-      <section className="relative bg-fig-navy text-fig-cream overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-20 lg:pb-24 flex flex-wrap items-center gap-10">
-          <div className="flex-1 basis-[420px] min-w-0">
-            <p className="fig-eyebrow text-fig-mustard mb-5">
-              Personal care · Made in Hyderabad
-            </p>
-            <h1 className="font-fig font-bold text-[clamp(2.6rem,6vw,4.4rem)] leading-[1.05] tracking-tight [text-wrap:balance]">
-              Care that keeps up with&nbsp;you.
-            </h1>
-            <p className="font-fig-body text-lg text-[#C9CCDC] max-w-[52ch] mt-5 mb-8 leading-relaxed">
-              Everyday essentials made to feel good on your skin — thoughtfully
-              formulated, honestly priced, and easy to fold into the routine you
-              already have.
-            </p>
-            <div className="flex flex-wrap gap-3.5">
-              <Link
-                href="/shop"
-                className="inline-flex items-center gap-2 rounded-full bg-fig-terracotta hover:bg-fig-terracotta-deep text-[#FFF6EE] font-fig font-semibold px-7 py-3.5 transition-all duration-150 hover:-translate-y-px"
-              >
-                Shop the range <ArrowRight size={15} />
-              </Link>
-              <Link
-                href="#promise"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-fig-cream/35 hover:border-fig-cream/70 text-fig-cream font-fig font-semibold px-7 py-3.5 transition-colors"
-              >
-                Our promise
-              </Link>
-            </div>
-            <div className="flex flex-wrap gap-6 mt-9">
-              {["Cruelty-free", "Full ingredient list", "Made in India"].map((t) => (
-                <span key={t} className="flex items-center gap-2 text-[13px] text-[#C9CCDC]">
-                  <i className="w-[7px] h-[7px] rounded-full bg-fig-sage inline-block flex-none" />
-                  {t}
+      {/* ── HERO (paper) ── */}
+      <section className="relative overflow-hidden bg-fig-paper">
+        <DoodleBlob className="absolute -top-24 -left-24 w-[380px] h-[380px] opacity-25 animate-bob-slow" color="#6FE0B0" />
+        <DoodleBlob className="absolute top-40 -right-28 w-[420px] h-[420px] opacity-20 animate-bob" color="#B49BFF" />
+        <DoodleSun className="absolute top-10 right-[8%] w-16 h-16 hidden sm:block" />
+        <DoodleSparkle className="absolute bottom-16 left-[6%] w-8 h-8 animate-wiggle-slow hidden sm:block" tone="coral" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-16 lg:pt-20 lg:pb-24 flex flex-wrap items-center gap-10">
+          <div className="flex-1 basis-[440px] min-w-0">
+            <AnimateIn>
+              <p className="fig-eyebrow text-fig-terracotta mb-4">Personal care, minus the fuss</p>
+              <h1 className="font-fig font-bold text-fig-navy text-[clamp(2.7rem,7vw,4.8rem)] leading-[1.03] tracking-tight [text-wrap:balance]">
+                Care that keeps<br className="hidden sm:block" /> up with{" "}
+                <span className="relative inline-block">
+                  you
+                  <DoodleSquiggle className="absolute -bottom-2 left-0 w-full h-3" color="#FF6B5C" />
                 </span>
-              ))}
-            </div>
+                .
+              </h1>
+            </AnimateIn>
+            <AnimateIn delay={0.12}>
+              <p className="font-fig-body text-lg text-fig-ink-soft max-w-[50ch] mt-6 mb-8 leading-relaxed">
+                Everyday essentials made to feel good on your skin — thoughtfully
+                formulated, honestly priced, and easy to fold into the routine you
+                already have.
+              </p>
+              <div className="flex flex-wrap gap-3.5">
+                <Link href="/shop" className="fig-btn text-base px-7 py-3.5 shadow-[4px_4px_0_0_#1E1E24] hover:shadow-[2px_2px_0_0_#1E1E24]">
+                  Shop the range <ArrowRight size={16} />
+                </Link>
+                <Link href="#promise" className="inline-flex items-center gap-2 rounded-full border-[2.5px] border-fig-navy text-fig-navy font-fig font-semibold px-7 py-3.5 hover:bg-fig-mustard transition-colors">
+                  Our promise
+                </Link>
+              </div>
+              <div className="flex flex-wrap gap-x-6 gap-y-2 mt-9">
+                {["Cruelty-free", "Full ingredient list", "Kind to skin"].map((t) => (
+                  <span key={t} className="flex items-center gap-2 text-[13px] font-fig-body text-fig-navy/70">
+                    <i className="w-2.5 h-2.5 rounded-full bg-fig-sage border-2 border-fig-navy inline-block" />
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </AnimateIn>
           </div>
-          <div className="flex-none basis-[300px] grow-0 mx-auto flex justify-center">
-            <HeroMotif />
+
+          <div className="flex-none basis-[300px] grow-0 mx-auto relative">
+            <DoodleReveal>
+              <WavingFig className="w-[min(300px,72vw)] h-auto animate-bob-slow" tone="coral" />
+            </DoodleReveal>
+            <DoodleDrop className="absolute -left-6 top-10 w-9 h-12 animate-bob hidden sm:block" tone="sky" />
+            <DoodleStar className="absolute right-0 -top-2 w-8 h-8 animate-wiggle hidden sm:block" tone="sunny" />
           </div>
         </div>
-        <div className="absolute left-0 right-0 bottom-8 h-px bg-gradient-to-r from-transparent via-fig-cream/20 to-transparent" aria-hidden="true" />
       </section>
 
-      {/* ── THE RANGE (cream) ── */}
-      <section id="shop" className="bg-fig-cream py-20 lg:py-24">
+      {/* ── WALKING STRIP (mint) ── */}
+      <section className="bg-fig-sage border-y-[3px] border-fig-navy py-8 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center">
+          <DoodleReveal className="w-full max-w-2xl">
+            <WalkingPeople className="w-full h-auto" />
+          </DoodleReveal>
+        </div>
+      </section>
+
+      {/* ── THE RANGE (paper) ── */}
+      <section id="shop" className="bg-fig-paper py-20 lg:py-24 relative overflow-hidden">
+        <DoodleSparkle className="absolute top-14 right-[10%] w-7 h-7 animate-wiggle hidden md:block" tone="lilac" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn>
-            <p className="fig-eyebrow text-fig-terracotta mb-4">
-              The range
-            </p>
-            <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
+            <p className="fig-eyebrow text-fig-terracotta mb-3">The range</p>
+            <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.9rem,4vw,2.8rem)] leading-tight [text-wrap:balance]">
               Two essentials today. More, slowly.
             </h2>
-            <p className="font-fig-body text-fig-ink-soft text-lg mt-3 max-w-[58ch]">
+            <p className="font-fig-body text-fig-ink-soft text-lg mt-3 max-w-[56ch]">
               We add a product only when it clears the same bar as the last one —
-              no filler SKUs, no fifty-variant walls.
+              no filler, no fifty-variant walls.
             </p>
           </AnimateIn>
 
@@ -180,33 +148,24 @@ export default async function HomePage() {
                 <HomeProductCard product={p} index={i} />
               </AnimateIn>
             ))}
-
-            {/* in-the-lab teaser */}
             <AnimateIn delay={0.16}>
-              <article className="bg-fig-paper border-[1.5px] border-fig-navy/10 rounded-3xl overflow-hidden flex flex-col h-full">
-                <div className="relative flex items-end justify-center p-6 bg-gradient-to-br from-fig-sage/30 to-fig-sage/10">
-                  <span className="absolute top-4 left-4 font-fig font-semibold text-[11px] tracking-[0.1em] uppercase border-[1.5px] border-fig-navy/15 text-fig-ink-soft rounded-full px-3 py-1.5">
+              <article className="bg-fig-sky/25 border-[2.5px] border-fig-navy rounded-3xl overflow-hidden flex flex-col h-full">
+                <div className="relative flex items-center justify-center py-8">
+                  <DoodleReveal>
+                    <DoodleBottle className="w-28 h-auto animate-bob" tone="coral" />
+                  </DoodleReveal>
+                  <span className="absolute top-4 left-4 font-fig font-semibold text-[11px] tracking-[0.1em] uppercase bg-fig-navy text-fig-cream rounded-full px-3 py-1.5">
                     In the lab
                   </span>
-                  <LabMotif />
                 </div>
-                <div className="flex flex-col gap-2 p-6 flex-1">
-                  <span className="font-fig font-semibold text-[11px] tracking-[0.12em] uppercase text-fig-terracotta">
-                    Next up
-                  </span>
+                <div className="flex flex-col gap-2 p-6 flex-1 border-t-[2.5px] border-fig-navy">
+                  <span className="font-fig font-semibold text-[11px] tracking-[0.12em] uppercase text-fig-terracotta">Next up</span>
                   <h3 className="font-fig font-bold text-xl text-fig-navy leading-tight">The third essential</h3>
                   <p className="font-fig-body text-sm text-fig-ink-soft">
-                    In formulation now. It ships when it clears the bar — join the
-                    list below and you&apos;ll hear first.
+                    In formulation now. It ships when it clears the bar — join the list and you&apos;ll hear first.
                   </p>
-                  <div className="mt-auto pt-4">
-                    <span className="font-fig font-semibold text-fig-ink-soft">Untitled, for now</span>
-                  </div>
-                  <a
-                    href="#notify"
-                    className="mt-3 inline-flex items-center justify-center rounded-full bg-fig-navy hover:bg-fig-navy-soft text-fig-cream font-fig font-semibold text-[15px] px-6 py-3 transition-all duration-150 hover:-translate-y-px"
-                  >
-                    Get notified
+                  <a href="#notify" className="mt-auto pt-4 inline-flex items-center gap-1.5 font-fig font-semibold text-fig-terracotta hover:gap-2.5 transition-all">
+                    Get notified <ArrowRight size={15} />
                   </a>
                 </div>
               </article>
@@ -215,32 +174,28 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── WHY FLUNO (terracotta) ── */}
-      <section className="bg-fig-terracotta py-20 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── THREE RULES (coral) ── */}
+      <section className="bg-fig-terracotta border-y-[3px] border-fig-navy py-20 lg:py-24 relative overflow-hidden">
+        <DoodleSun className="absolute -top-8 -left-8 w-28 h-28 opacity-90" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <AnimateIn>
-            <p className="fig-eyebrow text-fig-navy mb-4">
-              Why Fluno
-            </p>
-            <h2 className="font-fig font-bold text-[#FFF6EE] text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
-              Made for everyday life.
+            <p className="fig-eyebrow text-fig-navy mb-3">Why Fluno</p>
+            <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.9rem,4vw,2.8rem)] leading-tight [text-wrap:balance]">
+              Every formula follows three rules.
             </h2>
-            <p className="font-fig-body text-[#F8DFC9] text-lg mt-3 max-w-[58ch]">
-              Every formula follows three rules. If a product can&apos;t keep all
-              three, it doesn&apos;t ship.
+            <p className="font-fig-body text-fig-navy/80 text-lg mt-3 max-w-[54ch]">
+              If a product can&apos;t keep all three, it doesn&apos;t ship. Simple as that.
             </p>
           </AnimateIn>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-11">
-            {rituals.map((r, i) => (
+            {rules.map((r, i) => (
               <AnimateIn key={r.title} delay={i * 0.08}>
-                <div className="bg-[#FFFDF9]/10 border-[1.5px] border-[#FFFDF9]/20 rounded-3xl p-7 h-full">
-                  <h3 className="font-fig font-semibold text-lg text-[#FFF6EE] flex items-center gap-3">
-                    <span className={`w-11 h-11 rounded-full ${r.tone} border-[2.5px] border-fig-navy flex items-center justify-center flex-none font-fig font-bold text-fig-navy`}>
-                      {i + 1}
-                    </span>
-                    {r.title}
-                  </h3>
-                  <p className="font-fig-body text-sm text-[#F8DFC9] leading-relaxed mt-3.5">{r.body}</p>
+                <div className="bg-fig-paper border-[2.5px] border-fig-navy rounded-3xl p-7 h-full shadow-[5px_5px_0_0_#1E1E24]">
+                  <DoodleReveal className="mb-4">
+                    <r.Icon className="w-14 h-14 animate-wiggle-slow" tone={r.tone} />
+                  </DoodleReveal>
+                  <h3 className="font-fig font-bold text-xl text-fig-navy">{r.title}</h3>
+                  <p className="font-fig-body text-sm text-fig-ink-soft leading-relaxed mt-2.5">{r.body}</p>
                 </div>
               </AnimateIn>
             ))}
@@ -248,48 +203,56 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── OUR PROMISE (sage) ── */}
-      <section id="promise" className="bg-fig-sage py-20 lg:py-24">
+      {/* ── UNITED HAPPY TEAM / PROMISE (lilac) ── */}
+      <section id="promise" className="bg-fig-lilac border-b-[3px] border-fig-navy py-20 lg:py-24 relative overflow-hidden">
+        <DoodleSparkle className="absolute top-16 left-[8%] w-8 h-8 animate-wiggle hidden md:block" tone="sunny" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center gap-12">
           <div className="flex-1 basis-[420px]">
             <AnimateIn>
-              <p className="fig-eyebrow text-fig-navy mb-4">
-                The Fluno promise
-              </p>
-              <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
+              <p className="fig-eyebrow text-fig-navy mb-3">The Fluno promise</p>
+              <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.9rem,4vw,2.8rem)] leading-tight [text-wrap:balance]">
                 Care, done honestly.
               </h2>
-              <p className="font-fig-body text-fig-navy/75 text-lg mt-3 max-w-[56ch]">
-                A few simple commitments sit behind every Fluno product:
+              <p className="font-fig-body text-fig-navy/80 text-lg mt-3 max-w-[52ch]">
+                One small team, a few firm commitments, and no fine print. This is
+                what sits behind every Fluno product:
               </p>
-              <ul className="mt-7 grid gap-3.5 max-w-[54ch]">
+              <ul className="mt-7 grid gap-3.5 max-w-[46ch]">
                 {promises.map((s) => (
-                  <li key={s.title} className="flex gap-3.5 items-start text-fig-navy">
-                    <span className="flex-none w-6 h-6 rounded-full bg-fig-navy text-fig-cream flex items-center justify-center text-[11px] mt-0.5">
-                      ✓
-                    </span>
-                    <span className="font-fig-body text-[15px] leading-relaxed">
-                      <b className="font-fig font-semibold">{s.title}</b> — {s.body}
-                    </span>
+                  <li key={s} className="flex gap-3 items-center text-fig-navy">
+                    <span className="flex-none w-7 h-7 rounded-full bg-fig-paper border-[2.5px] border-fig-navy flex items-center justify-center text-[13px] font-bold">✓</span>
+                    <span className="font-fig-body text-[15px]">{s}</span>
                   </li>
                 ))}
               </ul>
             </AnimateIn>
           </div>
-          <div className="flex-none basis-[280px] grow-0 mx-auto">
-            <AnimateIn direction="left">
-              <div className="grid grid-cols-2 gap-4 w-[min(280px,72vw)]" aria-hidden="true">
-                <div className="aspect-square rounded-3xl bg-fig-terracotta animate-float" style={{ animationDelay: "0s" }} />
-                <div className="aspect-square rounded-3xl bg-fig-mustard animate-float" style={{ animationDelay: "0.8s" }} />
-                <div className="aspect-square rounded-3xl bg-fig-navy animate-float" style={{ animationDelay: "1.6s" }} />
-                <div className="aspect-square rounded-3xl bg-fig-cream animate-float" style={{ animationDelay: "2.4s" }} />
-              </div>
-            </AnimateIn>
+          <div className="flex-none basis-[320px] grow-0 mx-auto">
+            <DoodleReveal>
+              <HappyTeam className="w-[min(340px,80vw)] h-auto" />
+            </DoodleReveal>
           </div>
         </div>
       </section>
 
-      {/* ── LAUNCH LIST (mustard) ── */}
+      {/* ── REVIEWS NUDGE (sunny) ── */}
+      <section className="bg-fig-mustard border-b-[3px] border-fig-navy py-16 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-8">
+          <AnimateIn>
+            <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.6rem,3.4vw,2.3rem)] leading-tight max-w-[22ch]">
+              Loved by people who actually re-buy.
+            </h2>
+            <p className="font-fig-body text-fig-navy/80 mt-2 max-w-[46ch]">
+              Real reviews on every product page — the good, and the honest notes too.
+            </p>
+          </AnimateIn>
+          <DoodleReveal className="mx-auto">
+            <ThumbsUp className="w-28 h-auto animate-bob" tone="coral" />
+          </DoodleReveal>
+        </div>
+      </section>
+
+      {/* ── LAUNCH LIST ── */}
       <NotifyStrip />
     </>
   );

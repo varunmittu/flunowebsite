@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Facebook, Youtube, ArrowRight, Mail, MapPin, ExternalLink } from "lucide-react";
+import { Instagram, Facebook, Youtube, ArrowRight, Mail, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { FigMark } from "@/components/fig/Fig";
+import { DoodleSparkle } from "@/components/doodles/Doodles";
 
 const shop = [
   { label: "Hand Wash",         href: "/product/fluno-hand-wash-250ml"  },
@@ -90,7 +90,7 @@ export default function Footer() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-shrink-0 inline-flex items-center justify-center rounded-full bg-fig-terracotta hover:bg-fig-terracotta-deep text-[#FFF6EE] font-fig font-semibold px-5 py-3 transition-colors disabled:opacity-60"
+                  className="flex-shrink-0 inline-flex items-center justify-center rounded-full bg-fig-terracotta hover:bg-fig-terracotta-deep text-fig-navy font-fig font-semibold px-5 py-3 transition-colors disabled:opacity-60"
                   aria-label="Subscribe"
                 >
                   {loading ? "…" : <ArrowRight size={15} />}
@@ -108,7 +108,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-3 mb-5 group">
-              <FigMark size={30} headStroke="#F7F3EC" />
+              <DoodleSparkle className="w-6 h-6 animate-wiggle" tone="sunny" />
               <span>
                 <span className="font-fig font-bold text-4xl text-fig-cream tracking-tight group-hover:text-fig-terracotta transition-colors duration-200">
                   fluno
@@ -120,8 +120,8 @@ export default function Footer() {
             </Link>
 
             <p className="font-fig-body text-sm text-[#9BA0B8] leading-relaxed max-w-xs mb-6">
-              Mid-premium everyday personal care. A Parvar Enterprise brand,
-              made in Hyderabad, India.
+              Mid-premium everyday personal care that keeps up with you. A Parvar
+              Enterprise brand.
             </p>
 
             <div className="flex gap-3 mb-6">
@@ -156,9 +156,6 @@ export default function Footer() {
               <a href="mailto:contact@myfluno.com" className="flex items-center gap-2 text-xs text-fig-cream/40 hover:text-fig-terracotta transition-colors">
                 <Mail size={12} /> contact@myfluno.com
               </a>
-              <div className="flex items-center gap-2 text-xs text-fig-cream/40">
-                <MapPin size={12} /> Hyderabad, India
-              </div>
             </div>
           </div>
 
@@ -217,7 +214,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Parvar Enterprise. All rights reserved.
           </p>
           <p className="font-fig-body text-xs text-fig-cream/30">
-            Made in Hyderabad, India
+            Made with care
           </p>
         </div>
       </div>

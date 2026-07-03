@@ -102,7 +102,7 @@ export default function NotificationPrompt() {
                     <button
                       onClick={handleAllow}
                       disabled={status === "loading"}
-                      className="flex-1 bg-fig-terracotta text-white font-fig-body text-xs font-semibold py-2 rounded-xl hover:bg-fig-terracotta/90 transition-colors disabled:opacity-60"
+                      className="flex-1 bg-fig-terracotta text-fig-navy font-fig-body text-xs font-semibold py-2 rounded-xl hover:bg-fig-terracotta/90 transition-colors disabled:opacity-60"
                     >
                       {status === "loading" ? "Enabling…" : "Allow Notifications"}
                     </button>

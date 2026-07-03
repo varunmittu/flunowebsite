@@ -6,7 +6,7 @@ import { ShoppingBag, Search, User, Menu, X, ChevronDown } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { FigMark } from "@/components/fig/Fig";
+import { DoodleSparkle } from "@/components/doodles/Doodles";
 
 const navLinks = [
   { label: "Shop",     href: "/shop"     },
@@ -72,9 +72,9 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[66px]">
 
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
-              <FigMark size={26} />
+            {/* Wordmark (no logo mark) */}
+            <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+              <DoodleSparkle className="w-5 h-5 animate-wiggle" tone="coral" />
               <span className="flex flex-col leading-none">
                 <span className="font-fig font-bold text-[1.7rem] text-fig-navy tracking-tight group-hover:text-fig-terracotta transition-colors duration-200 leading-none">
                   fluno
@@ -146,7 +146,7 @@ export default function Header() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
-                      className="absolute -top-0.5 -right-0.5 bg-fig-terracotta text-white font-fig text-[9px] font-bold min-w-[17px] h-[17px] rounded-full flex items-center justify-center leading-none px-0.5"
+                      className="absolute -top-0.5 -right-0.5 bg-fig-terracotta text-fig-navy font-fig text-[9px] font-bold min-w-[17px] h-[17px] rounded-full flex items-center justify-center leading-none px-0.5"
                     >
                       {itemCount > 9 ? "9+" : itemCount}
                     </motion.span>

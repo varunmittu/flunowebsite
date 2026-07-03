@@ -100,7 +100,7 @@ export default async function BlogPage({
                   className={`shrink-0 px-4 py-1.5 rounded-full font-fig-body text-sm font-medium
                               transition-all duration-200 ${
                     isActive
-                      ? "bg-fig-terracotta text-white shadow-md shadow-fig-terracotta/30"
+                      ? "bg-fig-terracotta text-fig-navy shadow-md shadow-fig-terracotta/30"
                       : "bg-white border border-fig-sage text-fig-ink-soft hover:border-fig-terracotta hover:text-fig-terracotta"
                   }`}
                 >

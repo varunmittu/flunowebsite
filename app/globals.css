@@ -30,14 +30,14 @@
   html { scroll-behavior: smooth; }
 
   body {
-    @apply bg-fluno-light text-fluno-ink font-body antialiased;
+    @apply bg-fig-paper text-fig-navy font-fig-body antialiased;
   }
 
-  h1, h2, h3, h4 { @apply font-display; }
+  h1, h2, h3, h4 { @apply font-fig; }
 
   *:focus-visible { @apply outline-2 outline-offset-2 outline-fig-terracotta; }
 
-  ::selection { background-color: #D9814F30; }
+  ::selection { background-color: #FF6B5C33; }
 }
 
 @layer components {
@@ -116,47 +116,52 @@
   .badge      { @apply inline-block font-fig-body text-xs bg-fig-terracotta/10 text-fig-terracotta px-2.5 py-1 rounded-full; }
   .badge-dark { @apply inline-block font-fig-body text-xs bg-white/10 text-fig-mustard px-2.5 py-1 rounded-full; }
 
-  /* ── v2 "fig" palette components (shop / product) ── */
+  /* ── v3 bright "doodle" components (ink border + hard shadow) ── */
   .fig-eyebrow { @apply font-fig font-semibold text-[11px] tracking-[0.16em] uppercase; }
   .fig-btn {
     @apply inline-flex items-center justify-center gap-2
-           bg-fig-terracotta hover:bg-fig-terracotta-deep text-[#FFF6EE]
-           font-fig font-semibold px-6 py-3 rounded-full
-           transition-all duration-150 hover:-translate-y-px active:translate-y-0
-           focus-visible:ring-2 focus-visible:ring-fig-terracotta/40 focus-visible:ring-offset-2
-           disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0;
+           bg-fig-terracotta hover:bg-fig-terracotta-deep text-fig-navy
+           border-[2.5px] border-fig-navy font-fig font-semibold px-6 py-3 rounded-full
+           shadow-[3px_3px_0_0_#1E1E24] hover:shadow-[1px_1px_0_0_#1E1E24]
+           hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px]
+           transition-all duration-100
+           disabled:opacity-50 disabled:cursor-not-allowed
+           disabled:shadow-[3px_3px_0_0_#1E1E24] disabled:translate-x-0 disabled:translate-y-0;
   }
   .fig-btn-navy {
     @apply inline-flex items-center justify-center gap-2
            bg-fig-navy hover:bg-fig-navy-soft text-fig-cream
-           font-fig font-semibold px-6 py-3 rounded-full
-           transition-all duration-150 hover:-translate-y-px active:translate-y-0
-           disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0;
+           border-[2.5px] border-fig-navy font-fig font-semibold px-6 py-3 rounded-full
+           shadow-[3px_3px_0_0_#FF6B5C] hover:shadow-[1px_1px_0_0_#FF6B5C]
+           hover:translate-x-[2px] hover:translate-y-[2px]
+           transition-all duration-100
+           disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .fig-btn-outline {
     @apply inline-flex items-center justify-center gap-2
-           border-2 border-fig-navy/25 text-fig-navy font-fig font-semibold
-           px-6 py-3 rounded-full
-           hover:border-fig-terracotta hover:text-fig-terracotta
-           transition-all duration-150;
+           border-[2.5px] border-fig-navy text-fig-navy font-fig font-semibold
+           px-6 py-3 rounded-full bg-fig-paper
+           shadow-[3px_3px_0_0_#1E1E24] hover:bg-fig-mustard
+           hover:shadow-[1px_1px_0_0_#1E1E24] hover:translate-x-[2px] hover:translate-y-[2px]
+           transition-all duration-100;
   }
   .fig-card {
-    @apply bg-fig-paper rounded-3xl overflow-hidden border-[1.5px] border-fig-navy/10
-           transition-all duration-200
-           hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(37,43,66,.25)];
+    @apply bg-fig-paper rounded-3xl overflow-hidden border-[2.5px] border-fig-navy
+           shadow-[5px_5px_0_0_#1E1E24] transition-all duration-150
+           hover:shadow-[2px_2px_0_0_#1E1E24] hover:translate-x-[3px] hover:translate-y-[3px];
   }
   .fig-input {
-    @apply w-full border border-fig-navy/15 bg-fig-paper text-fig-navy px-4 py-3 rounded-xl
+    @apply w-full border-2 border-fig-navy/25 bg-fig-paper text-fig-navy px-4 py-3 rounded-xl
            font-fig-body text-sm placeholder:text-fig-ink-soft/50
-           focus:outline-none focus:border-fig-terracotta focus:ring-2 focus:ring-fig-terracotta/20 transition-all;
+           focus:outline-none focus:border-fig-terracotta focus:ring-2 focus:ring-fig-terracotta/25 transition-all;
   }
   .fig-badge {
     @apply inline-block font-fig font-semibold text-[11px] tracking-[0.06em]
-           border border-fig-navy/15 text-fig-ink-soft px-2.5 py-1 rounded-full;
+           border-2 border-fig-navy text-fig-navy bg-fig-paper px-2.5 py-1 rounded-full;
   }
 
   /* ── Dividers ── */
-  .divider      { @apply border-t border-fluno-lavender/60; }
+  .divider      { @apply border-t border-fig-navy/10; }
   .divider-dark { @apply border-t border-white/10; }
 
   /* ── Glow utilities ── */
@@ -195,16 +200,49 @@
   }
 }
 
-/* ── Non-character decorative motion (respects reduced-motion) ── */
+/* ── Doodle system ── */
+/* ink-outline default for hand-drawn SVGs */
+.doodle path,
+.doodle circle,
+.doodle ellipse,
+.doodle line,
+.doodle rect,
+.doodle polyline {
+  vector-effect: non-scaling-stroke;
+}
+/* draw-on: paths animate their stroke in when revealed */
+.doodle-draw [data-draw] {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+.doodle-draw.is-in [data-draw] {
+  animation: drawOn 1.1s ease-out forwards;
+}
+.doodle-draw.is-in [data-draw="2"] { animation-delay: 0.18s; }
+.doodle-draw.is-in [data-draw="3"] { animation-delay: 0.34s; }
+.doodle-draw.is-in [data-fill]     { opacity: 0; animation: fadeIn 0.5s ease-out 0.4s forwards; }
+
+/* marching-ants dashed connectors (scroll paths) */
+.doodle-march { stroke-dasharray: 6 10; animation: dashMarch 1.2s linear infinite; }
+
+/* underline squiggle used under headings */
+.doodle-underline { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+.doodle-underline.is-in { animation: drawOn 0.9s ease-out 0.2s forwards; }
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-float { animation: none; }
+  .animate-float,
+  .animate-wiggle, .animate-wiggle-slow, .animate-bob, .animate-bob-slow,
+  .animate-wave, .animate-pop-in, .animate-dash-march, .animate-draw-on,
+  .animate-blink, .animate-spin-slower, .doodle-march { animation: none !important; }
+  .doodle-draw [data-draw], .doodle-underline { stroke-dashoffset: 0 !important; }
+  .doodle-draw [data-fill] { opacity: 1 !important; }
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar             { width: 6px; }
-::-webkit-scrollbar-track       { background: #FAF7FF; }
-::-webkit-scrollbar-thumb       { background: #BD7EFA60; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #BD7EFA; }
+::-webkit-scrollbar-track       { background: #FFF9EC; }
+::-webkit-scrollbar-thumb       { background: #FF6B5C66; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #FF6B5C; }
 
 /* ── Keyframes ── */
 @keyframes orb4 {

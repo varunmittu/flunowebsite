@@ -5,6 +5,7 @@ import { Loader2, Grid3X3, LayoutList, Search } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { products as staticProducts } from "@/lib/products";
 import { autoAnimate } from "@formkit/auto-animate";
+import { DoodleSun, DoodleSparkle, DoodleDrop, DoodleReveal, WalkingPeople } from "@/components/doodles/Doodles";
 
 interface Product {
   id: string; slug: string; name: string; tagline: string; price: number;
@@ -88,12 +89,13 @@ export default function ShopPage() {
   return (
     <div className="min-h-screen bg-fig-cream">
       {/* ── Page hero ── */}
-      <div className="bg-fig-navy relative overflow-hidden">
+      <div className="bg-fig-navy relative overflow-hidden border-b-[3px] border-fig-navy">
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute top-[8%] right-[6%] w-52 h-52 rounded-full bg-fig-terracotta/20 blur-[90px]" />
           <div className="absolute bottom-0 left-[10%] w-56 h-56 rounded-full bg-fig-sage/15 blur-[100px]" />
-          <span className="absolute top-10 left-[12%] w-3.5 h-3.5 rounded-full bg-fig-mustard/70 animate-float" style={{ animationDelay: "0.2s" }} />
-          <span className="absolute bottom-12 right-[16%] w-5 h-5 rounded-full bg-fig-sage/60 animate-float" style={{ animationDelay: "1.3s" }} />
+          <DoodleSun className="absolute -top-6 right-[6%] w-24 h-24 opacity-90" />
+          <DoodleSparkle className="absolute bottom-10 left-[8%] w-8 h-8 animate-wiggle-slow" tone="mint" />
+          <DoodleDrop className="absolute top-14 right-[26%] w-8 h-11 animate-bob hidden md:block" tone="sky" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -124,6 +126,13 @@ export default function ShopPage() {
         </div>
       </div>
 
+      {/* Walking strip */}
+      <div className="bg-fig-sage border-b-[3px] border-fig-navy py-6 overflow-hidden">
+        <DoodleReveal className="max-w-lg mx-auto px-4">
+          <WalkingPeople className="w-full h-auto" />
+        </DoodleReveal>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* ── Filter + sort bar ── */}
         <div className="flex flex-col gap-5 mb-10 pb-8 border-b border-fig-navy/10">
@@ -135,7 +144,7 @@ export default function ShopPage() {
                 onClick={() => setActiveCategory(c)}
                 className={`font-fig font-semibold text-sm px-5 py-2 rounded-full border-2 transition-all duration-200 ${
                   activeCategory === c
-                    ? "bg-fig-terracotta border-fig-terracotta text-[#FFF6EE] shadow-lg shadow-fig-terracotta/20"
+                    ? "bg-fig-terracotta border-fig-terracotta text-fig-navy shadow-lg shadow-fig-terracotta/20"
                     : "border-fig-navy/15 text-fig-ink-soft hover:border-fig-terracotta hover:text-fig-terracotta bg-fig-paper"
                 }`}
               >
@@ -150,14 +159,14 @@ export default function ShopPage() {
               <button
                 onClick={() => setGridCols(3)}
                 aria-label="Comfortable grid"
-                className={`p-1.5 rounded-lg transition-all ${gridCols === 3 ? "bg-fig-terracotta text-[#FFF6EE]" : "text-fig-ink-soft hover:text-fig-terracotta"}`}
+                className={`p-1.5 rounded-lg transition-all ${gridCols === 3 ? "bg-fig-terracotta text-fig-navy" : "text-fig-ink-soft hover:text-fig-terracotta"}`}
               >
                 <Grid3X3 size={14} />
               </button>
               <button
                 onClick={() => setGridCols(4)}
                 aria-label="Compact grid"
-                className={`p-1.5 rounded-lg transition-all ${gridCols === 4 ? "bg-fig-terracotta text-[#FFF6EE]" : "text-fig-ink-soft hover:text-fig-terracotta"}`}
+                className={`p-1.5 rounded-lg transition-all ${gridCols === 4 ? "bg-fig-terracotta text-fig-navy" : "text-fig-ink-soft hover:text-fig-terracotta"}`}
               >
                 <LayoutList size={14} />
               </button>

@@ -154,7 +154,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <button
           onClick={() => handleAdd()}
           disabled={!product.inStock}
-          className="fig-btn-outline w-full mt-auto text-sm group-hover:bg-fig-terracotta group-hover:text-[#FFF6EE] group-hover:border-fig-terracotta transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="fig-btn-outline w-full mt-auto text-sm group-hover:bg-fig-terracotta group-hover:text-fig-navy group-hover:border-fig-terracotta transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ShoppingBag size={14} />
           {product.inStock ? "Add to Cart" : "Out of Stock"}

@@ -299,7 +299,7 @@ export default function SupportPage() {
                           <div className={`rounded-2xl text-sm font-fig-body leading-relaxed break-words overflow-hidden ${
                             isAdmin
                               ? "bg-fig-sage/70 text-fig-navy rounded-tl-sm"
-                              : "bg-fig-terracotta text-white rounded-tr-sm shadow-sm"
+                              : "bg-fig-terracotta text-fig-navy rounded-tr-sm shadow-sm"
                           }`}>
                             {msg.image && (
                               <a href={msg.image} target="_blank" rel="noopener noreferrer">
@@ -428,7 +428,7 @@ export default function SupportPage() {
                     onClick={() => { setView(id); setError(null); }}
                     className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-fig-body text-sm font-semibold transition-all duration-200 ${
                       view === id
-                        ? "bg-fig-terracotta text-white shadow-lg shadow-fig-terracotta/25"
+                        ? "bg-fig-terracotta text-fig-navy shadow-lg shadow-fig-terracotta/25"
                         : "bg-white text-fig-ink-soft border border-fig-sage hover:border-fig-terracotta hover:text-fig-terracotta shadow-sm"
                     }`}
                   >

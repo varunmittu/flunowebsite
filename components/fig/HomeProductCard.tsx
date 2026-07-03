@@ -18,7 +18,7 @@ export default function HomeProductCard({ product, index }: { product: Product; 
     : 0;
 
   return (
-    <article className="group bg-fig-paper border-[1.5px] border-fig-navy/10 rounded-3xl overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(37,43,66,.25)]">
+    <article className="group bg-fig-paper border-[2.5px] border-fig-navy rounded-3xl overflow-hidden flex flex-col transition-all duration-200 shadow-[5px_5px_0_0_#1E1E24] hover:shadow-[2px_2px_0_0_#1E1E24] hover:translate-x-[3px] hover:translate-y-[3px]">
       <Link
         href={`/product/${product.slug}`}
         className={`relative flex items-end justify-center min-h-[250px] p-6 ${ART_BG[index % ART_BG.length]}`}
@@ -98,14 +98,14 @@ export default function HomeProductCard({ product, index }: { product: Product; 
                 image: product.images[0],
               })
             }
-            className="mt-3 inline-flex items-center justify-center rounded-full bg-fig-terracotta hover:bg-fig-terracotta-deep text-[#FFF6EE] font-fig font-semibold text-[15px] px-6 py-3 transition-all duration-150 hover:-translate-y-px active:translate-y-0"
+            className="mt-3 fig-btn text-[15px] px-6 py-3"
           >
             Add to cart
           </button>
         ) : (
           <Link
             href={`/product/${product.slug}`}
-            className="mt-3 inline-flex items-center justify-center rounded-full bg-fig-navy hover:bg-fig-navy-soft text-fig-cream font-fig font-semibold text-[15px] px-6 py-3 transition-all duration-150 hover:-translate-y-px"
+            className="mt-3 fig-btn-navy text-[15px] px-6 py-3"
           >
             Notify me when back
           </Link>

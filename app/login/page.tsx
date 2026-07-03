@@ -146,7 +146,7 @@ export default function LoginPage() {
                 onClick={() => switchTab(t)}
                 className={`flex-1 py-2.5 rounded-full font-fig-body text-sm font-semibold transition-all duration-200 ${
                   tab === t
-                    ? "bg-fig-terracotta text-white shadow-lg shadow-fig-terracotta/30"
+                    ? "bg-fig-terracotta text-fig-navy shadow-lg shadow-fig-terracotta/30"
                     : "text-white/40 hover:text-white/70"
                 }`}
               >

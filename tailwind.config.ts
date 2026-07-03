@@ -25,16 +25,18 @@ const config: Config = {
         "fluno-teal-light":  "#9B5DE5",
         "fluno-blush":       "#DDB8FF",
         "fluno-stone":       "#EDE9FF",
-        // v2 "Fluno Figure" packaging palette
-        "fig-terracotta":      "#D9814F",
-        "fig-terracotta-deep": "#C06B3D",
-        "fig-sage":            "#8CB89A",
-        "fig-mustard":         "#E0A93B",
-        "fig-navy":            "#252B42",
-        "fig-navy-soft":       "#33395A",
-        "fig-cream":           "#F7F3EC",
-        "fig-paper":           "#FFFDF9",
-        "fig-ink-soft":        "#4A4F66",
+        // v3 bright "doodle" palette (fig-* names kept, values re-skinned)
+        "fig-terracotta":      "#FF6B5C", // coral (primary accent)
+        "fig-terracotta-deep": "#F0503F", // deep coral (hovers)
+        "fig-sage":            "#6FE0B0", // mint
+        "fig-mustard":         "#FFC94D", // sunny
+        "fig-sky":             "#5AB2FF", // sky blue
+        "fig-lilac":           "#B49BFF", // lilac
+        "fig-navy":            "#1E1E24", // ink (dark surfaces / outlines / text)
+        "fig-navy-soft":       "#33333D",
+        "fig-cream":           "#FFF9EC", // warm paper (light bg)
+        "fig-paper":           "#FFFDF7", // paper
+        "fig-ink-soft":        "#5A5A66", // muted ink text
       },
       fontFamily: {
         brand:   ["var(--font-quicksand)", "sans-serif"],
@@ -54,6 +56,17 @@ const config: Config = {
         orb1:             "orb1 9s ease-in-out infinite",
         orb2:             "orb2 11s ease-in-out infinite",
         orb3:             "orb3 13s ease-in-out infinite 2s",
+        // doodle motions
+        wiggle:           "wiggle 2.8s ease-in-out infinite",
+        "wiggle-slow":    "wiggle 5s ease-in-out infinite",
+        bob:              "bob 3s ease-in-out infinite",
+        "bob-slow":       "bob 5s ease-in-out infinite",
+        wave:             "wave 1.6s ease-in-out infinite",
+        "spin-slower":    "spin 26s linear infinite",
+        "pop-in":         "popIn 0.5s cubic-bezier(.34,1.56,.64,1) both",
+        "dash-march":     "dashMarch 1.2s linear infinite",
+        "draw-on":        "drawOn 1.2s ease-out both",
+        blink:            "blink 4s step-end infinite",
       },
       keyframes: {
         fadeUp: {
@@ -89,6 +102,35 @@ const config: Config = {
         orb3: {
           "0%, 100%": { transform: "translate(0,0) scale(1)" },
           "50%":      { transform: "translate(25px,35px) scale(1.05)" },
+        },
+        // doodle keyframes
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%":      { transform: "rotate(3deg)" },
+        },
+        bob: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%":      { transform: "translateY(-10px)" },
+        },
+        wave: {
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "25%":      { transform: "rotate(18deg)" },
+          "75%":      { transform: "rotate(-8deg)" },
+        },
+        popIn: {
+          "0%":   { opacity: "0", transform: "scale(0.6) rotate(-6deg)" },
+          "100%": { opacity: "1", transform: "scale(1) rotate(0deg)" },
+        },
+        dashMarch: {
+          to: { "stroke-dashoffset": "-16" },
+        },
+        drawOn: {
+          from: { "stroke-dashoffset": "1000" },
+          to:   { "stroke-dashoffset": "0" },
+        },
+        blink: {
+          "0%, 92%, 100%": { transform: "scaleY(1)" },
+          "96%":           { transform: "scaleY(0.1)" },
         },
       },
     },
