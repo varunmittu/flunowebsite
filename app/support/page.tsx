@@ -209,21 +209,21 @@ export default function SupportPage() {
     : [];
 
   return (
-    <div className="min-h-screen bg-fluno-light">
+    <div className="min-h-screen bg-fig-cream">
       {/* Hero */}
-      <div className="bg-fluno-dark pt-16 pb-16 relative overflow-hidden">
+      <div className="bg-fig-navy pt-16 pb-16 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-[20%] w-[350px] h-[350px] rounded-full bg-fluno-purple/10 blur-[100px]" />
-          <div className="absolute bottom-0 right-[15%] w-[250px] h-[250px] rounded-full bg-fluno-purple/8 blur-[80px]" />
+          <div className="absolute top-0 left-[20%] w-[350px] h-[350px] rounded-full bg-fig-terracotta/10 blur-[100px]" />
+          <div className="absolute bottom-0 right-[15%] w-[250px] h-[250px] rounded-full bg-fig-terracotta/8 blur-[80px]" />
         </div>
         <div className="relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <p className="eyebrow text-fluno-purple mb-4 flex items-center gap-2 justify-center">
+          <p className="fig-eyebrow text-fig-terracotta mb-4 flex items-center gap-2 justify-center">
             <Headphones size={12} /> Customer Support
           </p>
-          <h1 className="font-brand font-bold text-white leading-none mb-3" style={{ fontSize: "clamp(2.2rem, 5vw, 3.5rem)" }}>
+          <h1 className="font-fig font-bold text-white leading-none mb-3" style={{ fontSize: "clamp(2.2rem, 5vw, 3.5rem)" }}>
             How can we help?
           </h1>
-          <p className="font-body text-white/45 text-base">
+          <p className="font-fig-body text-white/45 text-base">
             We reply within 24 hours — Mon to Sat, 9 AM–6 PM IST.
           </p>
         </div>
@@ -245,18 +245,18 @@ export default function SupportPage() {
               <div className="flex items-center justify-between mb-4 px-1">
                 <button
                   onClick={() => { setView("new"); setTicket(null); }}
-                  className="flex items-center gap-1 font-mono text-xs text-fluno-muted hover:text-fluno-purple transition-colors"
+                  className="flex items-center gap-1 font-fig-body text-xs text-fig-ink-soft hover:text-fig-terracotta transition-colors"
                 >
                   <ChevronLeft size={14} /> New Ticket
                 </button>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-fluno-muted/60">{ticket.ticketId}</span>
-                  <span className={`font-mono text-[10px] px-2.5 py-0.5 rounded-full border ${statusCfg.color}`}>
+                  <span className="font-fig-body text-xs text-fig-ink-soft/60">{ticket.ticketId}</span>
+                  <span className={`font-fig-body text-[10px] px-2.5 py-0.5 rounded-full border ${statusCfg.color}`}>
                     {statusCfg.label}
                   </span>
                   <button
                     onClick={refreshTicket}
-                    className="text-fluno-muted/50 hover:text-fluno-purple transition-colors"
+                    className="text-fig-ink-soft/50 hover:text-fig-terracotta transition-colors"
                     title="Refresh"
                   >
                     <RefreshCw size={13} />
@@ -264,12 +264,12 @@ export default function SupportPage() {
                 </div>
               </div>
 
-              {/* Chat card */}
-              <div className="bg-white rounded-2xl shadow-sm border border-fluno-lavender/60 overflow-hidden">
+              {/* Chat bg-fig-paper border border-fig-navy/10 rounded-2xl */}
+              <div className="bg-white rounded-2xl shadow-sm border border-fig-sage/60 overflow-hidden">
                 {/* Header */}
-                <div className="px-6 py-4 bg-fluno-lavender/30 border-b border-fluno-lavender/50">
-                  <h2 className="font-display font-semibold text-fluno-ink text-lg leading-snug">{ticket.subject}</h2>
-                  <p className="font-mono text-xs text-fluno-muted/60 mt-0.5">
+                <div className="px-6 py-4 bg-fig-sage/30 border-b border-fig-sage/50">
+                  <h2 className="font-fig font-bold font-semibold text-fig-navy text-lg leading-snug">{ticket.subject}</h2>
+                  <p className="font-fig-body text-xs text-fig-ink-soft/60 mt-0.5">
                     {ticket.name} · {CATEGORIES.find(c => c.value === ticket.category)?.label ?? ticket.category}
                   </p>
                 </div>
@@ -291,15 +291,15 @@ export default function SupportPage() {
                         className={`flex gap-2.5 ${isAdmin ? "justify-start" : "justify-end"}`}
                       >
                         {isAdmin && (
-                          <div className="w-8 h-8 rounded-full bg-fluno-purple flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
-                            <span className="font-brand font-bold text-white text-[11px]">F</span>
+                          <div className="w-8 h-8 rounded-full bg-fig-terracotta flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
+                            <span className="font-fig font-bold text-white text-[11px]">F</span>
                           </div>
                         )}
                         <div className={`flex flex-col max-w-[78%] ${isAdmin ? "items-start" : "items-end"}`}>
-                          <div className={`rounded-2xl text-sm font-body leading-relaxed break-words overflow-hidden ${
+                          <div className={`rounded-2xl text-sm font-fig-body leading-relaxed break-words overflow-hidden ${
                             isAdmin
-                              ? "bg-fluno-lavender/70 text-fluno-ink rounded-tl-sm"
-                              : "bg-fluno-purple text-white rounded-tr-sm shadow-sm"
+                              ? "bg-fig-sage/70 text-fig-navy rounded-tl-sm"
+                              : "bg-fig-terracotta text-white rounded-tr-sm shadow-sm"
                           }`}>
                             {msg.image && (
                               <a href={msg.image} target="_blank" rel="noopener noreferrer">
@@ -315,14 +315,14 @@ export default function SupportPage() {
                               <div className="px-4 py-2.5 whitespace-pre-wrap">{msg.text}</div>
                             )}
                           </div>
-                          <span className="font-mono text-[10px] text-fluno-muted/45 mt-1 px-1">
+                          <span className="font-fig-body text-[10px] text-fig-ink-soft/45 mt-1 px-1">
                             {isAdmin ? "Fluno Support" : "You"}
                             {msg.createdAt && ` · ${new Date(msg.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}`}
                           </span>
                         </div>
                         {!isAdmin && (
-                          <div className="w-8 h-8 rounded-full bg-fluno-lavender flex items-center justify-center flex-shrink-0 mt-1">
-                            <User size={14} className="text-fluno-purple" />
+                          <div className="w-8 h-8 rounded-full bg-fig-sage flex items-center justify-center flex-shrink-0 mt-1">
+                            <User size={14} className="text-fig-terracotta" />
                           </div>
                         )}
                       </motion.div>
@@ -334,26 +334,26 @@ export default function SupportPage() {
                 {isClosed && (
                   <div className="mx-5 mb-4 px-4 py-3 rounded-xl bg-green-50 border border-green-200 flex items-start gap-2.5">
                     <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
-                    <p className="font-body text-sm text-green-700">
+                    <p className="font-fig-body text-sm text-green-700">
                       This ticket is <strong>{statusCfg.label.toLowerCase()}</strong>. If you need further assistance, please raise a new ticket.
                     </p>
                   </div>
                 )}
 
-                {/* Reply input */}
+                {/* Reply fig-input */}
                 {!isClosed && (
                   <form
                     onSubmit={handleReply}
-                    className="px-5 pb-5 pt-3 border-t border-fluno-lavender/40"
+                    className="px-5 pb-5 pt-3 border-t border-fig-sage/40"
                   >
                     {pendingImage && (
-                      <div className="mb-2.5 inline-flex items-start gap-2 p-1.5 rounded-xl bg-fluno-lavender/40 border border-fluno-lavender">
+                      <div className="mb-2.5 inline-flex items-start gap-2 p-1.5 rounded-xl bg-fig-sage/40 border border-fig-sage">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={pendingImage} alt="Attached" className="h-16 w-16 object-cover rounded-lg" />
                         <button
                           type="button"
                           onClick={() => setPendingImage(null)}
-                          className="p-1 text-fluno-muted/60 hover:text-red-500 transition-colors"
+                          className="p-1 text-fig-ink-soft/60 hover:text-red-500 transition-colors"
                           aria-label="Remove attachment"
                         >
                           <X size={13} />
@@ -372,7 +372,7 @@ export default function SupportPage() {
                         type="button"
                         onClick={() => fileRef.current?.click()}
                         disabled={uploading || !!pendingImage}
-                        className="flex-shrink-0 self-end p-3 rounded-xl border border-fluno-lavender text-fluno-purple hover:bg-fluno-lavender/40 transition-colors disabled:opacity-50"
+                        className="flex-shrink-0 self-end p-3 rounded-xl border border-fig-sage text-fig-terracotta hover:bg-fig-sage/40 transition-colors disabled:opacity-50"
                         aria-label="Attach photo"
                         title="Attach photo (required for damage claims)"
                       >
@@ -389,18 +389,18 @@ export default function SupportPage() {
                         }}
                         rows={2}
                         placeholder="Type a message… (Enter to send, Shift+Enter for new line)"
-                        className="input flex-1 resize-none text-sm py-2.5"
+                        className="fig-input flex-1 resize-none text-sm py-2.5"
                       />
                       <button
                         type="submit"
                         disabled={(!replyText.trim() && !pendingImage) || sending || uploading}
-                        className="btn-primary flex-shrink-0 self-end disabled:opacity-50"
+                        className="fig-btn flex-shrink-0 self-end disabled:opacity-50"
                         aria-label="Send message"
                       >
                         {sending ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
                       </button>
                     </div>
-                    <p className="font-mono text-[10px] text-fluno-muted/40 mt-1.5">
+                    <p className="font-fig-body text-[10px] text-fig-ink-soft/40 mt-1.5">
                       Auto-refreshes every 10 s · For return / damage claims, attach clear photos of the product using the 📎 image button
                     </p>
                   </form>
@@ -426,10 +426,10 @@ export default function SupportPage() {
                   <button
                     key={id}
                     onClick={() => { setView(id); setError(null); }}
-                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-body text-sm font-semibold transition-all duration-200 ${
+                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-fig-body text-sm font-semibold transition-all duration-200 ${
                       view === id
-                        ? "bg-fluno-purple text-white shadow-lg shadow-fluno-purple/25"
-                        : "bg-white text-fluno-muted border border-fluno-lavender hover:border-fluno-purple hover:text-fluno-purple shadow-sm"
+                        ? "bg-fig-terracotta text-white shadow-lg shadow-fig-terracotta/25"
+                        : "bg-white text-fig-ink-soft border border-fig-sage hover:border-fig-terracotta hover:text-fig-terracotta shadow-sm"
                     }`}
                   >
                     <Icon size={14} /> {label}
@@ -439,7 +439,7 @@ export default function SupportPage() {
 
               {/* New Ticket form */}
               {view === "new" && (
-                <form onSubmit={handleSubmit} className="card p-6 sm:p-8 space-y-5">
+                <form onSubmit={handleSubmit} className="bg-fig-paper border border-fig-navy/10 rounded-2xl p-6 sm:p-8 space-y-5">
                   {error && (
                     <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl p-3">
                       <AlertCircle size={16} className="flex-shrink-0" /> {error}
@@ -448,39 +448,39 @@ export default function SupportPage() {
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block font-mono text-xs text-fluno-muted/60 mb-1.5 uppercase tracking-wide">Full Name *</label>
-                      <input value={form.name} onChange={(e) => setField("name", e.target.value)} required placeholder="Your name" className="input w-full" />
+                      <label className="block font-fig-body text-xs text-fig-ink-soft/60 mb-1.5 uppercase tracking-wide">Full Name *</label>
+                      <input value={form.name} onChange={(e) => setField("name", e.target.value)} required placeholder="Your name" className="fig-input w-full" />
                     </div>
                     <div>
-                      <label className="block font-mono text-xs text-fluno-muted/60 mb-1.5 uppercase tracking-wide">Email *</label>
-                      <input type="email" value={form.email} onChange={(e) => setField("email", e.target.value)} required placeholder="you@example.com" className="input w-full" />
+                      <label className="block font-fig-body text-xs text-fig-ink-soft/60 mb-1.5 uppercase tracking-wide">Email *</label>
+                      <input type="email" value={form.email} onChange={(e) => setField("email", e.target.value)} required placeholder="you@example.com" className="fig-input w-full" />
                     </div>
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block font-mono text-xs text-fluno-muted/60 mb-1.5 uppercase tracking-wide">Phone</label>
-                      <input value={form.phone} onChange={(e) => setField("phone", e.target.value)} placeholder="+91 98765 43210" className="input w-full" />
+                      <label className="block font-fig-body text-xs text-fig-ink-soft/60 mb-1.5 uppercase tracking-wide">Phone</label>
+                      <input value={form.phone} onChange={(e) => setField("phone", e.target.value)} placeholder="+91 98765 43210" className="fig-input w-full" />
                     </div>
                     <div>
-                      <label className="block font-mono text-xs text-fluno-muted/60 mb-1.5 uppercase tracking-wide">Category</label>
-                      <select value={form.category} onChange={(e) => setField("category", e.target.value)} className="input w-full">
+                      <label className="block font-fig-body text-xs text-fig-ink-soft/60 mb-1.5 uppercase tracking-wide">Category</label>
+                      <select value={form.category} onChange={(e) => setField("category", e.target.value)} className="fig-input w-full">
                         {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
                       </select>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block font-mono text-xs text-fluno-muted/60 mb-1.5 uppercase tracking-wide">Subject *</label>
-                    <input value={form.subject} onChange={(e) => setField("subject", e.target.value)} required placeholder="Brief description of your issue" className="input w-full" />
+                    <label className="block font-fig-body text-xs text-fig-ink-soft/60 mb-1.5 uppercase tracking-wide">Subject *</label>
+                    <input value={form.subject} onChange={(e) => setField("subject", e.target.value)} required placeholder="Brief description of your issue" className="fig-input w-full" />
                   </div>
 
                   <div>
-                    <label className="block font-mono text-xs text-fluno-muted/60 mb-1.5 uppercase tracking-wide">Message *</label>
-                    <textarea value={form.message} onChange={(e) => setField("message", e.target.value)} required rows={4} placeholder="Describe your issue in detail…" className="input w-full resize-none" />
+                    <label className="block font-fig-body text-xs text-fig-ink-soft/60 mb-1.5 uppercase tracking-wide">Message *</label>
+                    <textarea value={form.message} onChange={(e) => setField("message", e.target.value)} required rows={4} placeholder="Describe your issue in detail…" className="fig-input w-full resize-none" />
                   </div>
 
-                  <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
+                  <button type="submit" disabled={loading} className="fig-btn w-full justify-center">
                     {loading
                       ? <><Loader2 size={16} className="animate-spin" /> Submitting…</>
                       : <><Send size={16} /> Submit Ticket</>
@@ -488,8 +488,8 @@ export default function SupportPage() {
                   </button>
 
                   <div className="flex items-center gap-2 pt-1">
-                    <MessageSquare size={12} className="text-fluno-purple flex-shrink-0" />
-                    <p className="font-mono text-[10px] text-fluno-muted/50">
+                    <MessageSquare size={12} className="text-fig-terracotta flex-shrink-0" />
+                    <p className="font-fig-body text-[10px] text-fig-ink-soft/50">
                       After submitting, you can chat directly with our support team.
                     </p>
                   </div>
@@ -498,13 +498,13 @@ export default function SupportPage() {
 
               {/* Track Ticket form */}
               {view === "track" && (
-                <form onSubmit={handleLookup} className="card p-6 sm:p-8 space-y-5">
+                <form onSubmit={handleLookup} className="bg-fig-paper border border-fig-navy/10 rounded-2xl p-6 sm:p-8 space-y-5">
                   <div className="text-center pb-2">
-                    <div className="w-14 h-14 rounded-2xl bg-fluno-purple/10 flex items-center justify-center mx-auto mb-4">
-                      <Search size={24} className="text-fluno-purple/60" />
+                    <div className="w-14 h-14 rounded-2xl bg-fig-terracotta/10 flex items-center justify-center mx-auto mb-4">
+                      <Search size={24} className="text-fig-terracotta/60" />
                     </div>
-                    <h2 className="font-display font-semibold text-fluno-ink mb-1">Track your ticket</h2>
-                    <p className="font-body text-fluno-ink/50 text-sm">
+                    <h2 className="font-fig font-bold font-semibold text-fig-navy mb-1">Track your ticket</h2>
+                    <p className="font-fig-body text-fig-navy/50 text-sm">
                       Enter your Ticket ID and the email you used — we&apos;ll show you the conversation.
                     </p>
                   </div>
@@ -516,29 +516,29 @@ export default function SupportPage() {
                   )}
 
                   <div>
-                    <label className="block font-mono text-xs text-fluno-muted/60 mb-1.5 uppercase tracking-wide">Ticket ID *</label>
+                    <label className="block font-fig-body text-xs text-fig-ink-soft/60 mb-1.5 uppercase tracking-wide">Ticket ID *</label>
                     <input
                       value={lookupId}
                       onChange={(e) => setLookupId(e.target.value.toUpperCase())}
                       required
                       placeholder="TKT-XXXXXXXXXX"
-                      className="input w-full font-mono tracking-wider"
+                      className="fig-input w-full font-fig-body tracking-wider"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-mono text-xs text-fluno-muted/60 mb-1.5 uppercase tracking-wide">Email *</label>
+                    <label className="block font-fig-body text-xs text-fig-ink-soft/60 mb-1.5 uppercase tracking-wide">Email *</label>
                     <input
                       type="email"
                       value={lookupEmail}
                       onChange={(e) => setLookupEmail(e.target.value)}
                       required
                       placeholder="Email used when raising the ticket"
-                      className="input w-full"
+                      className="fig-input w-full"
                     />
                   </div>
 
-                  <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
+                  <button type="submit" disabled={loading} className="fig-btn w-full justify-center">
                     {loading
                       ? <><Loader2 size={16} className="animate-spin" /> Searching…</>
                       : <><Search size={16} /> Find My Ticket</>

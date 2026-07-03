@@ -177,7 +177,7 @@ export default function CheckoutPage() {
             }
           },
           prefill: { name: form.name, email: form.email, contact: form.phone },
-          theme: { color: "#BD7EFA" },
+          theme: { color: "#D9814F" },
           modal: { ondismiss: () => setLoading(false) },
         });
         rzp.open();
@@ -203,23 +203,26 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-xl mx-auto px-4 py-20 text-center">
-        <p className="font-body text-fluno-ink/50 mb-4">Your cart is empty.</p>
-        <Link href="/shop" className="btn-primary">Shop Now</Link>
+      <div className="min-h-screen bg-fig-cream">
+        <div className="max-w-xl mx-auto px-4 py-20 text-center">
+          <p className="font-fig-body text-fig-ink-soft mb-4">Your cart is empty.</p>
+          <Link href="/shop" className="fig-btn">Shop Now</Link>
+        </div>
       </div>
     );
   }
 
   return (
+    <div className="min-h-screen bg-fig-cream">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Progress */}
-      <nav className="flex items-center gap-2 text-sm font-body mb-10 flex-wrap">
+      <nav className="flex items-center gap-2 text-sm font-fig-body mb-10 flex-wrap">
         {(["address", "review", "payment"] as Step[]).map((s, i, arr) => (
           <div key={s} className="flex items-center gap-2">
-            <span className={`font-medium ${step === s ? "text-fluno-teal" : i < arr.indexOf(step) ? "text-fluno-ink/40 line-through" : "text-fluno-ink/30"}`}>
+            <span className={`font-fig font-semibold ${step === s ? "text-fig-terracotta" : i < arr.indexOf(step) ? "text-fig-ink-soft/50 line-through" : "text-fig-ink-soft/50"}`}>
               {i + 1}. {s.charAt(0).toUpperCase() + s.slice(1)}
             </span>
-            {i < arr.length - 1 && <ChevronRight size={14} className="text-fluno-ink/20" />}
+            {i < arr.length - 1 && <ChevronRight size={14} className="text-fig-navy/25" />}
           </div>
         ))}
       </nav>
@@ -228,11 +231,11 @@ export default function CheckoutPage() {
         <div className="lg:col-span-2">
           {step === "address" && (
             <div>
-              <h1 className="font-display text-2xl text-fluno-ink mb-6">Delivery Address</h1>
+              <h1 className="font-fig font-bold text-2xl text-fig-navy mb-6">Delivery Address</h1>
 
               {savedAddresses.length > 0 && (
                 <div className="mb-8">
-                  <p className="font-mono text-xs text-fluno-ink/50 uppercase tracking-wide mb-3">Your saved addresses</p>
+                  <p className="font-fig font-semibold text-xs text-fig-ink-soft uppercase tracking-wide mb-3">Your saved addresses</p>
                   <div className="grid sm:grid-cols-2 gap-3">
                     {savedAddresses.map((a) => {
                       const active = selectedAddrId === a._id;
@@ -243,26 +246,26 @@ export default function CheckoutPage() {
                           onClick={() => applySavedAddress(a)}
                           className={`text-left p-4 rounded-xl border transition-all ${
                             active
-                              ? "border-fluno-purple bg-fluno-purple/5 shadow-sm"
-                              : "border-fluno-lavender/60 bg-white hover:border-fluno-purple/40"
+                              ? "border-fig-terracotta bg-fig-terracotta/5 shadow-sm"
+                              : "border-fig-navy/12 bg-fig-paper hover:border-fig-terracotta/40"
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1.5">
-                            <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-fluno-purple">
+                            <span className="flex items-center gap-1.5 font-fig font-semibold text-[10px] uppercase tracking-wide text-fig-terracotta">
                               <MapPin size={11} /> {a.label ?? "Address"}
-                              {a.isDefault && <span className="text-fluno-ink/30">· default</span>}
+                              {a.isDefault && <span className="text-fig-ink-soft/50">· default</span>}
                             </span>
-                            {active && <Check size={14} className="text-fluno-purple" />}
+                            {active && <Check size={14} className="text-fig-terracotta" />}
                           </div>
-                          <p className="font-body text-sm font-medium text-fluno-ink">{a.name}</p>
-                          <p className="font-body text-xs text-fluno-ink/55 leading-relaxed mt-0.5">
+                          <p className="font-fig-body text-sm font-medium text-fig-navy">{a.name}</p>
+                          <p className="font-fig-body text-xs text-fig-ink-soft leading-relaxed mt-0.5">
                             {a.address}, {a.city}, {a.state} — {a.pincode}
                           </p>
                         </button>
                       );
                     })}
                   </div>
-                  <p className="font-mono text-[10px] text-fluno-ink/35 mt-3">
+                  <p className="font-fig-body text-[10px] text-fig-ink-soft/60 mt-3">
                     Selecting fills the form below — you can still edit any field.
                   </p>
                 </div>
@@ -270,37 +273,37 @@ export default function CheckoutPage() {
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
-                  <label className="block font-body text-sm text-fluno-ink/70 mb-1">Full Name *</label>
-                  <input name="name" value={form.name} onChange={handleChange} className="input" placeholder="Priya Sharma" />
+                  <label className="block font-fig-body text-sm text-fig-ink-soft mb-1">Full Name *</label>
+                  <input name="name" value={form.name} onChange={handleChange} className="fig-input" placeholder="Priya Sharma" />
                 </div>
                 <div>
-                  <label className="block font-body text-sm text-fluno-ink/70 mb-1">Email *</label>
-                  <input name="email" type="email" value={form.email} onChange={handleChange} className="input" placeholder="priya@email.com" />
+                  <label className="block font-fig-body text-sm text-fig-ink-soft mb-1">Email *</label>
+                  <input name="email" type="email" value={form.email} onChange={handleChange} className="fig-input" placeholder="priya@email.com" />
                 </div>
                 <div>
-                  <label className="block font-body text-sm text-fluno-ink/70 mb-1">Phone *</label>
-                  <input name="phone" type="tel" value={form.phone} onChange={handleChange} className="input" placeholder="98765 43210" />
+                  <label className="block font-fig-body text-sm text-fig-ink-soft mb-1">Phone *</label>
+                  <input name="phone" type="tel" value={form.phone} onChange={handleChange} className="fig-input" placeholder="98765 43210" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block font-body text-sm text-fluno-ink/70 mb-1">Address *</label>
-                  <input name="address" value={form.address} onChange={handleChange} className="input" placeholder="House no., Street, Area" />
+                  <label className="block font-fig-body text-sm text-fig-ink-soft mb-1">Address *</label>
+                  <input name="address" value={form.address} onChange={handleChange} className="fig-input" placeholder="House no., Street, Area" />
                 </div>
                 <div>
-                  <label className="block font-body text-sm text-fluno-ink/70 mb-1">City *</label>
-                  <input name="city" value={form.city} onChange={handleChange} className="input" placeholder="Your city" />
+                  <label className="block font-fig-body text-sm text-fig-ink-soft mb-1">City *</label>
+                  <input name="city" value={form.city} onChange={handleChange} className="fig-input" placeholder="Your city" />
                 </div>
                 <div>
-                  <label className="block font-body text-sm text-fluno-ink/70 mb-1">Pincode *</label>
-                  <input name="pincode" value={form.pincode} onChange={handleChange} className="input" placeholder="500090" maxLength={6} />
+                  <label className="block font-fig-body text-sm text-fig-ink-soft mb-1">Pincode *</label>
+                  <input name="pincode" value={form.pincode} onChange={handleChange} className="fig-input" placeholder="500090" maxLength={6} />
                 </div>
                 <div>
-                  <label className="block font-body text-sm text-fluno-ink/70 mb-1">State *</label>
-                  <select name="state" value={form.state} onChange={handleChange} className="input">
+                  <label className="block font-fig-body text-sm text-fig-ink-soft mb-1">State *</label>
+                  <select name="state" value={form.state} onChange={handleChange} className="fig-input">
                     {["Telangana","Andhra Pradesh","Karnataka","Tamil Nadu","Maharashtra","Delhi","Gujarat","Rajasthan","Other"].map((s) => <option key={s}>{s}</option>)}
                   </select>
                 </div>
               </div>
-              <button onClick={() => setStep("review")} disabled={!form.name || !form.email || !form.phone || !form.address || !form.city || !form.pincode} className="btn-primary mt-8 disabled:opacity-50">
+              <button onClick={() => setStep("review")} disabled={!form.name || !form.email || !form.phone || !form.address || !form.city || !form.pincode} className="fig-btn mt-8 disabled:opacity-50">
                 Continue to Review
               </button>
             </div>
@@ -308,49 +311,49 @@ export default function CheckoutPage() {
 
           {step === "review" && (
             <div>
-              <h1 className="font-display text-2xl text-fluno-ink mb-6">Review Order</h1>
-              <div className="card p-5 mb-4">
-                <p className="font-body text-sm text-fluno-ink/50 mb-1">Delivering to</p>
-                <p className="font-body text-sm text-fluno-ink font-medium">{form.name}</p>
-                <p className="font-body text-sm text-fluno-ink/70">{form.address}, {form.city}, {form.state} — {form.pincode}</p>
-                <p className="font-body text-sm text-fluno-ink/70">{form.phone}</p>
-                <button onClick={() => setStep("address")} className="text-xs text-fluno-teal hover:underline mt-2 font-body">Edit</button>
+              <h1 className="font-fig font-bold text-2xl text-fig-navy mb-6">Review Order</h1>
+              <div className="bg-fig-paper border border-fig-navy/10 rounded-2xl p-5 mb-4">
+                <p className="font-fig-body text-sm text-fig-ink-soft mb-1">Delivering to</p>
+                <p className="font-fig-body text-sm text-fig-navy font-medium">{form.name}</p>
+                <p className="font-fig-body text-sm text-fig-ink-soft">{form.address}, {form.city}, {form.state} — {form.pincode}</p>
+                <p className="font-fig-body text-sm text-fig-ink-soft">{form.phone}</p>
+                <button onClick={() => setStep("address")} className="text-xs text-fig-terracotta hover:underline mt-2 font-fig-body">Edit</button>
               </div>
               <div className="space-y-3 mb-6">
                 {items.map((item) => (
-                  <div key={item.id} className="flex items-center gap-4 card p-3">
-                    <div className="w-12 h-12 bg-fluno-stone/20 rounded-sm overflow-hidden flex-shrink-0 relative">
+                  <div key={item.id} className="flex items-center gap-4 bg-fig-paper border border-fig-navy/10 rounded-2xl p-3">
+                    <div className="w-12 h-12 bg-fig-sage/15 rounded-lg overflow-hidden flex-shrink-0 relative">
                       <Image src={item.image} alt={item.name} fill className="object-cover" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-body text-sm text-fluno-ink">{item.name}</p>
-                      <p className="font-mono text-xs text-fluno-ink/40">Qty: {item.quantity}</p>
+                      <p className="font-fig-body text-sm text-fig-navy">{item.name}</p>
+                      <p className="font-fig-body text-xs text-fig-ink-soft/60">Qty: {item.quantity}</p>
                     </div>
-                    <p className="font-display text-sm text-fluno-teal font-medium">₹{(item.price * item.quantity).toLocaleString("en-IN")}</p>
+                    <p className="font-fig font-bold text-sm text-fig-terracotta tabular-nums">₹{(item.price * item.quantity).toLocaleString("en-IN")}</p>
                   </div>
                 ))}
               </div>
-              <button onClick={() => setStep("payment")} className="btn-primary">Continue to Payment</button>
+              <button onClick={() => setStep("payment")} className="fig-btn">Continue to Payment</button>
             </div>
           )}
 
           {step === "payment" && (
             <div>
-              <h1 className="font-display text-2xl text-fluno-ink mb-6">Payment</h1>
+              <h1 className="font-fig font-bold text-2xl text-fig-navy mb-6">Payment</h1>
               {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-sm text-sm text-red-700 font-body">
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 font-fig-body">
                   {error}
                 </div>
               )}
-              <div className="card p-6 space-y-4">
+              <div className="bg-fig-paper border border-fig-navy/10 rounded-2xl p-6 space-y-4">
                 <div className="flex items-center gap-3">
-                  <ShieldCheck size={24} className="text-fluno-teal" />
+                  <ShieldCheck size={24} className="text-fig-sage" />
                   <div>
-                    <p className="font-display text-base text-fluno-ink">Secure Payment via Razorpay</p>
-                    <p className="font-body text-sm text-fluno-ink/60">UPI · Card · Net Banking · Wallets</p>
+                    <p className="font-fig font-bold text-base text-fig-navy">Secure Payment via Razorpay</p>
+                    <p className="font-fig-body text-sm text-fig-ink-soft">UPI · Card · Net Banking · Wallets</p>
                   </div>
                 </div>
-                <button onClick={handlePayment} disabled={loading} className="btn-primary w-full text-base py-4">
+                <button onClick={handlePayment} disabled={loading} className="fig-btn w-full text-base py-4">
                   {loading ? "Opening payment…" : `Pay ₹${finalTotal.toLocaleString("en-IN")} →`}
                 </button>
               </div>
@@ -359,19 +362,19 @@ export default function CheckoutPage() {
         </div>
 
         {/* Summary */}
-        <div className="card p-5 h-fit">
-          <h2 className="font-display text-lg text-fluno-ink mb-4">Order Summary</h2>
+        <div className="bg-fig-paper border border-fig-navy/10 rounded-2xl p-5 h-fit">
+          <h2 className="font-fig font-bold text-lg text-fig-navy mb-4">Order Summary</h2>
 
           {/* Coupon */}
           <div className="mb-4">
             {appliedCoupon ? (
-              <div className="flex items-center justify-between p-2.5 bg-green-50 border border-green-200 rounded-sm">
-                <span className="flex items-center gap-1.5 font-mono text-xs text-green-700">
+              <div className="flex items-center justify-between p-2.5 bg-fig-sage/15 border border-fig-sage/40 rounded-lg">
+                <span className="flex items-center gap-1.5 font-fig-body text-xs text-fig-navy">
                   <Tag size={12} /> {appliedCoupon.code} applied — you save ₹{appliedCoupon.discount.toLocaleString("en-IN")}
                 </span>
                 <button
                   onClick={() => setAppliedCoupon(null)}
-                  className="text-green-700/60 hover:text-red-500 transition-colors"
+                  className="text-fig-navy/50 hover:text-fig-terracotta transition-colors"
                   aria-label="Remove coupon"
                 >
                   <X size={13} />
@@ -385,41 +388,42 @@ export default function CheckoutPage() {
                     onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
                     onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
                     placeholder="Coupon code"
-                    className="input flex-1 font-mono text-xs uppercase"
+                    className="fig-input flex-1 text-xs uppercase"
                   />
                   <button
                     onClick={applyCoupon}
                     disabled={!couponInput.trim() || couponLoading}
-                    className="btn-outline text-xs px-4 disabled:opacity-50 flex-shrink-0"
+                    className="fig-btn-outline text-xs px-4 disabled:opacity-50 flex-shrink-0"
                   >
                     {couponLoading ? <Loader2 size={13} className="animate-spin" /> : "Apply"}
                   </button>
                 </div>
                 {couponError && (
-                  <p className="font-body text-xs text-red-600 mt-1.5">{couponError}</p>
+                  <p className="font-fig-body text-xs text-red-600 mt-1.5">{couponError}</p>
                 )}
               </>
             )}
           </div>
 
-          <div className="space-y-2 text-sm font-body text-fluno-ink/70 mb-4">
-            <div className="flex justify-between"><span>Subtotal</span><span>₹{total.toLocaleString("en-IN")}</span></div>
-            <div className="flex justify-between"><span>Shipping</span><span>{shipping === 0 ? <span className="text-fluno-teal">Free</span> : `₹${shipping}`}</span></div>
+          <div className="space-y-2 text-sm font-fig-body text-fig-ink-soft mb-4">
+            <div className="flex justify-between"><span>Subtotal</span><span className="tabular-nums">₹{total.toLocaleString("en-IN")}</span></div>
+            <div className="flex justify-between"><span>Shipping</span><span>{shipping === 0 ? <span className="text-fig-sage">Free</span> : `₹${shipping}`}</span></div>
             {discount > 0 && (
-              <div className="flex justify-between text-green-600"><span>Discount ({appliedCoupon?.code})</span><span>−₹{discount.toLocaleString("en-IN")}</span></div>
+              <div className="flex justify-between text-fig-sage"><span>Discount ({appliedCoupon?.code})</span><span>−₹{discount.toLocaleString("en-IN")}</span></div>
             )}
           </div>
-          <div className="divider mb-4" />
-          <div className="flex justify-between font-display text-lg text-fluno-ink">
+          <div className="border-t border-fig-navy/10 mb-4" />
+          <div className="flex justify-between font-fig font-bold text-lg text-fig-navy">
             <span>Total</span>
-            <span className="text-fluno-teal">₹{finalTotal.toLocaleString("en-IN")}</span>
+            <span className="text-fig-terracotta tabular-nums">₹{finalTotal.toLocaleString("en-IN")}</span>
           </div>
-          <div className="mt-4 flex items-center gap-2 text-xs font-mono text-fluno-ink/40">
-            <ShieldCheck size={13} className="text-fluno-teal" />
+          <div className="mt-4 flex items-center gap-2 text-xs font-fig-body text-fig-ink-soft/70">
+            <ShieldCheck size={13} className="text-fig-sage" />
             SSL encrypted · 100% secure checkout
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

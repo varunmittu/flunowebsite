@@ -39,30 +39,30 @@ export default function CookieConsent() {
             style={{ background: "rgba(12,5,24,0.96)", backdropFilter: "blur(20px)" }}
           >
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-fluno-purple/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Cookie size={16} className="text-fluno-purple" />
+              <div className="w-9 h-9 rounded-xl bg-fig-terracotta/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Cookie size={16} className="text-fig-terracotta" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-body text-sm text-white font-semibold leading-snug">
+                <p className="font-fig-body text-sm text-white font-semibold leading-snug">
                   We use cookies
                 </p>
-                <p className="font-body text-[11px] text-white/40 mt-1 leading-relaxed">
+                <p className="font-fig-body text-[11px] text-white/40 mt-1 leading-relaxed">
                   We use cookies and similar technologies to run the site, remember your cart,
                   and personalise content and advertising. See our{" "}
-                  <Link href="/privacy-policy" className="text-fluno-purple/70 hover:text-fluno-purple underline">
+                  <Link href="/privacy-policy" className="text-fig-terracotta/70 hover:text-fig-terracotta underline">
                     Privacy Policy
                   </Link>.
                 </p>
                 <div className="flex gap-2 mt-3">
                   <button
                     onClick={() => decide("accepted")}
-                    className="flex-1 bg-fluno-purple text-white font-body text-xs font-semibold py-2 rounded-xl hover:bg-fluno-purple/90 transition-colors"
+                    className="flex-1 bg-fig-terracotta text-white font-fig-body text-xs font-semibold py-2 rounded-xl hover:bg-fig-terracotta/90 transition-colors"
                   >
                     Accept All
                   </button>
                   <button
                     onClick={() => decide("declined")}
-                    className="px-4 py-2 rounded-xl text-white/35 hover:text-white/70 hover:bg-white/[0.06] transition-all font-body text-xs"
+                    className="px-4 py-2 rounded-xl text-white/35 hover:text-white/70 hover:bg-white/[0.06] transition-all font-fig-body text-xs"
                   >
                     Essential Only
                   </button>

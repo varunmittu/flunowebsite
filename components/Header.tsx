@@ -47,7 +47,7 @@ export default function Header() {
           >
             <div className="flex items-center justify-center gap-3 py-2 px-4 relative">
               <p className="font-fig-body text-[11.5px] text-fig-cream/90 text-center">
-                Free shipping on orders above ₹599 · Dermatologist-tested formulas
+                Free shipping on orders above ₹599 · Cruelty-free personal care
               </p>
               <button
                 onClick={() => setAnnouncementHidden(true)}

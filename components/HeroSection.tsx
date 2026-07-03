@@ -202,14 +202,14 @@ export default function HeroSection() {
 
               {/* Float badge 1 — top right */}
               <div className="hero-float-badge float-b1 glass absolute -top-5 -right-12 px-4 py-3 z-20">
-                <p className="font-mono text-[10px] text-fluno-purple">EU Standard ✓</p>
+                <p className="font-mono text-[10px] text-fluno-purple">Broad Spectrum</p>
                 <p className="font-display text-sm text-white mt-0.5">SPF 50+</p>
               </div>
 
               {/* Float badge 2 — bottom left */}
               <div className="hero-float-badge float-b2 glass absolute -bottom-4 -left-12 px-4 py-3 z-20">
-                <p className="font-mono text-[10px] text-fluno-purple">Dermatologist</p>
-                <p className="font-display text-sm text-white mt-0.5">Tested ✓</p>
+                <p className="font-mono text-[10px] text-fluno-purple">Cruelty-Free</p>
+                <p className="font-display text-sm text-white mt-0.5">Always ✓</p>
               </div>
 
             </div>

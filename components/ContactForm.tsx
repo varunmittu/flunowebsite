@@ -54,14 +54,14 @@ export default function ContactForm() {
           <CheckCircle2 size={28} className="text-green-600" />
         </div>
         <div>
-          <p className="font-display text-lg font-semibold text-fluno-ink mb-1">Message sent!</p>
-          <p className="font-body text-sm text-fluno-ink/55">
+          <p className="font-fig font-bold text-lg font-semibold text-fig-navy mb-1">Message sent!</p>
+          <p className="font-fig-body text-sm text-fig-navy/55">
             We&apos;ll get back to you within 24–48 hours.
           </p>
         </div>
         <button
           onClick={() => setStatus("idle")}
-          className="font-mono text-xs text-fluno-teal hover:underline mt-2"
+          className="font-fig-body text-xs text-fig-terracotta hover:underline mt-2"
         >
           Send another message
         </button>
@@ -79,22 +79,22 @@ export default function ContactForm() {
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="block font-body text-sm text-fluno-ink/70 mb-1">Name *</label>
+          <label className="block font-fig-body text-sm text-fig-navy/70 mb-1">Name *</label>
           <input
             value={form.name}
             onChange={(e) => set("name", e.target.value)}
-            className="input"
+            className="fig-input"
             placeholder="Your name"
             required
           />
         </div>
         <div>
-          <label className="block font-body text-sm text-fluno-ink/70 mb-1">Email *</label>
+          <label className="block font-fig-body text-sm text-fig-navy/70 mb-1">Email *</label>
           <input
             type="email"
             value={form.email}
             onChange={(e) => set("email", e.target.value)}
-            className="input"
+            className="fig-input"
             placeholder="your@email.com"
             required
           />
@@ -102,23 +102,23 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block font-body text-sm text-fluno-ink/70 mb-1">Subject</label>
+        <label className="block font-fig-body text-sm text-fig-navy/70 mb-1">Subject</label>
         <select
           value={form.subject}
           onChange={(e) => set("subject", e.target.value)}
-          className="input"
+          className="fig-input"
         >
           {SUBJECTS.map((s) => <option key={s}>{s}</option>)}
         </select>
       </div>
 
       <div>
-        <label className="block font-body text-sm text-fluno-ink/70 mb-1">Message *</label>
+        <label className="block font-fig-body text-sm text-fig-navy/70 mb-1">Message *</label>
         <textarea
           rows={5}
           value={form.message}
           onChange={(e) => set("message", e.target.value)}
-          className="input resize-none"
+          className="fig-input resize-none"
           placeholder="How can we help you?"
           required
         />
@@ -127,7 +127,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="btn-primary w-full justify-center disabled:opacity-60"
+        className="fig-btn w-full justify-center disabled:opacity-60"
       >
         {status === "loading"
           ? <><Loader2 size={15} className="animate-spin" /> Sending…</>

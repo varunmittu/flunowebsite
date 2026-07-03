@@ -60,33 +60,34 @@ export default function WishlistPage() {
   }, []);
 
   return (
+    <div className="min-h-screen bg-fig-cream">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 min-h-[60vh]">
-      <p className="font-mono text-xs text-fluno-teal uppercase tracking-widest mb-2 flex items-center gap-1.5">
+      <p className="fig-eyebrow text-fig-terracotta mb-2 flex items-center gap-1.5">
         <Heart size={12} /> Saved for later
       </p>
-      <h1 className="section-title mb-3">Your Wishlist</h1>
-      <p className="font-body text-fluno-ink/55 mb-10">
+      <h1 className="font-fig font-bold text-3xl md:text-4xl text-fig-navy mb-3">Your Wishlist</h1>
+      <p className="font-fig-body text-fig-ink-soft mb-10">
         Products you&apos;ve saved. They&apos;re stored on this device — add them to your cart whenever you&apos;re ready.
       </p>
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 size={28} className="animate-spin text-fluno-purple" />
+          <Loader2 size={28} className="animate-spin text-fig-terracotta" />
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-16">
-          <div className="w-16 h-16 rounded-2xl bg-fluno-purple/10 flex items-center justify-center mx-auto mb-5">
-            <Heart size={26} className="text-fluno-purple/50" />
+          <div className="w-16 h-16 rounded-2xl bg-fig-terracotta/10 flex items-center justify-center mx-auto mb-5">
+            <Heart size={26} className="text-fig-terracotta/50" />
           </div>
-          <h2 className="font-display text-lg text-fluno-ink font-semibold mb-2">
+          <h2 className="font-fig font-bold text-lg text-fig-navy mb-2">
             {slugs.length ? "Saved products unavailable" : "Nothing saved yet"}
           </h2>
-          <p className="font-body text-sm text-fluno-ink/50 mb-7 max-w-sm mx-auto">
+          <p className="font-fig-body text-sm text-fig-ink-soft mb-7 max-w-sm mx-auto">
             {slugs.length
               ? "The products you saved are no longer available."
               : "Tap the ♡ Wishlist button on any product to save it here."}
           </p>
-          <Link href="/shop" className="btn-primary">Browse Products</Link>
+          <Link href="/shop" className="fig-btn">Browse Products</Link>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -95,6 +96,7 @@ export default function WishlistPage() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }

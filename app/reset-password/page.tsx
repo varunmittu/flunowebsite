@@ -49,10 +49,10 @@ function ResetPasswordContent() {
   }
 
   return (
-    <div className="min-h-screen bg-fluno-dark flex items-center justify-center px-4 py-16 relative overflow-hidden">
+    <div className="min-h-screen bg-fig-navy flex items-center justify-center px-4 py-16 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[15%] left-[20%] w-[350px] h-[350px] rounded-full bg-fluno-purple/10 blur-[110px]" />
-        <div className="absolute bottom-[10%] right-[15%] w-[280px] h-[280px] rounded-full bg-fluno-purple/8 blur-[90px]" />
+        <div className="absolute top-[15%] left-[20%] w-[350px] h-[350px] rounded-full bg-fig-terracotta/10 blur-[110px]" />
+        <div className="absolute bottom-[10%] right-[15%] w-[280px] h-[280px] rounded-full bg-fig-terracotta/8 blur-[90px]" />
       </div>
 
       <div className="relative w-full max-w-md">
@@ -62,29 +62,29 @@ function ResetPasswordContent() {
               <div className="w-14 h-14 rounded-2xl bg-green-500/15 border border-green-500/25 flex items-center justify-center mx-auto mb-5">
                 <CheckCircle2 size={24} className="text-green-400" />
               </div>
-              <h1 className="font-display text-xl text-white font-semibold mb-2">Password updated!</h1>
-              <p className="font-body text-sm text-white/45 mb-6">Redirecting you to login…</p>
-              <Link href="/login" className="font-mono text-xs text-fluno-purple hover:underline">Go to login now</Link>
+              <h1 className="font-fig font-bold text-xl text-white font-semibold mb-2">Password updated!</h1>
+              <p className="font-fig-body text-sm text-white/45 mb-6">Redirecting you to login…</p>
+              <Link href="/login" className="font-fig-body text-xs text-fig-terracotta hover:underline">Go to login now</Link>
             </div>
           ) : linkInvalid ? (
             <div className="text-center py-4">
-              <h1 className="font-display text-xl text-white font-semibold mb-2">Invalid link</h1>
-              <p className="font-body text-sm text-white/45 mb-6">
+              <h1 className="font-fig font-bold text-xl text-white font-semibold mb-2">Invalid link</h1>
+              <p className="font-fig-body text-sm text-white/45 mb-6">
                 This password-reset link is incomplete. Please use the link from your email, or request a new one.
               </p>
-              <Link href="/forgot-password" className="font-mono text-xs text-fluno-purple hover:underline">Request a new link</Link>
+              <Link href="/forgot-password" className="font-fig-body text-xs text-fig-terracotta hover:underline">Request a new link</Link>
             </div>
           ) : (
             <>
-              <div className="w-12 h-12 rounded-2xl bg-fluno-purple/15 border border-fluno-purple/25 flex items-center justify-center mb-5">
-                <LockKeyhole size={20} className="text-fluno-purple" />
+              <div className="w-12 h-12 rounded-2xl bg-fig-terracotta/15 border border-fig-terracotta/25 flex items-center justify-center mb-5">
+                <LockKeyhole size={20} className="text-fig-terracotta" />
               </div>
-              <h1 className="font-display text-xl text-white font-semibold mb-1.5">Choose a new password</h1>
-              <p className="font-body text-sm text-white/40 mb-7">For {email}</p>
+              <h1 className="font-fig font-bold text-xl text-white font-semibold mb-1.5">Choose a new password</h1>
+              <p className="font-fig-body text-sm text-white/40 mb-7">For {email}</p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {error && (
-                  <p className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 font-body text-sm text-red-400">
+                  <p className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 font-fig-body text-sm text-red-400">
                     {error}
                   </p>
                 )}
@@ -96,7 +96,7 @@ function ResetPasswordContent() {
                     required
                     minLength={6}
                     placeholder="New password (min 6 characters)"
-                    className="input-dark pr-10"
+                    className="fig-input-dark pr-10"
                   />
                   <button
                     type="button"
@@ -113,12 +113,12 @@ function ResetPasswordContent() {
                   required
                   minLength={6}
                   placeholder="Confirm new password"
-                  className="input-dark"
+                  className="fig-input-dark"
                 />
                 <button
                   type="submit"
                   disabled={loading || !password || !confirm}
-                  className="btn-primary w-full justify-center disabled:opacity-50"
+                  className="fig-btn w-full justify-center disabled:opacity-50"
                 >
                   {loading ? <Loader2 size={15} className="animate-spin" /> : "Update Password"}
                 </button>
@@ -133,7 +133,7 @@ function ResetPasswordContent() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-fluno-dark" />}>
+    <Suspense fallback={<div className="min-h-screen bg-fig-navy" />}>
       <ResetPasswordContent />
     </Suspense>
   );

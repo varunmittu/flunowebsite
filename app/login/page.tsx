@@ -93,7 +93,7 @@ export default function LoginPage() {
         toast.success("Account created! Please log in.");
         setTab("login");
       } else {
-        toast.success("Account created!", { description: "Welcome to Fluno 💜", icon: "🎉" });
+        toast.success("Account created!", { description: "Welcome to Fluno 🧡", icon: "🎉" });
         router.push("/account");
       }
     } catch {
@@ -102,11 +102,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-fluno-dark relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-fig-navy relative overflow-hidden">
       {/* Orbs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="animate-orb1 absolute top-[10%] left-[10%]  w-[400px] h-[400px] rounded-full bg-fluno-purple/15 blur-[120px]" />
-        <div className="animate-orb2 absolute bottom-[10%] right-[10%] w-[500px] h-[500px] rounded-full bg-fluno-purple-deep/10 blur-[140px]" />
+        <div className="animate-orb1 absolute top-[10%] left-[10%]  w-[400px] h-[400px] rounded-full bg-fig-terracotta/15 blur-[120px]" />
+        <div className="animate-orb2 absolute bottom-[10%] right-[10%] w-[500px] h-[500px] rounded-full bg-fig-terracotta-deep/10 blur-[140px]" />
       </div>
 
       {/* Grid */}
@@ -114,7 +114,7 @@ export default function LoginPage() {
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(189,126,250,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(189,126,250,.5) 1px, transparent 1px)",
+            "linear-gradient(rgba(217,129,79,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(217,129,79,.5) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -128,11 +128,11 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block group">
-            <span className="font-brand font-bold text-5xl text-white text-glow group-hover:text-fluno-purple transition-colors duration-200">
+            <span className="font-fig font-bold text-5xl text-white text-glow group-hover:text-fig-terracotta transition-colors duration-200">
               fluno
             </span>
           </Link>
-          <p className="font-mono text-xs text-fluno-purple/70 mt-1 tracking-widest uppercase">
+          <p className="font-fig-body text-xs text-fig-terracotta/70 mt-1 tracking-widest uppercase">
             care in every drop
           </p>
         </div>
@@ -144,9 +144,9 @@ export default function LoginPage() {
               <button
                 key={t}
                 onClick={() => switchTab(t)}
-                className={`flex-1 py-2.5 rounded-full font-body text-sm font-semibold transition-all duration-200 ${
+                className={`flex-1 py-2.5 rounded-full font-fig-body text-sm font-semibold transition-all duration-200 ${
                   tab === t
-                    ? "bg-fluno-purple text-white shadow-lg shadow-fluno-purple/30"
+                    ? "bg-fig-terracotta text-white shadow-lg shadow-fig-terracotta/30"
                     : "text-white/40 hover:text-white/70"
                 }`}
               >
@@ -158,7 +158,7 @@ export default function LoginPage() {
           {/* Google */}
           <button
             onClick={() => signIn("google", { callbackUrl: "/account" })}
-            className="w-full flex items-center justify-center gap-3 bg-white text-fluno-ink font-body font-semibold text-sm py-3.5 rounded-full hover:bg-fluno-lavender transition-colors duration-200 shadow-lg mb-6"
+            className="w-full flex items-center justify-center gap-3 bg-white text-fig-navy font-fig-body font-semibold text-sm py-3.5 rounded-full hover:bg-fig-sage transition-colors duration-200 shadow-lg mb-6"
           >
             <svg viewBox="0 0 24 24" className="w-4 h-4 flex-shrink-0">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -174,7 +174,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-white/10" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-transparent px-3 font-mono text-xs text-white/25">or</span>
+              <span className="bg-transparent px-3 font-fig-body text-xs text-white/25">or</span>
             </div>
           </div>
 
@@ -191,7 +191,7 @@ export default function LoginPage() {
                 className="space-y-4"
               >
                 {loginForm.formState.errors.root && (
-                  <p className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 font-body text-sm text-red-400">
+                  <p className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 font-fig-body text-sm text-red-400">
                     {loginForm.formState.errors.root.message}
                   </p>
                 )}
@@ -200,11 +200,11 @@ export default function LoginPage() {
                   <input
                     {...loginForm.register("email")}
                     type="email"
-                    className="input-dark"
+                    className="fig-input-dark"
                     placeholder="Email address"
                   />
                   {loginForm.formState.errors.email && (
-                    <p className="mt-1 font-mono text-xs text-red-400">{loginForm.formState.errors.email.message}</p>
+                    <p className="mt-1 font-fig-body text-xs text-red-400">{loginForm.formState.errors.email.message}</p>
                   )}
                 </div>
 
@@ -213,7 +213,7 @@ export default function LoginPage() {
                     <input
                       {...loginForm.register("password")}
                       type={showPass ? "text" : "password"}
-                      className="input-dark pr-10"
+                      className="fig-input-dark pr-10"
                       placeholder="Password"
                     />
                     <button
@@ -225,18 +225,18 @@ export default function LoginPage() {
                     </button>
                   </div>
                   {loginForm.formState.errors.password && (
-                    <p className="mt-1 font-mono text-xs text-red-400">{loginForm.formState.errors.password.message}</p>
+                    <p className="mt-1 font-fig-body text-xs text-red-400">{loginForm.formState.errors.password.message}</p>
                   )}
                 </div>
 
                 <div className="flex justify-end">
-                  <Link href="/forgot-password" className="font-mono text-xs text-fluno-purple hover:underline">Forgot password?</Link>
+                  <Link href="/forgot-password" className="font-fig-body text-xs text-fig-terracotta hover:underline">Forgot password?</Link>
                 </div>
 
                 <button
                   type="submit"
                   disabled={loginForm.formState.isSubmitting}
-                  className="btn-primary w-full justify-center"
+                  className="fig-btn w-full justify-center"
                 >
                   {loginForm.formState.isSubmitting
                     ? <Loader2 size={15} className="animate-spin" />
@@ -244,11 +244,11 @@ export default function LoginPage() {
                   }
                 </button>
 
-                <p className="font-mono text-[10px] text-white/25 text-center leading-relaxed">
+                <p className="font-fig-body text-[10px] text-white/25 text-center leading-relaxed">
                   By logging in, you&apos;re agreeing to our{" "}
-                  <Link href="/privacy-policy" className="text-fluno-purple/60 hover:text-fluno-purple transition-colors">Privacy Policy</Link>
+                  <Link href="/privacy-policy" className="text-fig-terracotta/60 hover:text-fig-terracotta transition-colors">Privacy Policy</Link>
                   {" "}&amp;{" "}
-                  <Link href="/terms" className="text-fluno-purple/60 hover:text-fluno-purple transition-colors">Terms of Service</Link>
+                  <Link href="/terms" className="text-fig-terracotta/60 hover:text-fig-terracotta transition-colors">Terms of Service</Link>
                 </p>
               </motion.form>
             ) : (
@@ -262,7 +262,7 @@ export default function LoginPage() {
                 className="space-y-4"
               >
                 {signupForm.formState.errors.root && (
-                  <p className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 font-body text-sm text-red-400">
+                  <p className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 font-fig-body text-sm text-red-400">
                     {signupForm.formState.errors.root.message}
                   </p>
                 )}
@@ -271,11 +271,11 @@ export default function LoginPage() {
                   <input
                     {...signupForm.register("name")}
                     type="text"
-                    className="input-dark"
+                    className="fig-input-dark"
                     placeholder="Full Name"
                   />
                   {signupForm.formState.errors.name && (
-                    <p className="mt-1 font-mono text-xs text-red-400">{signupForm.formState.errors.name.message}</p>
+                    <p className="mt-1 font-fig-body text-xs text-red-400">{signupForm.formState.errors.name.message}</p>
                   )}
                 </div>
 
@@ -283,21 +283,21 @@ export default function LoginPage() {
                   <input
                     {...signupForm.register("email")}
                     type="email"
-                    className="input-dark"
+                    className="fig-input-dark"
                     placeholder="Email address"
                   />
                   {signupForm.formState.errors.email && (
-                    <p className="mt-1 font-mono text-xs text-red-400">{signupForm.formState.errors.email.message}</p>
+                    <p className="mt-1 font-fig-body text-xs text-red-400">{signupForm.formState.errors.email.message}</p>
                   )}
                 </div>
 
                 <div>
                   <div className="flex gap-2">
-                    <span className="input-dark w-14 text-center text-white/40 flex-shrink-0 flex items-center justify-center cursor-default">+91</span>
+                    <span className="fig-input-dark w-14 text-center text-white/40 flex-shrink-0 flex items-center justify-center cursor-default">+91</span>
                     <input
                       {...signupForm.register("phone")}
                       type="tel"
-                      className="input-dark flex-1"
+                      className="fig-input-dark flex-1"
                       placeholder="Mobile Number"
                       maxLength={10}
                       onChange={(e) => {
@@ -307,7 +307,7 @@ export default function LoginPage() {
                     />
                   </div>
                   {signupForm.formState.errors.phone && (
-                    <p className="mt-1 font-mono text-xs text-red-400">{signupForm.formState.errors.phone.message}</p>
+                    <p className="mt-1 font-fig-body text-xs text-red-400">{signupForm.formState.errors.phone.message}</p>
                   )}
                 </div>
 
@@ -316,7 +316,7 @@ export default function LoginPage() {
                     <input
                       {...signupForm.register("password")}
                       type={showPass ? "text" : "password"}
-                      className="input-dark pr-10"
+                      className="fig-input-dark pr-10"
                       placeholder="Password (min 6 characters)"
                     />
                     <button
@@ -328,7 +328,7 @@ export default function LoginPage() {
                     </button>
                   </div>
                   {signupForm.formState.errors.password && (
-                    <p className="mt-1 font-mono text-xs text-red-400">{signupForm.formState.errors.password.message}</p>
+                    <p className="mt-1 font-fig-body text-xs text-red-400">{signupForm.formState.errors.password.message}</p>
                   )}
                 </div>
 
@@ -338,17 +338,17 @@ export default function LoginPage() {
                     <input
                       type="checkbox"
                       {...signupForm.register("acceptTerms")}
-                      className="mt-0.5 w-4 h-4 accent-fluno-purple cursor-pointer flex-shrink-0"
+                      className="mt-0.5 w-4 h-4 accent-fig-terracotta cursor-pointer flex-shrink-0"
                     />
-                    <span className="font-mono text-[11px] text-white/45 leading-relaxed">
+                    <span className="font-fig-body text-[11px] text-white/45 leading-relaxed">
                       I agree to the{" "}
-                      <Link href="/terms" className="text-fluno-purple hover:underline">Terms & Conditions</Link>
+                      <Link href="/terms" className="text-fig-terracotta hover:underline">Terms & Conditions</Link>
                       {" "}and{" "}
-                      <Link href="/privacy-policy" className="text-fluno-purple hover:underline">Privacy Policy</Link>
+                      <Link href="/privacy-policy" className="text-fig-terracotta hover:underline">Privacy Policy</Link>
                     </span>
                   </label>
                   {signupForm.formState.errors.acceptTerms && (
-                    <p className="mt-1 font-mono text-xs text-red-400">{signupForm.formState.errors.acceptTerms.message}</p>
+                    <p className="mt-1 font-fig-body text-xs text-red-400">{signupForm.formState.errors.acceptTerms.message}</p>
                   )}
                 </div>
 
@@ -358,21 +358,21 @@ export default function LoginPage() {
                     <input
                       type="checkbox"
                       {...signupForm.register("acceptCookies")}
-                      className="mt-0.5 w-4 h-4 accent-fluno-purple cursor-pointer flex-shrink-0"
+                      className="mt-0.5 w-4 h-4 accent-fig-terracotta cursor-pointer flex-shrink-0"
                     />
-                    <span className="font-mono text-[11px] text-white/45 leading-relaxed">
+                    <span className="font-fig-body text-[11px] text-white/45 leading-relaxed">
                       I accept cookies for analytics &amp; personalisation
                     </span>
                   </label>
                   {signupForm.formState.errors.acceptCookies && (
-                    <p className="mt-1 font-mono text-xs text-red-400">{signupForm.formState.errors.acceptCookies.message}</p>
+                    <p className="mt-1 font-fig-body text-xs text-red-400">{signupForm.formState.errors.acceptCookies.message}</p>
                   )}
                 </div>
 
                 <button
                   type="submit"
                   disabled={signupForm.formState.isSubmitting}
-                  className="btn-primary w-full justify-center"
+                  className="fig-btn w-full justify-center"
                 >
                   {signupForm.formState.isSubmitting
                     ? <Loader2 size={15} className="animate-spin" />
@@ -384,14 +384,14 @@ export default function LoginPage() {
           </AnimatePresence>
         </div>
 
-        <div className="flex items-center justify-center gap-2 mt-6 font-mono text-xs text-white/25">
-          <ShieldCheck size={13} className="text-fluno-purple" />
+        <div className="flex items-center justify-center gap-2 mt-6 font-fig-body text-xs text-white/25">
+          <ShieldCheck size={13} className="text-fig-terracotta" />
           Protected under India&apos;s DPDP Act 2023
         </div>
 
-        <p className="text-center font-mono text-[10px] text-white/12 mt-3 tracking-wider">
+        <p className="text-center font-fig-body text-[10px] text-white/12 mt-3 tracking-wider">
           Powered by{" "}
-          <span className="text-fluno-purple/40 font-brand font-bold">fluno</span>
+          <span className="text-fig-terracotta/40 font-fig font-bold">fluno</span>
           {" "}· myfluno.com
         </p>
       </motion.div>

@@ -67,9 +67,9 @@ export default function TestimonialCarousel() {
         <div className="flex touch-pan-y">
           {testimonials.map((t) => (
             <div key={t.name} className="flex-none w-full sm:w-1/2 lg:w-1/3 px-3">
-              <div className="card p-7 h-full flex flex-col relative overflow-hidden group">
+              <div className="bg-fig-paper border border-fig-navy/10 rounded-2xl p-7 h-full flex flex-col relative overflow-hidden group">
                 {/* Hover gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-fluno-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-br from-fig-terracotta/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 {/* Stars */}
                 <div className="flex gap-1 mb-5">
@@ -77,22 +77,22 @@ export default function TestimonialCarousel() {
                     <Star
                       key={s}
                       size={14}
-                      className={s <= t.rating ? "fill-fluno-purple text-fluno-purple" : "fill-fluno-lavender text-fluno-lavender"}
+                      className={s <= t.rating ? "fill-fig-terracotta text-fig-terracotta" : "fill-fig-sage text-fig-sage"}
                     />
                   ))}
                 </div>
 
-                <p className="font-body text-fluno-ink/70 leading-relaxed italic flex-1 relative z-10 mb-6">
+                <p className="font-fig-body text-fig-navy/70 leading-relaxed italic flex-1 relative z-10 mb-6">
                   &ldquo;{t.text}&rdquo;
                 </p>
 
                 <div className="flex items-center gap-3 relative z-10">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-fluno-purple to-fluno-purple-dark flex items-center justify-center flex-shrink-0">
-                    <span className="font-brand font-bold text-xs text-white">{t.initials}</span>
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-fig-terracotta to-fig-terracotta-deep flex items-center justify-center flex-shrink-0">
+                    <span className="font-fig font-bold text-xs text-white">{t.initials}</span>
                   </div>
                   <div>
-                    <p className="font-brand font-semibold text-fluno-ink text-sm">{t.name}</p>
-                    <p className="font-mono text-[10px] text-fluno-muted/60">{t.location} · {t.product}</p>
+                    <p className="font-fig font-bold font-semibold text-fig-navy text-sm">{t.name}</p>
+                    <p className="font-fig-body text-[10px] text-fig-ink-soft/60">{t.location} · {t.product}</p>
                   </div>
                 </div>
               </div>
@@ -105,7 +105,7 @@ export default function TestimonialCarousel() {
       <div className="flex items-center justify-center gap-4 mt-8">
         <button
           onClick={scrollPrev}
-          className="w-9 h-9 rounded-full border border-fluno-lavender flex items-center justify-center text-fluno-ink hover:border-fluno-purple hover:text-fluno-purple transition-all"
+          className="w-9 h-9 rounded-full border border-fig-sage flex items-center justify-center text-fig-navy hover:border-fig-terracotta hover:text-fig-terracotta transition-all"
         >
           <ChevronLeft size={16} />
         </button>
@@ -117,8 +117,8 @@ export default function TestimonialCarousel() {
               onClick={() => emblaApi?.scrollTo(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
                 i === selectedIndex
-                  ? "w-6 bg-fluno-purple"
-                  : "w-2 bg-fluno-lavender hover:bg-fluno-purple/40"
+                  ? "w-6 bg-fig-terracotta"
+                  : "w-2 bg-fig-sage hover:bg-fig-terracotta/40"
               }`}
               aria-label={`Go to testimonial ${i + 1}`}
             />
@@ -127,7 +127,7 @@ export default function TestimonialCarousel() {
 
         <button
           onClick={scrollNext}
-          className="w-9 h-9 rounded-full border border-fluno-lavender flex items-center justify-center text-fluno-ink hover:border-fluno-purple hover:text-fluno-purple transition-all"
+          className="w-9 h-9 rounded-full border border-fig-sage flex items-center justify-center text-fig-navy hover:border-fig-terracotta hover:text-fig-terracotta transition-all"
         >
           <ChevronRight size={16} />
         </button>

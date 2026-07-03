@@ -36,7 +36,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80",
     ],
     description:
-      "Our signature hand wash combines gentle surfactants with skin-conditioning agents to clean without stripping. Dermatologist-tested, pH-balanced, and free from harsh sulphates.",
+      "Our signature hand wash combines gentle surfactants with skin-conditioning agents to clean without stripping. pH-balanced and free from harsh sulphates.",
     ingredients: [
       "Aqua",
       "Cocamidopropyl Betaine",
@@ -58,9 +58,9 @@ export const products: Product[] = [
       "pH-balanced formula",
       "Sulphate-free surfactants",
       "Moisturises while cleansing",
-      "Dermatologist tested",
+      "Kind to everyday skin",
     ],
-    badges: ["Sulphate-Free", "pH Balanced", "Dermatologist Tested"],
+    badges: ["Sulphate-Free", "pH Balanced", "Cruelty-Free"],
     inStock: true,
     featured: true,
   },
@@ -68,7 +68,7 @@ export const products: Product[] = [
     id: "fluno-spf50-sunscreen",
     slug: "fluno-spf50-sunscreen",
     name: "Fluno Sunscreen SPF 50+ PA++++",
-    tagline: "Broad-spectrum UVA/UVB protection, EU-standard ingredients",
+    tagline: "Broad-spectrum UVA/UVB protection, lightweight finish",
     price: 499,
     size: "50g",
     category: "Sun Care",
@@ -79,7 +79,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&q=80",
     ],
     description:
-      "Our flagship SPF 50+ PA++++ sunscreen is formulated to EU/UK ingredient-safety standards — the gold standard in UV filter safety. Lightweight, no white cast, water-resistant.",
+      "Our flagship SPF 50+ PA++++ sunscreen uses broad-spectrum UV filters for dependable everyday protection. Lightweight, no white cast, water-resistant.",
     ingredients: [
       "Aqua",
       "Ethylhexyl Methoxycinnamate",
@@ -100,12 +100,12 @@ export const products: Product[] = [
     ],
     benefits: [
       "SPF 50+ PA++++",
-      "EU/UK-standard UV filters",
+      "Broad-spectrum UV filters",
       "No white cast",
       "Water resistant",
       "Niacinamide brightening",
     ],
-    badges: ["SPF 50+", "PA++++", "EU-Standard", "No White Cast"],
+    badges: ["SPF 50+", "PA++++", "Broad Spectrum", "No White Cast"],
     inStock: true,
     featured: true,
     isNew: true,

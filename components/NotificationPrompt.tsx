@@ -81,34 +81,34 @@ export default function NotificationPrompt() {
             className="rounded-2xl px-5 py-4 shadow-2xl border border-white/[0.08] flex items-start gap-3"
             style={{ background: "rgba(12,5,24,0.95)", backdropFilter: "blur(20px)" }}
           >
-            <div className="w-9 h-9 rounded-xl bg-fluno-purple/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Bell size={16} className="text-fluno-purple" />
+            <div className="w-9 h-9 rounded-xl bg-fig-terracotta/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Bell size={16} className="text-fig-terracotta" />
             </div>
 
             <div className="flex-1 min-w-0">
               {status === "done" ? (
-                <p className="font-body text-sm text-white font-semibold">
+                <p className="font-fig-body text-sm text-white font-semibold">
                   You&apos;re in! 🎉 We&apos;ll notify you about new drops.
                 </p>
               ) : (
                 <>
-                  <p className="font-body text-sm text-white font-semibold leading-snug">
+                  <p className="font-fig-body text-sm text-white font-semibold leading-snug">
                     Stay updated with Fluno
                   </p>
-                  <p className="font-mono text-[11px] text-white/40 mt-0.5 leading-relaxed">
+                  <p className="font-fig-body text-[11px] text-white/40 mt-0.5 leading-relaxed">
                     Get notified about new products, blog posts &amp; exclusive offers.
                   </p>
                   <div className="flex gap-2 mt-3">
                     <button
                       onClick={handleAllow}
                       disabled={status === "loading"}
-                      className="flex-1 bg-fluno-purple text-white font-body text-xs font-semibold py-2 rounded-xl hover:bg-fluno-purple/90 transition-colors disabled:opacity-60"
+                      className="flex-1 bg-fig-terracotta text-white font-fig-body text-xs font-semibold py-2 rounded-xl hover:bg-fig-terracotta/90 transition-colors disabled:opacity-60"
                     >
                       {status === "loading" ? "Enabling…" : "Allow Notifications"}
                     </button>
                     <button
                       onClick={dismiss}
-                      className="px-3 py-2 rounded-xl text-white/30 hover:text-white/60 hover:bg-white/[0.06] transition-all font-body text-xs"
+                      className="px-3 py-2 rounded-xl text-white/30 hover:text-white/60 hover:bg-white/[0.06] transition-all font-fig-body text-xs"
                     >
                       Not now
                     </button>

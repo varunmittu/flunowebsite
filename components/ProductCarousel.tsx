@@ -26,14 +26,14 @@ export default function ProductCarousel({ products }: { products: Product[] }) {
       <div className="flex gap-2 absolute -top-14 right-0 z-10">
         <button
           onClick={scrollPrev}
-          className="w-10 h-10 rounded-full border-2 border-fluno-lavender flex items-center justify-center text-fluno-ink hover:border-fluno-purple hover:text-fluno-purple transition-all"
+          className="w-10 h-10 rounded-full border-2 border-fig-sage flex items-center justify-center text-fig-navy hover:border-fig-terracotta hover:text-fig-terracotta transition-all"
           aria-label="Previous"
         >
           <ChevronLeft size={18} />
         </button>
         <button
           onClick={scrollNext}
-          className="w-10 h-10 rounded-full border-2 border-fluno-lavender flex items-center justify-center text-fluno-ink hover:border-fluno-purple hover:text-fluno-purple transition-all"
+          className="w-10 h-10 rounded-full border-2 border-fig-sage flex items-center justify-center text-fig-navy hover:border-fig-terracotta hover:text-fig-terracotta transition-all"
           aria-label="Next"
         >
           <ChevronRight size={18} />

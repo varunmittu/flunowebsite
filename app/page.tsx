@@ -4,8 +4,6 @@ import { ArrowRight } from "lucide-react";
 import { connectDB } from "@/lib/mongodb";
 import { ProductModel } from "@/lib/models/Product";
 import { getFeaturedProducts } from "@/lib/products";
-import { FigRunner, FigSeeker, FigListener } from "@/components/fig/Fig";
-import ScrollTraveler from "@/components/fig/ScrollTraveler";
 import HomeProductCard from "@/components/fig/HomeProductCard";
 import NotifyStrip from "@/components/fig/NotifyStrip";
 import AnimateIn from "@/components/AnimateIn";
@@ -15,7 +13,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Fluno — Care that keeps up with you",
   description:
-    "Dermatologist-tested personal care formulated to EU ingredient standards, priced for every day. Made in Hyderabad, India.",
+    "Everyday personal care, thoughtfully formulated and honestly priced. Made in Hyderabad, India.",
 };
 
 interface RawProduct {
@@ -26,59 +24,66 @@ interface RawProduct {
   badges?: string[]; inStock?: boolean; featured?: boolean;
 }
 
+const promises = [
+  { title: "Full ingredient list", body: "the complete list on every product page and pack — nothing hidden." },
+  { title: "Cruelty-free", body: "never tested on animals, full stop." },
+  { title: "Made in India", body: "formulated and made here, close to the people we make it for." },
+  { title: "Everyday pricing", body: "priced so daily care is something you can actually keep up." },
+];
+
 const rituals = [
   {
-    title: "Gentle, not weak",
-    body: "Sulphate-free surfactants and pH-balanced formulas clean properly without stripping skin — soft hands after the fiftieth wash, not just the first.",
-    pose: "runner",
+    title: "Kind, not harsh",
+    body: "Cleans and cares without leaving skin tight or stripped — a finish you'll happily reach for on the fiftieth day, not just the first.",
+    tone: "bg-fig-terracotta",
   },
   {
-    title: "Held to EU standards",
-    body: "We formulate to EU and UK ingredient rules — stricter than what's required here — because the safest list should be the default, not the import.",
-    pose: "leap",
+    title: "Made to repeat",
+    body: "Formulated to sit easily inside the routine you already have, so the good habit becomes the easy option — tomorrow, and the day after.",
+    tone: "bg-fig-sage",
   },
   {
-    title: "Priced for daily use",
-    body: "Mid-premium quality at an everyday price. Care only works when you can afford to repeat it — tomorrow, and the day after.",
-    pose: "dancer",
+    title: "Honestly priced",
+    body: "Mid-premium quality at an everyday price. Care only works when you can afford to repeat it, so we made sure you can.",
+    tone: "bg-fig-mustard",
   },
 ] as const;
 
-const standards = [
-  { title: "EU/UK ingredient standards", body: "including UV filters approved under the strictest safety reviews in the world." },
-  { title: "Dermatologist tested", body: "every formula, before launch, signed off by Dr. Sai Prasad, MBBS." },
-  { title: "pH balanced", body: "matched to skin so daily use never becomes daily damage." },
-  { title: "Full ingredient disclosure", body: "the complete INCI list on every product page, not just the flattering half." },
-];
-
-/** small pose glyphs for the ritual cards */
-function RitualGlyph({ pose }: { pose: string }) {
+/** Non-character hero motif: a care bottle with floating droplet accents. */
+function HeroMotif() {
   return (
-    <span className="w-11 h-11 rounded-full bg-fig-cream border-[2.5px] border-fig-navy flex items-center justify-center flex-none">
-      <svg viewBox="0 0 200 260" className="w-[26px] h-[26px]" aria-hidden="true">
-        {pose === "runner" && (
-          <>
-            <path d="M104 112 C 88 122, 72 120, 62 104" fill="none" stroke="#D9814F" strokeWidth="16" strokeLinecap="round" />
-            <path d="M108 100 L 99 150" fill="none" stroke="#D9814F" strokeWidth="44" strokeLinecap="round" />
-            <circle cx="123" cy="71" r="26" fill="#F7F3EC" stroke="#252B42" strokeWidth="6" />
-          </>
-        )}
-        {pose === "leap" && (
-          <>
-            <path d="M92 88 C 76 72, 68 56, 66 40" fill="none" stroke="#252B42" strokeWidth="16" strokeLinecap="round" />
-            <path d="M100 82 L 100 130" fill="none" stroke="#252B42" strokeWidth="44" strokeLinecap="round" />
-            <circle cx="100" cy="52" r="26" fill="#F7F3EC" stroke="#252B42" strokeWidth="6" />
-          </>
-        )}
-        {pose === "dancer" && (
-          <>
-            <path d="M106 100 C 124 80, 120 56, 98 48" fill="none" stroke="#E0A93B" strokeWidth="16" strokeLinecap="round" />
-            <path d="M102 100 L 104 152" fill="none" stroke="#E0A93B" strokeWidth="44" strokeLinecap="round" />
-            <circle cx="88" cy="72" r="26" fill="#F7F3EC" stroke="#252B42" strokeWidth="6" />
-          </>
-        )}
+    <div className="relative w-[min(300px,66vw)] aspect-[3/4]" aria-hidden="true">
+      {/* floating accents */}
+      <span className="absolute top-6 left-2 w-4 h-4 rounded-full bg-fig-sage animate-float" style={{ animationDelay: "0s" }} />
+      <span className="absolute top-20 right-3 w-6 h-6 rounded-full bg-fig-mustard animate-float" style={{ animationDelay: "1.1s" }} />
+      <span className="absolute bottom-16 left-0 w-3 h-3 rounded-full bg-fig-cream/70 animate-float" style={{ animationDelay: "2.2s" }} />
+      {/* bottle */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="animate-float" style={{ animationDelay: "0.4s" }}>
+          <svg viewBox="0 0 160 220" className="w-[190px] h-auto drop-shadow-2xl">
+            <rect x="62" y="10" width="36" height="26" rx="7" fill="#E0A93B" stroke="#252B42" strokeWidth="4" />
+            <rect x="46" y="40" width="68" height="164" rx="26" fill="#D9814F" stroke="#252B42" strokeWidth="4" />
+            <rect x="46" y="92" width="68" height="60" fill="#F7F3EC" opacity="0.14" />
+            <circle cx="80" cy="120" r="19" fill="#F7F3EC" opacity="0.9" />
+            <path d="M80 108 v24 M68 120 h24" stroke="#252B42" strokeWidth="4" strokeLinecap="round" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Non-character motif for the "in the lab" card. */
+function LabMotif() {
+  return (
+    <div className="relative flex items-center justify-center h-[190px]" aria-hidden="true">
+      <span className="absolute inset-0 m-auto w-28 h-28 rounded-full bg-fig-sage/25 animate-float" style={{ animationDelay: "0.6s" }} />
+      <svg viewBox="0 0 120 120" className="relative w-24 h-24 animate-float">
+        <circle cx="60" cy="60" r="40" fill="none" stroke="#252B42" strokeWidth="4" opacity="0.5" />
+        <path d="M60 30 C 60 30, 82 56, 82 72 A 22 22 0 0 1 38 72 C 38 56, 60 30, 60 30 Z" fill="#D9814F" stroke="#252B42" strokeWidth="4" strokeLinejoin="round" />
+        <circle cx="51" cy="70" r="6" fill="#F7F3EC" opacity="0.85" />
       </svg>
-    </span>
+    </div>
   );
 }
 
@@ -108,22 +113,20 @@ export default async function HomePage() {
 
   return (
     <>
-      <ScrollTraveler />
-
       {/* ── HERO (navy) ── */}
       <section className="relative bg-fig-navy text-fig-cream overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-20 lg:pb-24 flex flex-wrap items-center gap-10">
           <div className="flex-1 basis-[420px] min-w-0">
-            <p className="font-fig font-semibold text-[11px] tracking-[0.16em] uppercase text-fig-mustard mb-5">
-              Personal care · EU ingredient standards · Hyderabad
+            <p className="fig-eyebrow text-fig-mustard mb-5">
+              Personal care · Made in Hyderabad
             </p>
             <h1 className="font-fig font-bold text-[clamp(2.6rem,6vw,4.4rem)] leading-[1.05] tracking-tight [text-wrap:balance]">
               Care that keeps up with&nbsp;you.
             </h1>
             <p className="font-fig-body text-lg text-[#C9CCDC] max-w-[52ch] mt-5 mb-8 leading-relaxed">
-              Dermatologist-tested essentials formulated to EU and UK ingredient
-              standards — the strictest lists we could find — and priced for every
-              single day.
+              Everyday essentials made to feel good on your skin — thoughtfully
+              formulated, honestly priced, and easy to fold into the routine you
+              already have.
             </p>
             <div className="flex flex-wrap gap-3.5">
               <Link
@@ -133,14 +136,14 @@ export default async function HomePage() {
                 Shop the range <ArrowRight size={15} />
               </Link>
               <Link
-                href="/about"
+                href="#promise"
                 className="inline-flex items-center gap-2 rounded-full border-2 border-fig-cream/35 hover:border-fig-cream/70 text-fig-cream font-fig font-semibold px-7 py-3.5 transition-colors"
               >
-                Read our standards
+                Our promise
               </Link>
             </div>
             <div className="flex flex-wrap gap-6 mt-9">
-              {["Dermatologist tested", "pH balanced", "Sulphate-free cleansing"].map((t) => (
+              {["Cruelty-free", "Full ingredient list", "Made in India"].map((t) => (
                 <span key={t} className="flex items-center gap-2 text-[13px] text-[#C9CCDC]">
                   <i className="w-[7px] h-[7px] rounded-full bg-fig-sage inline-block flex-none" />
                   {t}
@@ -149,7 +152,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="flex-none basis-[300px] grow-0 mx-auto flex justify-center">
-            <FigRunner animate darkGround className="w-[min(290px,64vw)] h-auto" />
+            <HeroMotif />
           </div>
         </div>
         <div className="absolute left-0 right-0 bottom-8 h-px bg-gradient-to-r from-transparent via-fig-cream/20 to-transparent" aria-hidden="true" />
@@ -159,15 +162,15 @@ export default async function HomePage() {
       <section id="shop" className="bg-fig-cream py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn>
-            <p className="font-fig font-semibold text-[11px] tracking-[0.16em] uppercase text-fig-terracotta mb-4">
+            <p className="fig-eyebrow text-fig-terracotta mb-4">
               The range
             </p>
             <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
               Two essentials today. More, slowly.
             </h2>
             <p className="font-fig-body text-fig-ink-soft text-lg mt-3 max-w-[58ch]">
-              We add a product only when it clears the same standards bar as the
-              last one — no filler SKUs, no fifty-variant walls.
+              We add a product only when it clears the same bar as the last one —
+              no filler SKUs, no fifty-variant walls.
             </p>
           </AnimateIn>
 
@@ -181,11 +184,11 @@ export default async function HomePage() {
             {/* in-the-lab teaser */}
             <AnimateIn delay={0.16}>
               <article className="bg-fig-paper border-[1.5px] border-fig-navy/10 rounded-3xl overflow-hidden flex flex-col h-full">
-                <div className="relative flex items-end justify-center min-h-[250px] p-6 bg-gradient-to-br from-fig-sage/30 to-fig-sage/10">
+                <div className="relative flex items-end justify-center p-6 bg-gradient-to-br from-fig-sage/30 to-fig-sage/10">
                   <span className="absolute top-4 left-4 font-fig font-semibold text-[11px] tracking-[0.1em] uppercase border-[1.5px] border-fig-navy/15 text-fig-ink-soft rounded-full px-3 py-1.5">
                     In the lab
                   </span>
-                  <FigSeeker animate className="h-[210px] w-auto" />
+                  <LabMotif />
                 </div>
                 <div className="flex flex-col gap-2 p-6 flex-1">
                   <span className="font-fig font-semibold text-[11px] tracking-[0.12em] uppercase text-fig-terracotta">
@@ -216,11 +219,11 @@ export default async function HomePage() {
       <section className="bg-fig-terracotta py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn>
-            <p className="font-fig font-semibold text-[11px] tracking-[0.16em] uppercase text-fig-navy mb-4">
+            <p className="fig-eyebrow text-fig-navy mb-4">
               Why Fluno
             </p>
             <h2 className="font-fig font-bold text-[#FFF6EE] text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
-              Made for bodies in motion.
+              Made for everyday life.
             </h2>
             <p className="font-fig-body text-[#F8DFC9] text-lg mt-3 max-w-[58ch]">
               Every formula follows three rules. If a product can&apos;t keep all
@@ -232,7 +235,9 @@ export default async function HomePage() {
               <AnimateIn key={r.title} delay={i * 0.08}>
                 <div className="bg-[#FFFDF9]/10 border-[1.5px] border-[#FFFDF9]/20 rounded-3xl p-7 h-full">
                   <h3 className="font-fig font-semibold text-lg text-[#FFF6EE] flex items-center gap-3">
-                    <RitualGlyph pose={r.pose} />
+                    <span className={`w-11 h-11 rounded-full ${r.tone} border-[2.5px] border-fig-navy flex items-center justify-center flex-none font-fig font-bold text-fig-navy`}>
+                      {i + 1}
+                    </span>
                     {r.title}
                   </h3>
                   <p className="font-fig-body text-sm text-[#F8DFC9] leading-relaxed mt-3.5">{r.body}</p>
@@ -243,24 +248,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── OUR STANDARDS (sage) ── */}
-      <section id="standards" className="bg-fig-sage py-20 lg:py-24">
+      {/* ── OUR PROMISE (sage) ── */}
+      <section id="promise" className="bg-fig-sage py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center gap-12">
           <div className="flex-1 basis-[420px]">
             <AnimateIn>
-              <p className="font-fig font-semibold text-[11px] tracking-[0.16em] uppercase text-fig-navy mb-4">
-                Our standards
+              <p className="fig-eyebrow text-fig-navy mb-4">
+                The Fluno promise
               </p>
               <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
-                The boring paperwork, done properly.
+                Care, done honestly.
               </h2>
               <p className="font-fig-body text-fig-navy/75 text-lg mt-3 max-w-[56ch]">
-                Founded in Hyderabad by a CEO who reads ingredient lists and a
-                doctor who signs off on them. This is the bar every Fluno product
-                clears:
+                A few simple commitments sit behind every Fluno product:
               </p>
               <ul className="mt-7 grid gap-3.5 max-w-[54ch]">
-                {standards.map((s) => (
+                {promises.map((s) => (
                   <li key={s.title} className="flex gap-3.5 items-start text-fig-navy">
                     <span className="flex-none w-6 h-6 rounded-full bg-fig-navy text-fig-cream flex items-center justify-center text-[11px] mt-0.5">
                       ✓
@@ -273,8 +276,15 @@ export default async function HomePage() {
               </ul>
             </AnimateIn>
           </div>
-          <div className="flex-none basis-[280px] grow-0 mx-auto flex justify-center">
-            <FigListener className="w-[min(260px,58vw)] h-auto" />
+          <div className="flex-none basis-[280px] grow-0 mx-auto">
+            <AnimateIn direction="left">
+              <div className="grid grid-cols-2 gap-4 w-[min(280px,72vw)]" aria-hidden="true">
+                <div className="aspect-square rounded-3xl bg-fig-terracotta animate-float" style={{ animationDelay: "0s" }} />
+                <div className="aspect-square rounded-3xl bg-fig-mustard animate-float" style={{ animationDelay: "0.8s" }} />
+                <div className="aspect-square rounded-3xl bg-fig-navy animate-float" style={{ animationDelay: "1.6s" }} />
+                <div className="aspect-square rounded-3xl bg-fig-cream animate-float" style={{ animationDelay: "2.4s" }} />
+              </div>
+            </AnimateIn>
           </div>
         </div>
       </section>

@@ -15,7 +15,7 @@ export default function OGImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0D0618",
+          background: "#252B42",
           position: "relative",
           overflow: "hidden",
         }}
@@ -30,7 +30,7 @@ export default function OGImage() {
             width: 600,
             height: 400,
             borderRadius: 300,
-            background: "rgba(189,126,250,0.18)",
+            background: "rgba(217,129,79,0.20)",
           }}
         />
         {/* Soft purple glow — bottom right */}
@@ -42,7 +42,7 @@ export default function OGImage() {
             width: 400,
             height: 300,
             borderRadius: 200,
-            background: "rgba(155,93,229,0.12)",
+            background: "rgba(140,184,154,0.15)",
           }}
         />
 
@@ -53,15 +53,15 @@ export default function OGImage() {
             alignItems: "center",
             padding: "8px 22px",
             borderRadius: 100,
-            border: "1px solid rgba(189,126,250,0.3)",
-            background: "rgba(189,126,250,0.1)",
+            border: "1px solid rgba(217,129,79,0.35)",
+            background: "rgba(217,129,79,0.12)",
             marginBottom: 28,
           }}
         >
           <span
             style={{
               fontSize: 15,
-              color: "rgba(189,126,250,0.9)",
+              color: "rgba(224,169,59,0.95)",
               fontFamily: "sans-serif",
               letterSpacing: "0.25em",
               textTransform: "uppercase",
@@ -101,7 +101,7 @@ export default function OGImage() {
 
         {/* Badges row */}
         <div style={{ display: "flex", gap: 12 }}>
-          {["Clean Formula", "Dermatologist Tested", "EU Standard"].map((badge) => (
+          {["Everyday Care", "Cruelty-Free", "Made in India"].map((badge) => (
             <div
               key={badge}
               style={{
@@ -126,7 +126,7 @@ export default function OGImage() {
             bottom: 36,
             right: 48,
             fontSize: 16,
-            color: "rgba(189,126,250,0.5)",
+            color: "rgba(217,129,79,0.6)",
             fontFamily: "sans-serif",
             letterSpacing: "0.05em",
           }}

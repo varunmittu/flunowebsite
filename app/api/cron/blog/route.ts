@@ -125,7 +125,7 @@ export async function GET(req: NextRequest) {
     const avoidList = recentPosts.map((p) => `- ${p.title}`).join("\n");
 
     // ── Generate blog content + image prompts ─────────────────────────────
-    const blogPrompt = `You are a professional content writer for Fluno — a mid-premium personal care and hygiene brand from India. Fluno's products include sunscreens, hand wash, and skincare formulated against EU/UK safety standards.
+    const blogPrompt = `You are a professional content writer for Fluno — a mid-premium personal care and hygiene brand from India. Fluno's products include sunscreens, hand wash, and everyday skincare essentials.
 
 Write a complete SEO-optimised blog post for the Fluno blog.
 

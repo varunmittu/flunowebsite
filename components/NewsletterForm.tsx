@@ -32,9 +32,9 @@ export default function NewsletterForm() {
 
   if (done) {
     return (
-      <div className="flex items-center justify-center gap-3 p-4 bg-fluno-purple/10 rounded-2xl border border-fluno-purple/20">
+      <div className="flex items-center justify-center gap-3 p-4 bg-fig-terracotta/10 rounded-2xl border border-fig-terracotta/20">
         <span className="text-2xl">💜</span>
-        <p className="font-body text-sm text-fluno-purple font-semibold">You&apos;re in! Check your inbox for a welcome note.</p>
+        <p className="font-fig-body text-sm text-fig-terracotta font-semibold">You&apos;re in! Check your inbox for a welcome note.</p>
       </div>
     );
   }
@@ -46,9 +46,9 @@ export default function NewsletterForm() {
         type="email"
         placeholder="your@email.com"
         required
-        className="input flex-1"
+        className="fig-input flex-1"
       />
-      <button type="submit" disabled={loading} className="btn-primary flex-shrink-0">
+      <button type="submit" disabled={loading} className="fig-btn flex-shrink-0">
         {loading ? "..." : "Subscribe"}
       </button>
     </form>

@@ -41,7 +41,7 @@ const config: Config = {
         display: ["var(--font-outfit)", "sans-serif"],
         body:    ["var(--font-public-sans)", "system-ui", "sans-serif"],
         mono:    ["var(--font-ibm-plex-mono)", "monospace"],
-        fig:     ["var(--font-general-sans)", "var(--font-inter)", "sans-serif"],
+        fig:     ["var(--font-quicksand)", "var(--font-inter)", "sans-serif"],
         "fig-body": ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       animation: {

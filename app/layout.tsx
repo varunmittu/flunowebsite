@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Quicksand, Outfit, Public_Sans, IBM_Plex_Mono, Inter } from "next/font/google";
-import localFont from "next/font/local";
 import "./globals.css";
 import { CartProvider }      from "@/context/CartContext";
 import SessionProvider       from "@/components/SessionProvider";
@@ -47,19 +46,10 @@ const inter = Inter({
   display: "swap",
 });
 
-const generalSans = localFont({
-  src: [
-    { path: "./fonts/GeneralSans-Semibold.woff2", weight: "600", style: "normal" },
-    { path: "./fonts/GeneralSans-Bold.woff2",     weight: "700", style: "normal" },
-  ],
-  variable: "--font-general-sans",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: { default: "Fluno — Care in Every Drop", template: "%s | Fluno" },
   description:
-    "Fluno is a mid-premium personal care and hygiene brand from India. Clean ingredients, dermatologist-tested, repeat-worthy results.",
+    "Fluno is a mid-premium personal care and hygiene brand from India. Thoughtfully formulated everyday essentials, honestly priced.",
   metadataBase: new URL("https://myfluno.com"),
   openGraph: { siteName: "Fluno", type: "website", locale: "en_IN" },
   twitter:    { card: "summary_large_image" },
@@ -78,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${quicksand.variable} ${outfit.variable} ${publicSans.variable} ${ibmPlexMono.variable} ${inter.variable} ${generalSans.variable}`}
+      className={`${quicksand.variable} ${outfit.variable} ${publicSans.variable} ${ibmPlexMono.variable} ${inter.variable}`}
     >
       <body>
         <script
@@ -111,9 +101,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               position="bottom-right"
               toastOptions={{
                 style: {
-                  background: "#1A0A2E",
-                  color: "#fff",
-                  border: "1px solid rgba(189,126,250,0.3)",
+                  background: "#252B42",
+                  color: "#F7F3EC",
+                  border: "1px solid rgba(217,129,79,0.35)",
                 },
               }}
             />

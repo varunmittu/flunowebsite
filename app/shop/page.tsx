@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { SlidersHorizontal, Sparkles, Loader2, Grid3X3, LayoutList, Search } from "lucide-react";
+import { Loader2, Grid3X3, LayoutList, Search } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { products as staticProducts } from "@/lib/products";
 import { autoAnimate } from "@formkit/auto-animate";
@@ -86,45 +86,39 @@ export default function ShopPage() {
     });
 
   return (
-    <div className="min-h-screen bg-fluno-light">
+    <div className="min-h-screen bg-fig-cream">
       {/* ── Page hero ── */}
-      <div className="bg-fluno-dark relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-fluno-purple/12 to-transparent" />
-          <div className="absolute top-[5%] left-[5%] w-[400px] h-[400px] rounded-full bg-fluno-purple/10 blur-[120px]" />
-          <div className="absolute bottom-0 right-0 w-72 h-72 bg-fluno-purple-deep/8 blur-[80px] rounded-full" />
-          <div
-            className="absolute inset-0 opacity-[0.025]"
-            style={{
-              backgroundImage: "linear-gradient(rgba(189,126,250,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(189,126,250,.6) 1px, transparent 1px)",
-              backgroundSize: "50px 50px",
-            }}
-          />
+      <div className="bg-fig-navy relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute top-[8%] right-[6%] w-52 h-52 rounded-full bg-fig-terracotta/20 blur-[90px]" />
+          <div className="absolute bottom-0 left-[10%] w-56 h-56 rounded-full bg-fig-sage/15 blur-[100px]" />
+          <span className="absolute top-10 left-[12%] w-3.5 h-3.5 rounded-full bg-fig-mustard/70 animate-float" style={{ animationDelay: "0.2s" }} />
+          <span className="absolute bottom-12 right-[16%] w-5 h-5 rounded-full bg-fig-sage/60 animate-float" style={{ animationDelay: "1.3s" }} />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <p className="eyebrow text-fluno-purple mb-3 flex items-center gap-2">
-            <Sparkles size={12} /> The Collection
+          <p className="fig-eyebrow text-fig-mustard mb-3">
+            The collection
           </p>
           <h1
-            className="font-brand font-bold text-white text-glow leading-none mb-4"
+            className="font-fig font-bold text-fig-cream leading-none mb-4 tracking-tight"
             style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
           >
-            Shop All Products
+            Shop all products
           </h1>
-          <p className="font-body text-white/40 text-base max-w-md">
-            {products.length} carefully formulated products — clean ingredients, honest pricing.
+          <p className="font-fig-body text-[#C9CCDC] text-base max-w-md">
+            {products.length} everyday essentials — thoughtfully formulated, honestly priced.
           </p>
 
           {/* Inline search */}
           <div className="relative mt-7 max-w-sm">
-            <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
+            <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-fig-cream/40 pointer-events-none z-10" />
             <input
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search products…"
-              className="input-dark pl-10"
+              className="w-full border border-fig-cream/20 bg-fig-cream/10 text-fig-cream pl-10 pr-4 py-3 rounded-full font-fig-body text-sm placeholder:text-fig-cream/40 focus:outline-none focus:border-fig-terracotta/70 focus:ring-2 focus:ring-fig-terracotta/25 transition-all"
             />
           </div>
         </div>
@@ -132,17 +126,17 @@ export default function ShopPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* ── Filter + sort bar ── */}
-        <div className="flex flex-col gap-5 mb-10 pb-8 border-b border-fluno-lavender/60">
+        <div className="flex flex-col gap-5 mb-10 pb-8 border-b border-fig-navy/10">
           {/* Category chips */}
           <div className="flex gap-2 flex-wrap">
             {categories.map((c) => (
               <button
                 key={c}
                 onClick={() => setActiveCategory(c)}
-                className={`font-body text-sm px-5 py-2 rounded-full border-2 transition-all duration-200 ${
+                className={`font-fig font-semibold text-sm px-5 py-2 rounded-full border-2 transition-all duration-200 ${
                   activeCategory === c
-                    ? "bg-fluno-purple border-fluno-purple text-white shadow-lg shadow-fluno-purple/20"
-                    : "border-fluno-lavender text-fluno-muted hover:border-fluno-purple hover:text-fluno-purple bg-white"
+                    ? "bg-fig-terracotta border-fig-terracotta text-[#FFF6EE] shadow-lg shadow-fig-terracotta/20"
+                    : "border-fig-navy/15 text-fig-ink-soft hover:border-fig-terracotta hover:text-fig-terracotta bg-fig-paper"
                 }`}
               >
                 {c}
@@ -152,16 +146,18 @@ export default function ShopPage() {
 
           {/* Sort + view toggle */}
           <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-1 border border-fluno-lavender rounded-xl p-1 bg-white ml-auto">
+            <div className="flex items-center gap-1 border border-fig-navy/15 rounded-xl p-1 bg-fig-paper ml-auto">
               <button
                 onClick={() => setGridCols(3)}
-                className={`p-1.5 rounded-lg transition-all ${gridCols === 3 ? "bg-fluno-purple text-white" : "text-fluno-muted hover:text-fluno-purple"}`}
+                aria-label="Comfortable grid"
+                className={`p-1.5 rounded-lg transition-all ${gridCols === 3 ? "bg-fig-terracotta text-[#FFF6EE]" : "text-fig-ink-soft hover:text-fig-terracotta"}`}
               >
                 <Grid3X3 size={14} />
               </button>
               <button
                 onClick={() => setGridCols(4)}
-                className={`p-1.5 rounded-lg transition-all ${gridCols === 4 ? "bg-fluno-purple text-white" : "text-fluno-muted hover:text-fluno-purple"}`}
+                aria-label="Compact grid"
+                className={`p-1.5 rounded-lg transition-all ${gridCols === 4 ? "bg-fig-terracotta text-[#FFF6EE]" : "text-fig-ink-soft hover:text-fig-terracotta"}`}
               >
                 <LayoutList size={14} />
               </button>
@@ -170,7 +166,7 @@ export default function ShopPage() {
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value)}
-              className="input py-2.5 w-full sm:w-52 text-sm bg-white"
+              className="border border-fig-navy/15 bg-fig-paper text-fig-navy px-4 py-2.5 rounded-xl font-fig-body text-sm w-full sm:w-52 focus:outline-none focus:border-fig-terracotta focus:ring-2 focus:ring-fig-terracotta/20 transition-all"
             >
               {sortOptions.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -180,7 +176,7 @@ export default function ShopPage() {
         </div>
 
         {/* ── Result count ── */}
-        <p className="font-mono text-xs text-fluno-muted/60 mb-7">
+        <p className="font-fig-body text-xs text-fig-ink-soft/70 mb-7">
           {loading
             ? "Loading…"
             : `Showing ${filtered.length} of ${products.length} product${products.length !== 1 ? "s" : ""}`
@@ -190,7 +186,7 @@ export default function ShopPage() {
         {/* ── Grid — auto-animate applied ── */}
         {loading ? (
           <div className="flex justify-center py-28">
-            <Loader2 size={32} className="animate-spin text-fluno-purple" />
+            <Loader2 size={32} className="animate-spin text-fig-terracotta" />
           </div>
         ) : filtered.length > 0 ? (
           <div
@@ -207,13 +203,13 @@ export default function ShopPage() {
           </div>
         ) : (
           <div className="text-center py-28">
-            <div className="w-20 h-20 rounded-2xl bg-fluno-purple/10 flex items-center justify-center mx-auto mb-5">
-              <Sparkles size={28} className="text-fluno-purple/40" />
+            <div className="w-20 h-20 rounded-2xl bg-fig-terracotta/10 flex items-center justify-center mx-auto mb-5">
+              <Search size={28} className="text-fig-terracotta/50" />
             </div>
-            <p className="font-display text-lg text-fluno-ink/60 mb-2">No products found</p>
-            <p className="font-body text-sm text-fluno-muted/60">Try a different category or search term.</p>
+            <p className="font-fig font-bold text-lg text-fig-navy mb-2">No products found</p>
+            <p className="font-fig-body text-sm text-fig-ink-soft">Try a different category or search term.</p>
             {search && (
-              <button onClick={() => setSearch("")} className="btn-outline mt-5 text-sm">
+              <button onClick={() => setSearch("")} className="fig-btn-outline mt-5 text-sm">
                 Clear search
               </button>
             )}

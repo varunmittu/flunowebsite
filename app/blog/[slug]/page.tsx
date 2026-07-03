@@ -116,7 +116,7 @@ export default async function BlogPost({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {/* ── Editorial hero ────────────────────────────────────────────── */}
-      <div className="relative w-full min-h-[55vh] md:min-h-[65vh] bg-fluno-dark flex items-end overflow-hidden">
+      <div className="relative w-full min-h-[55vh] md:min-h-[65vh] bg-fig-navy flex items-end overflow-hidden">
         {/* Background image */}
         {post.coverImage ? (
           <Image
@@ -128,47 +128,47 @@ export default async function BlogPost({
             sizes="100vw"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-fluno-dark via-fluno-ink to-fluno-purple-deep/40" />
+          <div className="absolute inset-0 bg-gradient-to-br from-fig-navy via-fig-navy to-fig-terracotta-deep/40" />
         )}
 
         {/* Gradient veil — fades image into solid dark at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-fluno-dark via-fluno-dark/55 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-fig-navy via-fig-navy/55 to-transparent" />
 
         {/* Title block */}
         <div className="relative z-10 max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-12 md:pb-18">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-body text-white/45
-                       hover:text-fluno-glow transition-colors mb-7"
+            className="inline-flex items-center gap-2 text-sm font-fig-body text-white/45
+                       hover:text-fig-mustard transition-colors mb-7"
           >
             <ArrowLeft size={14} /> Back to Blog
           </Link>
 
           {post.category && (
             <div className="mb-4">
-              <span className="badge-dark">{post.category}</span>
+              <span className="fig-fig-badge">{post.category}</span>
             </div>
           )}
 
-          <h1 className="font-brand text-4xl md:text-6xl text-white leading-[1.08] max-w-3xl">
+          <h1 className="font-fig font-bold text-4xl md:text-6xl text-white leading-[1.08] max-w-3xl">
             {post.title}
           </h1>
         </div>
       </div>
 
       {/* ── Metadata bar ──────────────────────────────────────────────── */}
-      <div className="bg-fluno-dark/95 border-b border-white/10">
+      <div className="bg-fig-navy/95 border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-5 items-center">
-          <span className="flex items-center gap-1.5 font-mono text-xs text-white/40">
+          <span className="flex items-center gap-1.5 font-fig-body text-xs text-white/40">
             <User size={12} />
             {post.author ?? "Fluno Team"}
           </span>
-          <span className="flex items-center gap-1.5 font-mono text-xs text-white/40">
+          <span className="flex items-center gap-1.5 font-fig-body text-xs text-white/40">
             <Calendar size={12} />
             {formatDate(post.createdAt)}
           </span>
           {post.readTime && (
-            <span className="flex items-center gap-1.5 font-mono text-xs text-white/40">
+            <span className="flex items-center gap-1.5 font-fig-body text-xs text-white/40">
               <Clock size={12} />
               {post.readTime}
             </span>
@@ -181,8 +181,8 @@ export default async function BlogPost({
 
         {/* Pull-quote excerpt */}
         {post.excerpt && (
-          <p className="font-display text-xl text-fluno-ink/70 leading-relaxed mb-10
-                        border-l-4 border-fluno-purple pl-5">
+          <p className="font-fig font-bold text-xl text-fig-navy/70 leading-relaxed mb-10
+                        border-l-4 border-fig-terracotta pl-5">
             {post.excerpt}
           </p>
         )}
@@ -192,18 +192,18 @@ export default async function BlogPost({
           <div
             className="
               prose prose-lg max-w-none
-              prose-headings:font-display prose-headings:text-fluno-ink prose-headings:font-bold prose-headings:leading-snug
-              prose-p:font-body prose-p:text-fluno-ink/75 prose-p:leading-relaxed
-              prose-a:text-fluno-purple prose-a:no-underline hover:prose-a:underline
-              prose-strong:text-fluno-ink prose-strong:font-semibold
-              prose-li:font-body prose-li:text-fluno-ink/75
+              prose-headings:font-fig font-bold prose-headings:text-fig-navy prose-headings:font-bold prose-headings:leading-snug
+              prose-p:font-fig-body prose-p:text-fig-navy/75 prose-p:leading-relaxed
+              prose-a:text-fig-terracotta prose-a:no-underline hover:prose-a:underline
+              prose-strong:text-fig-navy prose-strong:font-semibold
+              prose-li:font-fig-body prose-li:text-fig-navy/75
               prose-img:rounded-2xl prose-img:shadow-lg
-              prose-blockquote:border-l-4 prose-blockquote:border-fluno-purple
-              prose-blockquote:bg-fluno-lavender/30 prose-blockquote:rounded-r-2xl
+              prose-blockquote:border-l-4 prose-blockquote:border-fig-terracotta
+              prose-blockquote:bg-fig-sage/30 prose-blockquote:rounded-r-2xl
               prose-blockquote:py-2 prose-blockquote:pr-5 prose-blockquote:not-italic
-              prose-code:text-fluno-purple prose-code:bg-fluno-lavender/40
-              prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono
-              prose-hr:border-fluno-lavender
+              prose-code:text-fig-terracotta prose-code:bg-fig-sage/40
+              prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:font-fig-body
+              prose-hr:border-fig-sage
             "
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
@@ -212,7 +212,7 @@ export default async function BlogPost({
         {/* ── In-article image gallery ─────────────────────────────── */}
         {post.images && post.images.length > 0 && (
           <div className="mt-16">
-            <h2 className="font-display text-xl font-bold text-fluno-ink mb-6">
+            <h2 className="font-fig font-bold text-xl font-bold text-fig-navy mb-6">
               Gallery
             </h2>
             <div
@@ -228,7 +228,7 @@ export default async function BlogPost({
                 <div
                   key={i}
                   className="relative aspect-square rounded-2xl overflow-hidden
-                             bg-fluno-lavender/40 shadow-md"
+                             bg-fig-sage/40 shadow-md"
                 >
                   <Image
                     src={src}
@@ -246,9 +246,9 @@ export default async function BlogPost({
         {/* ── Tags ─────────────────────────────────────────────────── */}
         {post.tags && post.tags.length > 0 && (
           <div className="mt-12 flex flex-wrap gap-2 items-center">
-            <Tag size={14} className="text-fluno-muted shrink-0" />
+            <Tag size={14} className="text-fig-ink-soft shrink-0" />
             {post.tags.map((tag) => (
-              <span key={tag} className="badge">
+              <span key={tag} className="fig-badge">
                 {tag}
               </span>
             ))}
@@ -256,29 +256,29 @@ export default async function BlogPost({
         )}
 
         {/* ── Shop CTA ─────────────────────────────────────────────── */}
-        <div className="mt-20 rounded-3xl bg-gradient-to-br from-fluno-dark to-fluno-ink
+        <div className="mt-20 rounded-3xl bg-gradient-to-br from-fig-navy to-fig-navy
                         p-10 md:p-14 text-center relative overflow-hidden">
           {/* Ambient orbs */}
           <div
             aria-hidden
             className="absolute -top-24 -right-24 w-72 h-72 rounded-full
-                       bg-fluno-purple/20 blur-[90px] pointer-events-none"
+                       bg-fig-terracotta/20 blur-[90px] pointer-events-none"
           />
           <div
             aria-hidden
             className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full
-                       bg-fluno-glow/10 blur-[70px] pointer-events-none"
+                       bg-fig-mustard/10 blur-[70px] pointer-events-none"
           />
           <div className="relative z-10">
-            <p className="eyebrow text-fluno-glow/60 mb-4">Made for Indian skin</p>
-            <h2 className="font-brand text-3xl md:text-4xl text-white mb-3">
+            <p className="fig-eyebrow text-fig-mustard/60 mb-4">Made for Indian skin</p>
+            <h2 className="font-fig font-bold text-3xl md:text-4xl text-white mb-3">
               Ready to glow?
             </h2>
-            <p className="font-body text-white/45 mb-8 max-w-sm mx-auto leading-relaxed">
+            <p className="font-fig-body text-white/45 mb-8 max-w-sm mx-auto leading-relaxed">
               Explore our science-backed skincare range crafted specifically for
               Indian skin types and climates.
             </p>
-            <Link href="/shop" className="btn-primary">
+            <Link href="/shop" className="fig-btn">
               Shop Fluno Products →
             </Link>
           </div>
@@ -287,9 +287,9 @@ export default async function BlogPost({
 
       {/* ── Related articles ──────────────────────────────────────────── */}
       {related.length > 0 && (
-        <section className="bg-fluno-lavender/25 py-16 border-t border-fluno-lavender/50">
+        <section className="bg-fig-sage/25 py-16 border-t border-fig-sage/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-display text-2xl font-bold text-fluno-ink mb-8">
+            <h2 className="font-fig font-bold text-2xl font-bold text-fig-navy mb-8">
               Related Articles
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -297,10 +297,10 @@ export default async function BlogPost({
                 <Link
                   key={rel._id}
                   href={`/blog/${rel.slug}`}
-                  className="card group"
+                  className="bg-fig-paper border border-fig-navy/10 rounded-2xl group"
                 >
                   {/* Cover */}
-                  <div className="relative aspect-[16/9] overflow-hidden bg-fluno-lavender/40">
+                  <div className="relative aspect-[16/9] overflow-hidden bg-fig-sage/40">
                     {rel.coverImage ? (
                       <Image
                         src={rel.coverImage}
@@ -310,22 +310,22 @@ export default async function BlogPost({
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-fluno-purple/20 to-fluno-glow/20" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-fig-terracotta/20 to-fig-mustard/20" />
                     )}
                   </div>
                   {/* Info */}
                   <div className="p-5">
                     {rel.category && (
-                      <span className="badge mb-2 block w-fit">
+                      <span className="fig-badge mb-2 block w-fit">
                         {rel.category}
                       </span>
                     )}
-                    <h3 className="font-display font-bold text-fluno-ink group-hover:text-fluno-purple
+                    <h3 className="font-fig font-bold text-fig-navy group-hover:text-fig-terracotta
                                    transition-colors leading-snug line-clamp-2">
                       {rel.title}
                     </h3>
                     {rel.readTime && (
-                      <span className="flex items-center gap-1.5 mt-3 font-mono text-xs text-fluno-muted">
+                      <span className="flex items-center gap-1.5 mt-3 font-fig-body text-xs text-fig-ink-soft">
                         <Clock size={11} />
                         {rel.readTime}
                       </span>

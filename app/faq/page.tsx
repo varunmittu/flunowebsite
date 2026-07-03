@@ -79,7 +79,7 @@ const SECTIONS: { title: string; faqs: { q: string; a: string }[] }[] = [
     faqs: [
       {
         q: "Are Fluno products safe for sensitive skin?",
-        a: "Our formulas are dermatologist-tested and pH-balanced, and we avoid unnecessary harsh chemicals. That said, everyone's skin is different — always do a patch test before first use, and check the full ingredient list (printed on every pack and listed on each product page) for known allergens.",
+        a: "Our formulas are made to be gentle and we avoid unnecessary harsh chemicals. That said, everyone's skin is different — always do a patch test before first use, and check the full ingredient list (printed on every pack and listed on each product page) for known allergens.",
       },
       {
         q: "Are your products tested on animals?",
@@ -91,7 +91,7 @@ const SECTIONS: { title: string; faqs: { q: string; a: string }[] }[] = [
       },
       {
         q: "Where are Fluno products made?",
-        a: "Fluno products are formulated and made in India, to EU/UK ingredient-safety standards.",
+        a: "Fluno products are formulated and made in India.",
       },
     ],
   },
@@ -100,30 +100,30 @@ const SECTIONS: { title: string; faqs: { q: string; a: string }[] }[] = [
 export default function FAQPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <p className="font-mono text-xs text-fluno-teal uppercase tracking-widest mb-2">Help Center</p>
-      <h1 className="section-title mb-3">Frequently Asked Questions</h1>
-      <p className="font-body text-fluno-ink/55 mb-12">
+      <p className="font-fig-body text-xs text-fig-terracotta uppercase tracking-widest mb-2">Help Center</p>
+      <h1 className="font-fig font-bold text-3xl md:text-4xl text-fig-navy leading-tight mb-3">Frequently Asked Questions</h1>
+      <p className="font-fig-body text-fig-navy/55 mb-12">
         Quick answers to the questions we get most. Can&apos;t find yours?{" "}
-        <Link href="/support" className="text-fluno-teal hover:underline">Raise a support ticket</Link>{" "}
+        <Link href="/support" className="text-fig-terracotta hover:underline">Raise a support ticket</Link>{" "}
         or email{" "}
-        <a href="mailto:contact@myfluno.com" className="text-fluno-teal hover:underline">contact@myfluno.com</a>.
+        <a href="mailto:contact@myfluno.com" className="text-fig-terracotta hover:underline">contact@myfluno.com</a>.
       </p>
 
       <div className="space-y-10">
         {SECTIONS.map((section) => (
           <section key={section.title}>
-            <h2 className="font-display text-lg font-semibold text-fluno-ink mb-4">{section.title}</h2>
+            <h2 className="font-fig font-bold text-lg font-semibold text-fig-navy mb-4">{section.title}</h2>
             <div className="space-y-2.5">
               {section.faqs.map((faq) => (
                 <details
                   key={faq.q}
-                  className="group bg-white border border-fluno-lavender/60 rounded-xl overflow-hidden hover:border-fluno-purple/30 transition-colors"
+                  className="group bg-white border border-fig-sage/60 rounded-xl overflow-hidden hover:border-fig-terracotta/30 transition-colors"
                 >
-                  <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none font-body text-sm font-medium text-fluno-ink [&::-webkit-details-marker]:hidden">
+                  <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none font-fig-body text-sm font-medium text-fig-navy [&::-webkit-details-marker]:hidden">
                     {faq.q}
-                    <span className="text-fluno-purple text-lg leading-none group-open:rotate-45 transition-transform flex-shrink-0">+</span>
+                    <span className="text-fig-terracotta text-lg leading-none group-open:rotate-45 transition-transform flex-shrink-0">+</span>
                   </summary>
-                  <p className="px-5 pb-4 font-body text-sm text-fluno-ink/60 leading-relaxed">
+                  <p className="px-5 pb-4 font-fig-body text-sm text-fig-navy/60 leading-relaxed">
                     {faq.a}
                   </p>
                 </details>
@@ -133,12 +133,12 @@ export default function FAQPage() {
         ))}
       </div>
 
-      <div className="mt-14 p-6 bg-fluno-teal/5 border border-fluno-teal/20 rounded-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="mt-14 p-6 bg-fig-terracotta/5 border border-fig-terracotta/20 rounded-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <p className="font-mono text-xs text-fluno-teal uppercase tracking-widest mb-1">Still stuck?</p>
-          <p className="font-body text-sm text-fluno-ink/70">Our support team replies within 24 hours, Mon–Sat.</p>
+          <p className="font-fig-body text-xs text-fig-terracotta uppercase tracking-widest mb-1">Still stuck?</p>
+          <p className="font-fig-body text-sm text-fig-navy/70">Our support team replies within 24 hours, Mon–Sat.</p>
         </div>
-        <Link href="/support" className="btn-primary whitespace-nowrap shrink-0">Get Support</Link>
+        <Link href="/support" className="fig-btn whitespace-nowrap shrink-0">Get Support</Link>
       </div>
     </div>
   );

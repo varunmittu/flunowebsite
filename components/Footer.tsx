@@ -120,8 +120,8 @@ export default function Footer() {
             </Link>
 
             <p className="font-fig-body text-sm text-[#9BA0B8] leading-relaxed max-w-xs mb-6">
-              Mid-premium personal care formulated to EU standards. A Parvar
-              Enterprise brand, made in Hyderabad, India.
+              Mid-premium everyday personal care. A Parvar Enterprise brand,
+              made in Hyderabad, India.
             </p>
 
             <div className="flex gap-3 mb-6">
@@ -217,7 +217,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Parvar Enterprise. All rights reserved.
           </p>
           <p className="font-fig-body text-xs text-fig-cream/30">
-            Design v2 · The Fluno Figure
+            Made in Hyderabad, India
           </p>
         </div>
       </div>
