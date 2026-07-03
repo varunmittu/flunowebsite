@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Quicksand, Outfit, Public_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Quicksand, Outfit, Public_Sans, IBM_Plex_Mono, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { CartProvider }      from "@/context/CartContext";
 import SessionProvider       from "@/components/SessionProvider";
@@ -40,6 +41,21 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const generalSans = localFont({
+  src: [
+    { path: "./fonts/GeneralSans-Semibold.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/GeneralSans-Bold.woff2",     weight: "700", style: "normal" },
+  ],
+  variable: "--font-general-sans",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: { default: "Fluno — Care in Every Drop", template: "%s | Fluno" },
   description:
@@ -62,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${quicksand.variable} ${outfit.variable} ${publicSans.variable} ${ibmPlexMono.variable}`}
+      className={`${quicksand.variable} ${outfit.variable} ${publicSans.variable} ${ibmPlexMono.variable} ${inter.variable} ${generalSans.variable}`}
     >
       <body>
         <script

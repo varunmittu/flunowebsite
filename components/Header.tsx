@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ShoppingBag, Search, User, Menu, X, ChevronDown, Sparkles } from "lucide-react";
+import { ShoppingBag, Search, User, Menu, X, ChevronDown } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { FigMark } from "@/components/fig/Fig";
 
 const navLinks = [
   { label: "Shop",     href: "/shop"     },
@@ -42,16 +43,15 @@ export default function Header() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden bg-gradient-to-r from-fluno-purple-deep via-fluno-purple to-fluno-purple-dark"
+            className="overflow-hidden bg-fig-navy"
           >
             <div className="flex items-center justify-center gap-3 py-2 px-4 relative">
-              <Sparkles size={11} className="text-white/70 flex-shrink-0" />
-              <p className="font-mono text-[11px] text-white/90 text-center">
+              <p className="font-fig-body text-[11.5px] text-fig-cream/90 text-center">
                 Free shipping on orders above ₹599 · Dermatologist-tested formulas
               </p>
               <button
                 onClick={() => setAnnouncementHidden(true)}
-                className="absolute right-3 text-white/50 hover:text-white"
+                className="absolute right-3 text-fig-cream/50 hover:text-fig-cream"
                 aria-label="Dismiss"
               >
                 <X size={13} />
@@ -63,22 +63,25 @@ export default function Header() {
 
       {/* ── Main header ── */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+        className={`sticky top-0 z-50 transition-all duration-300 border-b ${
           scrolled
-            ? "bg-fluno-dark/92 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-fluno-dark/50"
-            : "bg-fluno-dark/75 backdrop-blur-md border-b border-white/5"
+            ? "bg-fig-cream/90 backdrop-blur-xl border-fig-navy/10 shadow-[0_10px_30px_-18px_rgba(37,43,66,.35)]"
+            : "bg-fig-cream/80 backdrop-blur-md border-fig-navy/5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[66px]">
 
             {/* Logo */}
-            <Link href="/" className="flex flex-col leading-none group flex-shrink-0">
-              <span className="font-brand font-bold text-[2rem] text-white group-hover:text-fluno-purple transition-colors duration-200 text-glow leading-none">
-                fluno
-              </span>
-              <span className="font-mono text-[7px] text-fluno-purple/60 tracking-[0.22em] uppercase">
-                care in every drop
+            <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
+              <FigMark size={26} />
+              <span className="flex flex-col leading-none">
+                <span className="font-fig font-bold text-[1.7rem] text-fig-navy tracking-tight group-hover:text-fig-terracotta transition-colors duration-200 leading-none">
+                  fluno
+                </span>
+                <span className="font-fig-body text-[7px] text-fig-ink-soft/70 tracking-[0.22em] uppercase mt-0.5">
+                  care in every drop
+                </span>
               </span>
             </Link>
 
@@ -90,15 +93,15 @@ export default function Header() {
                   <Link
                     key={l.href}
                     href={l.href}
-                    className={`relative font-body text-sm px-4 py-2 rounded-lg transition-all duration-200 group ${
+                    className={`relative font-fig-body text-sm px-4 py-2 rounded-lg transition-all duration-200 ${
                       active
-                        ? "text-fluno-purple bg-fluno-purple/10"
-                        : "text-white/55 hover:text-white hover:bg-white/5"
+                        ? "text-fig-terracotta bg-fig-terracotta/10 font-semibold"
+                        : "text-fig-ink-soft hover:text-fig-navy hover:bg-fig-navy/5"
                     }`}
                   >
                     {l.label}
                     {active && (
-                      <span className="absolute -bottom-0.5 left-4 right-4 h-px bg-fluno-purple rounded-full" />
+                      <span className="absolute -bottom-0.5 left-4 right-4 h-px bg-fig-terracotta rounded-full" />
                     )}
                   </Link>
                 );
@@ -111,7 +114,9 @@ export default function Header() {
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
                 className={`p-2.5 transition-all rounded-xl ${
-                  searchOpen ? "text-fluno-purple bg-fluno-purple/10" : "text-white/45 hover:text-fluno-purple hover:bg-fluno-purple/10"
+                  searchOpen
+                    ? "text-fig-terracotta bg-fig-terracotta/10"
+                    : "text-fig-ink-soft/70 hover:text-fig-terracotta hover:bg-fig-terracotta/10"
                 }`}
                 aria-label="Search"
               >
@@ -121,7 +126,7 @@ export default function Header() {
               {/* Account */}
               <Link
                 href="/account"
-                className="p-2.5 text-white/45 hover:text-fluno-purple hover:bg-fluno-purple/10 transition-all rounded-xl"
+                className="p-2.5 text-fig-ink-soft/70 hover:text-fig-terracotta hover:bg-fig-terracotta/10 transition-all rounded-xl"
                 aria-label="Account"
               >
                 <User size={17} />
@@ -130,7 +135,7 @@ export default function Header() {
               {/* Cart */}
               <button
                 onClick={openCart}
-                className="relative p-2.5 text-white/45 hover:text-fluno-purple hover:bg-fluno-purple/10 transition-all rounded-xl ml-0.5"
+                className="relative p-2.5 text-fig-ink-soft/70 hover:text-fig-terracotta hover:bg-fig-terracotta/10 transition-all rounded-xl ml-0.5"
                 aria-label={`Cart, ${itemCount} items`}
               >
                 <ShoppingBag size={17} />
@@ -141,7 +146,7 @@ export default function Header() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
-                      className="absolute -top-0.5 -right-0.5 bg-fluno-purple text-white font-mono text-[9px] font-bold min-w-[17px] h-[17px] rounded-full flex items-center justify-center leading-none px-0.5"
+                      className="absolute -top-0.5 -right-0.5 bg-fig-terracotta text-white font-fig text-[9px] font-bold min-w-[17px] h-[17px] rounded-full flex items-center justify-center leading-none px-0.5"
                     >
                       {itemCount > 9 ? "9+" : itemCount}
                     </motion.span>
@@ -152,7 +157,7 @@ export default function Header() {
               {/* Mobile hamburger */}
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="md:hidden p-2.5 text-white/45 hover:text-fluno-purple hover:bg-fluno-purple/10 transition-all rounded-xl ml-1"
+                className="md:hidden p-2.5 text-fig-ink-soft/70 hover:text-fig-terracotta hover:bg-fig-terracotta/10 transition-all rounded-xl ml-1"
                 aria-label="Menu"
               >
                 <AnimatePresence mode="wait" initial={false}>
@@ -179,7 +184,7 @@ export default function Header() {
                   autoFocus
                   type="search"
                   placeholder="Search products, ingredients…"
-                  className="input-dark"
+                  className="w-full border border-fig-navy/15 bg-fig-paper text-fig-navy px-4 py-3 rounded-xl font-fig-body text-sm placeholder:text-fig-ink-soft/50 focus:outline-none focus:border-fig-terracotta focus:ring-2 focus:ring-fig-terracotta/20 transition-all"
                   onKeyDown={(e) => { if (e.key === "Escape") setSearchOpen(false); }}
                 />
               </motion.div>
@@ -194,7 +199,7 @@ export default function Header() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.22 }}
-                className="md:hidden overflow-hidden border-t border-white/10 pt-3 pb-4 space-y-0.5"
+                className="md:hidden overflow-hidden border-t border-fig-navy/10 pt-3 pb-4 space-y-0.5"
               >
                 {navLinks.map((l, i) => {
                   const active = pathname === l.href;
@@ -207,10 +212,10 @@ export default function Header() {
                     >
                       <Link
                         href={l.href}
-                        className={`flex items-center font-body text-sm py-2.5 px-3 rounded-xl transition-all ${
+                        className={`flex items-center font-fig-body text-sm py-2.5 px-3 rounded-xl transition-all ${
                           active
-                            ? "text-fluno-purple bg-fluno-purple/10 font-semibold"
-                            : "text-white/60 hover:text-white hover:bg-white/5"
+                            ? "text-fig-terracotta bg-fig-terracotta/10 font-semibold"
+                            : "text-fig-ink-soft hover:text-fig-navy hover:bg-fig-navy/5"
                         }`}
                       >
                         {l.label}

@@ -1,40 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Leaf, Sparkles, Zap, Clock } from "lucide-react";
-import HeroSection from "@/components/HeroSection";
-import AnimateIn from "@/components/AnimateIn";
-import ProductCarousel from "@/components/ProductCarousel";
-import TestimonialCarousel from "@/components/TestimonialCarousel";
-import NewsletterForm from "@/components/NewsletterForm";
+import { ArrowRight } from "lucide-react";
 import { connectDB } from "@/lib/mongodb";
 import { ProductModel } from "@/lib/models/Product";
 import { getFeaturedProducts } from "@/lib/products";
+import { FigRunner, FigSeeker, FigListener } from "@/components/fig/Fig";
+import ScrollTraveler from "@/components/fig/ScrollTraveler";
+import HomeProductCard from "@/components/fig/HomeProductCard";
+import NotifyStrip from "@/components/fig/NotifyStrip";
+import AnimateIn from "@/components/AnimateIn";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Fluno — Care in Every Drop",
-  description: "Mid-premium personal care and hygiene from India. Clean ingredients, dermatologist-tested, repeat-worthy.",
+  title: "Fluno — Care that keeps up with you",
+  description:
+    "Dermatologist-tested personal care formulated to EU ingredient standards, priced for every day. Made in Hyderabad, India.",
 };
-
-const whyUs = [
-  { icon: Leaf,        title: "Clean Formulas",      body: "No unnecessary harsh chemicals. Every ingredient earns its place in the formula.", color: "from-emerald-500/20 to-teal-500/10" },
-  { icon: ShieldCheck, title: "Dermatologist Tested", body: "Formulated with dermatologist input and tested on diverse Indian skin types.", color: "from-violet-500/20 to-purple-500/10" },
-];
-
-const ingredients = [
-  { name: "Zinc Oxide", role: "Broad-spectrum UV filter", note: "EU approved" },
-  { name: "Niacinamide", role: "Brightening + barrier repair", note: "4% concentration" },
-  { name: "Hyaluronic Acid", role: "Deep hydration", note: "Multi-molecular weight" },
-  { name: "Allantoin", role: "Skin conditioning", note: "Dermatologist favourite" },
-];
-
-const process = [
-  { step: "01", title: "Research",     body: "Every formula begins with clinical literature and dermatologist input — not trends.", icon: Zap },
-  { step: "02", title: "Formulation",  body: "Ingredients are selected against EU/UK safety standards before any testing begins.", icon: Leaf },
-  { step: "03", title: "Testing",      body: "Real-world trials with diverse Indian skin types across climates and seasons.", icon: ShieldCheck },
-  { step: "04", title: "Your Skin",    body: "Only when we're confident the product works consistently does it go on sale.", icon: Clock },
-];
 
 interface RawProduct {
   _id: unknown; slug: string; name: string; tagline?: string; price: number;
@@ -42,6 +24,62 @@ interface RawProduct {
   reviewCount?: number; images?: string[]; description?: string;
   ingredients?: string[]; howToUse?: string[]; benefits?: string[];
   badges?: string[]; inStock?: boolean; featured?: boolean;
+}
+
+const rituals = [
+  {
+    title: "Gentle, not weak",
+    body: "Sulphate-free surfactants and pH-balanced formulas clean properly without stripping skin — soft hands after the fiftieth wash, not just the first.",
+    pose: "runner",
+  },
+  {
+    title: "Held to EU standards",
+    body: "We formulate to EU and UK ingredient rules — stricter than what's required here — because the safest list should be the default, not the import.",
+    pose: "leap",
+  },
+  {
+    title: "Priced for daily use",
+    body: "Mid-premium quality at an everyday price. Care only works when you can afford to repeat it — tomorrow, and the day after.",
+    pose: "dancer",
+  },
+] as const;
+
+const standards = [
+  { title: "EU/UK ingredient standards", body: "including UV filters approved under the strictest safety reviews in the world." },
+  { title: "Dermatologist tested", body: "every formula, before launch, signed off by Dr. Sai Prasad, MBBS." },
+  { title: "pH balanced", body: "matched to skin so daily use never becomes daily damage." },
+  { title: "Full ingredient disclosure", body: "the complete INCI list on every product page, not just the flattering half." },
+];
+
+/** small pose glyphs for the ritual cards */
+function RitualGlyph({ pose }: { pose: string }) {
+  return (
+    <span className="w-11 h-11 rounded-full bg-fig-cream border-[2.5px] border-fig-navy flex items-center justify-center flex-none">
+      <svg viewBox="0 0 200 260" className="w-[26px] h-[26px]" aria-hidden="true">
+        {pose === "runner" && (
+          <>
+            <path d="M104 112 C 88 122, 72 120, 62 104" fill="none" stroke="#D9814F" strokeWidth="16" strokeLinecap="round" />
+            <path d="M108 100 L 99 150" fill="none" stroke="#D9814F" strokeWidth="44" strokeLinecap="round" />
+            <circle cx="123" cy="71" r="26" fill="#F7F3EC" stroke="#252B42" strokeWidth="6" />
+          </>
+        )}
+        {pose === "leap" && (
+          <>
+            <path d="M92 88 C 76 72, 68 56, 66 40" fill="none" stroke="#252B42" strokeWidth="16" strokeLinecap="round" />
+            <path d="M100 82 L 100 130" fill="none" stroke="#252B42" strokeWidth="44" strokeLinecap="round" />
+            <circle cx="100" cy="52" r="26" fill="#F7F3EC" stroke="#252B42" strokeWidth="6" />
+          </>
+        )}
+        {pose === "dancer" && (
+          <>
+            <path d="M106 100 C 124 80, 120 56, 98 48" fill="none" stroke="#E0A93B" strokeWidth="16" strokeLinecap="round" />
+            <path d="M102 100 L 104 152" fill="none" stroke="#E0A93B" strokeWidth="44" strokeLinecap="round" />
+            <circle cx="88" cy="72" r="26" fill="#F7F3EC" stroke="#252B42" strokeWidth="6" />
+          </>
+        )}
+      </svg>
+    </span>
+  );
 }
 
 export default async function HomePage() {
@@ -70,285 +108,179 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ── HERO ── */}
-      <HeroSection />
+      <ScrollTraveler />
 
-      {/* ── MARQUEE STRIP ── */}
-      <div className="bg-gradient-to-r from-fluno-purple-deep via-fluno-purple to-fluno-purple-dark py-3.5 overflow-hidden">
-        <div className="flex animate-marquee whitespace-nowrap gap-0 select-none">
-          {Array(10).fill(null).map((_, i) => (
-            <span key={i} className="font-brand font-bold text-white/90 text-base italic shrink-0 px-7">
-              Care in Every Drop ✦
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* ── FEATURED PRODUCTS (Embla carousel) ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <AnimateIn className="flex items-end justify-between mb-16">
-          <div>
-            <p className="eyebrow text-fluno-purple mb-3 flex items-center gap-2">
-              <Sparkles size={12} /> The Collection
+      {/* ── HERO (navy) ── */}
+      <section className="relative bg-fig-navy text-fig-cream overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-20 lg:pb-24 flex flex-wrap items-center gap-10">
+          <div className="flex-1 basis-[420px] min-w-0">
+            <p className="font-fig font-semibold text-[11px] tracking-[0.16em] uppercase text-fig-mustard mb-5">
+              Personal care · EU ingredient standards · Hyderabad
             </p>
-            <h2 className="section-title">Our Products</h2>
-            <p className="section-sub max-w-md">
-              Every formula earns your trust before it earns your repeat order.
+            <h1 className="font-fig font-bold text-[clamp(2.6rem,6vw,4.4rem)] leading-[1.05] tracking-tight [text-wrap:balance]">
+              Care that keeps up with&nbsp;you.
+            </h1>
+            <p className="font-fig-body text-lg text-[#C9CCDC] max-w-[52ch] mt-5 mb-8 leading-relaxed">
+              Dermatologist-tested essentials formulated to EU and UK ingredient
+              standards — the strictest lists we could find — and priced for every
+              single day.
             </p>
-          </div>
-          <Link
-            href="/shop"
-            className="hidden sm:flex items-center gap-2 text-sm font-semibold text-fluno-purple hover:gap-3 transition-all group shrink-0"
-          >
-            View All <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </AnimateIn>
-
-        <AnimateIn>
-          <ProductCarousel products={featured} />
-        </AnimateIn>
-
-        <AnimateIn className="text-center mt-12 sm:hidden">
-          <Link href="/shop" className="btn-outline">
-            View All Products <ArrowRight size={15} />
-          </Link>
-        </AnimateIn>
-      </section>
-
-      {/* ── WHY FLUNO ── */}
-      <section className="bg-fluno-dark py-28 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-fluno-purple/6 blur-[140px]" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-fluno-purple-deep/10 blur-[100px] rounded-full" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimateIn className="text-center mb-16">
-            <p className="eyebrow text-fluno-purple mb-3 flex items-center justify-center gap-2">
-              <Sparkles size={12} /> Why Choose Us
-            </p>
-            <h2 className="section-title-white">Why Fluno?</h2>
-            <p className="section-sub-white max-w-lg mx-auto">
-              We measure success by whether you come back for a second bottle.
-            </p>
-          </AnimateIn>
-
-          <div className="grid sm:grid-cols-2 gap-5">
-            {whyUs.map((w, i) => (
-              <AnimateIn key={w.title} delay={i * 0.1}>
-                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 h-full group hover:border-fluno-purple/30 transition-colors duration-300">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${w.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                  <div className="relative z-10">
-                    <div className="w-12 h-12 bg-white/8 border border-white/10 rounded-2xl flex items-center justify-center mb-5 group-hover:border-fluno-purple/30 transition-colors">
-                      <w.icon size={22} className="text-fluno-purple" />
-                    </div>
-                    <h3 className="font-display text-lg text-white mb-2.5">{w.title}</h3>
-                    <p className="font-body text-sm text-white/40 leading-relaxed">{w.body}</p>
-                  </div>
-                </div>
-              </AnimateIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── INGREDIENT SPOTLIGHT ── */}
-      <section className="py-28 bg-fluno-light relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-fluno-purple/4 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-fluno-purple/5 rounded-full blur-[80px] pointer-events-none" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <AnimateIn direction="left">
-              <p className="eyebrow text-fluno-purple mb-4 flex items-center gap-2">
-                <Sparkles size={12} /> What&apos;s Inside
-              </p>
-              <h2 className="section-title mb-6">Ingredients you can trust</h2>
-              <p className="font-body text-fluno-ink/60 leading-relaxed mb-10">
-                We publish our ingredient philosophy because we have nothing to hide.
-                Every active is present at a concentration that actually works — not just
-                enough to claim it on the label.
-              </p>
-
-              <div className="space-y-4">
-                {ingredients.map((ing, i) => (
-                  <AnimateIn key={ing.name} delay={i * 0.08} direction="left">
-                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-fluno-lavender/60 hover:border-fluno-purple/30 hover:shadow-md hover:shadow-fluno-purple/5 transition-all duration-300 group">
-                      <div className="w-10 h-10 bg-fluno-purple/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-fluno-purple/20 transition-colors">
-                        <Leaf size={16} className="text-fluno-purple" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-display font-semibold text-sm text-fluno-ink">{ing.name}</p>
-                        <p className="font-body text-xs text-fluno-muted/70 mt-0.5">{ing.role}</p>
-                      </div>
-                      <span className="badge text-[10px] flex-shrink-0">{ing.note}</span>
-                    </div>
-                  </AnimateIn>
-                ))}
-              </div>
-            </AnimateIn>
-
-            <AnimateIn direction="right">
-              <div className="relative">
-                <div className="aspect-square rounded-3xl bg-gradient-to-br from-fluno-lavender via-white to-fluno-lavender/50 border border-fluno-lavender/60 flex items-center justify-center overflow-hidden">
-                  <div className="text-center p-12">
-                    <p className="font-mono text-xs text-fluno-purple/60 tracking-widest uppercase mb-4">Formulated with</p>
-                    <p
-                      className="font-brand font-bold text-fluno-ink leading-none"
-                      style={{ fontSize: "clamp(3rem, 8vw, 5.5rem)" }}
-                    >
-                      Science
-                    </p>
-                    <p className="font-mono text-sm text-fluno-muted/50 mt-3">
-                      not trends
-                    </p>
-                    <div className="mt-8 flex flex-wrap gap-2 justify-center">
-                      {["EU Approved", "pH Balanced", "Dermatologist Tested", "No Parabens", "No SLS"].map((tag) => (
-                        <span key={tag} className="badge text-[10px]">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                {/* Floating accent */}
-                <div className="absolute -top-4 -right-4 glass px-4 py-3 shadow-lg">
-                  <p className="font-mono text-[10px] text-fluno-purple">EU / UK Standard</p>
-                  <p className="font-display text-sm text-fluno-ink font-semibold mt-0.5">Safety Verified ✓</p>
-                </div>
-              </div>
-            </AnimateIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ── OUR PROCESS ── */}
-      <section className="py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimateIn className="text-center mb-16">
-            <p className="eyebrow text-fluno-purple mb-3 flex items-center justify-center gap-2">
-              <Sparkles size={12} /> How We Work
-            </p>
-            <h2 className="section-title">From lab to your skin</h2>
-            <p className="section-sub max-w-lg mx-auto">
-              No shortcuts. No compromises. Every product goes through this process before we're satisfied.
-            </p>
-          </AnimateIn>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-            {/* Connector line */}
-            <div className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-fluno-lavender to-transparent" />
-
-            {process.map((p, i) => (
-              <AnimateIn key={p.step} delay={i * 0.1}>
-                <div className="relative text-center">
-                  <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-fluno-purple to-fluno-purple-dark flex items-center justify-center shadow-lg shadow-fluno-purple/20 relative z-10">
-                    <p.icon size={24} className="text-white" />
-                  </div>
-                  <span className="font-mono text-xs text-fluno-purple/40 tracking-widest">{p.step}</span>
-                  <h3 className="font-display text-lg font-semibold text-fluno-ink mt-1 mb-2">{p.title}</h3>
-                  <p className="font-body text-sm text-fluno-muted/70 leading-relaxed">{p.body}</p>
-                </div>
-              </AnimateIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── BRAND PROMISE ── */}
-      <section className="relative py-28 overflow-hidden bg-fluno-dark">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-fluno-purple/15 via-transparent to-fluno-purple-deep/8" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] bg-fluno-purple/8 blur-[120px] rounded-full" />
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <AnimateIn>
-            <p className="eyebrow text-fluno-purple mb-6 flex items-center justify-center gap-2">
-              <Sparkles size={12} /> Our Promise
-            </p>
-            <blockquote
-              className="font-brand font-bold text-white leading-tight"
-              style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)" }}
-            >
-              &ldquo;You shouldn&apos;t have to{" "}
-              <span className="text-fluno-purple text-glow">choose between</span>{" "}
-              safe and effective.&rdquo;
-            </blockquote>
-            <p className="font-body text-lg text-white/40 mt-8 leading-relaxed max-w-2xl mx-auto">
-              Fluno was born in India with one question: why do most personal care products
-              either cut corners on ingredients or charge luxury prices? We formulated our way to the answer.
-            </p>
-            <Link href="/about" className="btn-outline-white mt-10 inline-flex">
-              Read Our Story <ArrowRight size={15} />
-            </Link>
-          </AnimateIn>
-        </div>
-      </section>
-
-      {/* ── TESTIMONIALS (Embla) ── */}
-      <section className="py-28 bg-fluno-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimateIn className="text-center mb-14">
-            <p className="eyebrow text-fluno-purple mb-3 flex items-center justify-center gap-2">
-              <Sparkles size={12} /> Customer Love
-            </p>
-            <h2 className="section-title">What our customers say</h2>
-            <p className="section-sub">Real reviews. No filters. No paid testimonials.</p>
-          </AnimateIn>
-
-          <AnimateIn>
-            <TestimonialCarousel />
-          </AnimateIn>
-        </div>
-      </section>
-
-      {/* ── NEWSLETTER ── */}
-      <section className="py-20 bg-white border-y border-fluno-lavender/60">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <AnimateIn>
-            <p className="eyebrow text-fluno-purple mb-3">Stay in the loop</p>
-            <h3 className="font-display text-2xl md:text-3xl text-fluno-ink mb-3">
-              Skincare tips straight to your inbox
-            </h3>
-            <p className="font-body text-sm text-fluno-muted/70 mb-8">
-              No spam. Just honest skincare advice, ingredient deep-dives, and early access to new products.
-            </p>
-            <NewsletterForm />
-          </AnimateIn>
-        </div>
-      </section>
-
-      {/* ── FINAL CTA ── */}
-      <section className="relative py-28 overflow-hidden bg-fluno-dark">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-fluno-purple/20 via-fluno-dark to-fluno-purple-deep/10" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-fluno-purple/10 blur-[100px] rounded-full" />
-        </div>
-
-        <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
-          <AnimateIn>
-            <p className="eyebrow text-fluno-purple mb-4 flex items-center justify-center gap-2">
-              <Sparkles size={12} /> Join the Fluno family
-            </p>
-            <h2
-              className="font-brand font-bold text-white leading-tight"
-              style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)" }}
-            >
-              Ready to make the switch?
-            </h2>
-            <p className="section-sub-white text-lg mt-4 mb-10">
-              Trusted by skincare enthusiasts who chose quality over compromise.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="/shop" className="btn-primary text-base px-10 py-4 shadow-lg shadow-fluno-purple/30">
-                Shop Now <ArrowRight size={16} />
+            <div className="flex flex-wrap gap-3.5">
+              <Link
+                href="/shop"
+                className="inline-flex items-center gap-2 rounded-full bg-fig-terracotta hover:bg-fig-terracotta-deep text-[#FFF6EE] font-fig font-semibold px-7 py-3.5 transition-all duration-150 hover:-translate-y-px"
+              >
+                Shop the range <ArrowRight size={15} />
               </Link>
-              <Link href="/contact" className="btn-outline-white text-base px-10 py-4">
-                Get in Touch
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-fig-cream/35 hover:border-fig-cream/70 text-fig-cream font-fig font-semibold px-7 py-3.5 transition-colors"
+              >
+                Read our standards
               </Link>
             </div>
+            <div className="flex flex-wrap gap-6 mt-9">
+              {["Dermatologist tested", "pH balanced", "Sulphate-free cleansing"].map((t) => (
+                <span key={t} className="flex items-center gap-2 text-[13px] text-[#C9CCDC]">
+                  <i className="w-[7px] h-[7px] rounded-full bg-fig-sage inline-block flex-none" />
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex-none basis-[300px] grow-0 mx-auto flex justify-center">
+            <FigRunner animate darkGround className="w-[min(290px,64vw)] h-auto" />
+          </div>
+        </div>
+        <div className="absolute left-0 right-0 bottom-8 h-px bg-gradient-to-r from-transparent via-fig-cream/20 to-transparent" aria-hidden="true" />
+      </section>
+
+      {/* ── THE RANGE (cream) ── */}
+      <section id="shop" className="bg-fig-cream py-20 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimateIn>
+            <p className="font-fig font-semibold text-[11px] tracking-[0.16em] uppercase text-fig-terracotta mb-4">
+              The range
+            </p>
+            <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
+              Two essentials today. More, slowly.
+            </h2>
+            <p className="font-fig-body text-fig-ink-soft text-lg mt-3 max-w-[58ch]">
+              We add a product only when it clears the same standards bar as the
+              last one — no filler SKUs, no fifty-variant walls.
+            </p>
           </AnimateIn>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-11">
+            {featured.slice(0, 2).map((p, i) => (
+              <AnimateIn key={p.id} delay={i * 0.08}>
+                <HomeProductCard product={p} index={i} />
+              </AnimateIn>
+            ))}
+
+            {/* in-the-lab teaser */}
+            <AnimateIn delay={0.16}>
+              <article className="bg-fig-paper border-[1.5px] border-fig-navy/10 rounded-3xl overflow-hidden flex flex-col h-full">
+                <div className="relative flex items-end justify-center min-h-[250px] p-6 bg-gradient-to-br from-fig-sage/30 to-fig-sage/10">
+                  <span className="absolute top-4 left-4 font-fig font-semibold text-[11px] tracking-[0.1em] uppercase border-[1.5px] border-fig-navy/15 text-fig-ink-soft rounded-full px-3 py-1.5">
+                    In the lab
+                  </span>
+                  <FigSeeker animate className="h-[210px] w-auto" />
+                </div>
+                <div className="flex flex-col gap-2 p-6 flex-1">
+                  <span className="font-fig font-semibold text-[11px] tracking-[0.12em] uppercase text-fig-terracotta">
+                    Next up
+                  </span>
+                  <h3 className="font-fig font-bold text-xl text-fig-navy leading-tight">The third essential</h3>
+                  <p className="font-fig-body text-sm text-fig-ink-soft">
+                    In formulation now. It ships when it clears the bar — join the
+                    list below and you&apos;ll hear first.
+                  </p>
+                  <div className="mt-auto pt-4">
+                    <span className="font-fig font-semibold text-fig-ink-soft">Untitled, for now</span>
+                  </div>
+                  <a
+                    href="#notify"
+                    className="mt-3 inline-flex items-center justify-center rounded-full bg-fig-navy hover:bg-fig-navy-soft text-fig-cream font-fig font-semibold text-[15px] px-6 py-3 transition-all duration-150 hover:-translate-y-px"
+                  >
+                    Get notified
+                  </a>
+                </div>
+              </article>
+            </AnimateIn>
+          </div>
         </div>
       </section>
+
+      {/* ── WHY FLUNO (terracotta) ── */}
+      <section className="bg-fig-terracotta py-20 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimateIn>
+            <p className="font-fig font-semibold text-[11px] tracking-[0.16em] uppercase text-fig-navy mb-4">
+              Why Fluno
+            </p>
+            <h2 className="font-fig font-bold text-[#FFF6EE] text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
+              Made for bodies in motion.
+            </h2>
+            <p className="font-fig-body text-[#F8DFC9] text-lg mt-3 max-w-[58ch]">
+              Every formula follows three rules. If a product can&apos;t keep all
+              three, it doesn&apos;t ship.
+            </p>
+          </AnimateIn>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-11">
+            {rituals.map((r, i) => (
+              <AnimateIn key={r.title} delay={i * 0.08}>
+                <div className="bg-[#FFFDF9]/10 border-[1.5px] border-[#FFFDF9]/20 rounded-3xl p-7 h-full">
+                  <h3 className="font-fig font-semibold text-lg text-[#FFF6EE] flex items-center gap-3">
+                    <RitualGlyph pose={r.pose} />
+                    {r.title}
+                  </h3>
+                  <p className="font-fig-body text-sm text-[#F8DFC9] leading-relaxed mt-3.5">{r.body}</p>
+                </div>
+              </AnimateIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── OUR STANDARDS (sage) ── */}
+      <section id="standards" className="bg-fig-sage py-20 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center gap-12">
+          <div className="flex-1 basis-[420px]">
+            <AnimateIn>
+              <p className="font-fig font-semibold text-[11px] tracking-[0.16em] uppercase text-fig-navy mb-4">
+                Our standards
+              </p>
+              <h2 className="font-fig font-bold text-fig-navy text-[clamp(1.8rem,3.6vw,2.6rem)] leading-tight [text-wrap:balance]">
+                The boring paperwork, done properly.
+              </h2>
+              <p className="font-fig-body text-fig-navy/75 text-lg mt-3 max-w-[56ch]">
+                Founded in Hyderabad by a CEO who reads ingredient lists and a
+                doctor who signs off on them. This is the bar every Fluno product
+                clears:
+              </p>
+              <ul className="mt-7 grid gap-3.5 max-w-[54ch]">
+                {standards.map((s) => (
+                  <li key={s.title} className="flex gap-3.5 items-start text-fig-navy">
+                    <span className="flex-none w-6 h-6 rounded-full bg-fig-navy text-fig-cream flex items-center justify-center text-[11px] mt-0.5">
+                      ✓
+                    </span>
+                    <span className="font-fig-body text-[15px] leading-relaxed">
+                      <b className="font-fig font-semibold">{s.title}</b> — {s.body}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </AnimateIn>
+          </div>
+          <div className="flex-none basis-[280px] grow-0 mx-auto flex justify-center">
+            <FigListener className="w-[min(260px,58vw)] h-auto" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── LAUNCH LIST (mustard) ── */}
+      <NotifyStrip />
     </>
   );
 }

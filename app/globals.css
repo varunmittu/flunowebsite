@@ -156,6 +156,36 @@
   }
 }
 
+/* ── Fluno Figure ("Fig") v2 character system ── */
+.fig-armB { transform-origin: 104px 112px; animation: figSwingB .8s ease-in-out infinite; }
+.fig-armF { transform-origin: 112px 116px; animation: figSwingF .8s ease-in-out infinite; }
+.fig-legB { transform-origin: 98px 148px;  animation: figSwingF .8s ease-in-out infinite; }
+.fig-legF { transform-origin: 104px 148px; animation: figSwingB .8s ease-in-out infinite; }
+.fig-body { animation: figBob .4s ease-in-out infinite alternate; }
+.fig-seek { transform-origin: 100px 150px; animation: figSeek 2.6s ease-in-out infinite; }
+.fig-leap-in { animation: figLeapIn 1.1s cubic-bezier(.32,1.4,.5,1) both; }
+
+@keyframes figSwingB { 0%,100% { transform: rotate(10deg);  } 50% { transform: rotate(-12deg); } }
+@keyframes figSwingF { 0%,100% { transform: rotate(-10deg); } 50% { transform: rotate(12deg);  } }
+@keyframes figBob    { from    { transform: translateY(0);  } to  { transform: translateY(3px); } }
+@keyframes figSeek   { 0%,100% { transform: rotate(-7deg);  } 50% { transform: rotate(7deg);   } }
+@keyframes figLeapIn {
+  0%   { transform: translateY(46px) scale(.82); }
+  55%  { transform: translateY(-14px) scale(1.04); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* traveler rests when scrolling stops */
+.fig-traveler:not(.fig-moving) .fig-armB,
+.fig-traveler:not(.fig-moving) .fig-armF,
+.fig-traveler:not(.fig-moving) .fig-legB,
+.fig-traveler:not(.fig-moving) .fig-legF,
+.fig-traveler:not(.fig-moving) .fig-body { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fig-armB, .fig-armF, .fig-legB, .fig-legF, .fig-body, .fig-seek, .fig-leap-in { animation: none; }
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar             { width: 6px; }
 ::-webkit-scrollbar-track       { background: #FAF7FF; }
