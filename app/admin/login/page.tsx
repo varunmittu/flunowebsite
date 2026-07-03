@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ShieldCheck, Eye, EyeOff, Loader2, ArrowRight, Sparkles } from "lucide-react";
+import { ShieldCheck, Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
+import {
+  WavingFig, DoodleSun, DoodleSparkle, DoodleHeart, DoodleStar, DoodleDrop,
+} from "@/components/doodles/Doodles";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -47,10 +50,20 @@ export default function AdminLogin() {
         className="absolute inset-0 opacity-[0.025] pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(217,129,79,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(217,129,79,.6) 1px, transparent 1px)",
+            "linear-gradient(rgba(255,107,92,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,107,92,.6) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
+
+      {/* Floating doodles (bright fills pop on the dark bg) */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <DoodleSun className="absolute top-[12%] right-[14%] w-16 h-16 hidden sm:block" />
+        <DoodleHeart className="absolute top-[22%] left-[16%] w-9 h-9 animate-bob hidden sm:block" tone="coral" />
+        <DoodleStar className="absolute bottom-[18%] left-[22%] w-8 h-8 animate-wiggle-slow hidden sm:block" tone="sunny" />
+        <DoodleDrop className="absolute bottom-[24%] right-[18%] w-8 h-11 animate-bob-slow hidden sm:block" tone="sky" />
+        <DoodleSparkle className="absolute top-[40%] left-[10%] w-7 h-7 animate-wiggle hidden lg:block" tone="mint" />
+        <DoodleSparkle className="absolute bottom-[12%] right-[30%] w-6 h-6 animate-wiggle-slow hidden lg:block" tone="lilac" />
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -58,10 +71,13 @@ export default function AdminLogin() {
         transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo + Admin badge */}
+        {/* Mascot + wordmark */}
         <div className="text-center mb-8">
+          <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-fig-mustard border-[2.5px] border-fig-navy shadow-[4px_4px_0_0_#1E1E24] flex items-center justify-center animate-bob-slow">
+            <WavingFig className="w-16 h-auto" tone="coral" />
+          </div>
           <div className="inline-flex items-center gap-2.5 mb-3">
-            <Sparkles size={16} className="text-fig-terracotta" />
+            <DoodleSparkle className="w-5 h-5 animate-wiggle" tone="coral" />
             <span className="font-fig font-bold text-5xl text-white text-glow">fluno</span>
           </div>
           <div className="flex items-center justify-center gap-2 mt-1">

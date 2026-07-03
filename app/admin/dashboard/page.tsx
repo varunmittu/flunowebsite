@@ -8,6 +8,7 @@ import {
   Bell, Send, Users,
 } from "lucide-react";
 import Link from "next/link";
+import { HappyTeam, DoodleSparkle, DoodleReveal } from "@/components/doodles/Doodles";
 
 interface Stats {
   revenue: number;
@@ -173,6 +174,19 @@ export default function Dashboard() {
 
   return (
     <div className="flex-1 p-6 lg:p-8">
+
+      {/* Welcome banner */}
+      <div className="relative overflow-hidden mb-8 rounded-3xl border-[2.5px] border-fig-navy bg-fig-sage shadow-[5px_5px_0_0_#1E1E24] px-6 py-5 flex items-center justify-between gap-4">
+        <div className="relative z-10">
+          <p className="fig-eyebrow text-fig-navy/70 mb-1">Fluno admin</p>
+          <h2 className="font-fig font-bold text-2xl md:text-3xl text-fig-navy">Welcome back!</h2>
+          <p className="font-fig-body text-sm text-fig-navy/75 mt-1">Here&apos;s how your store is doing today.</p>
+        </div>
+        <DoodleReveal className="hidden sm:block shrink-0">
+          <HappyTeam className="w-44 lg:w-56 h-auto" />
+        </DoodleReveal>
+        <DoodleSparkle className="absolute top-4 right-4 w-6 h-6 animate-wiggle" tone="coral" />
+      </div>
 
       {/* Header */}
       <motion.div

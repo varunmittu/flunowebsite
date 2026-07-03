@@ -4,10 +4,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, Package, ShoppingBag, FileText,
-  Tag, FolderOpen, LogOut, Sparkles, X, Menu, HardDrive,
+  Tag, FolderOpen, LogOut, X, Menu, HardDrive,
   TicketCheck, ExternalLink, ChevronRight, Inbox,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { DoodleSparkle } from "@/components/doodles/Doodles";
 
 const sections = [
   {
@@ -66,8 +67,8 @@ export default function Sidebar() {
           onClick={() => setOpen(false)}
           className="flex items-center gap-2.5 group"
         >
-          <div className="w-8 h-8 rounded-xl bg-fig-terracotta/20 border border-fig-terracotta/25 flex items-center justify-center flex-shrink-0 group-hover:bg-fig-terracotta/30 transition-colors">
-            <Sparkles size={13} className="text-fig-terracotta" />
+          <div className="w-8 h-8 rounded-xl bg-fig-paper border-2 border-fig-navy flex items-center justify-center flex-shrink-0 group-hover:bg-fig-mustard transition-colors">
+            <DoodleSparkle className="w-4 h-4 animate-wiggle-slow" tone="coral" />
           </div>
           <div>
             <span className="font-fig font-bold text-xl text-white leading-none block">

@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Inbox, Mail, MailOpen, Trash2, Reply, ChevronDown,
+  Mail, MailOpen, Trash2, Reply, ChevronDown,
   ChevronUp, Loader2, RefreshCw,
 } from "lucide-react";
+import { ThumbsUp } from "@/components/doodles/Doodles";
 
 interface Message {
   _id: string;
@@ -132,10 +133,12 @@ export default function MessagesPage() {
           <Loader2 size={20} className="animate-spin" />
         </div>
       ) : messages.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 gap-3 text-white/20">
-          <Inbox size={36} />
-          <p className="font-mono text-sm">
-            {filter === "unread" ? "No unread messages" : "No messages yet"}
+        <div className="flex flex-col items-center justify-center py-24 gap-4">
+          <div className="w-24 h-24 rounded-3xl bg-fig-paper border-[2.5px] border-fig-navy shadow-[4px_4px_0_0_#000] flex items-center justify-center">
+            <ThumbsUp className="w-14 h-auto" tone="sunny" />
+          </div>
+          <p className="font-fig font-bold text-white/70">
+            {filter === "unread" ? "No unread messages" : "Inbox zero — nice."}
           </p>
         </div>
       ) : (

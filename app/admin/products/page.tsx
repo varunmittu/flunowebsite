@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Plus, Pencil, Trash2, Loader2, Package, ToggleLeft, ToggleRight } from "lucide-react";
+import { DoodleBottle } from "@/components/doodles/Doodles";
 
 interface Product {
   _id: string; name: string; slug: string; price: number;
@@ -62,9 +63,12 @@ export default function AdminProducts() {
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-16">
-            <Package size={32} className="text-white/[0.07] mx-auto mb-3" />
-            <p className="font-fig-body text-sm text-white/25">No products yet.</p>
-            <Link href="/admin/products/new" className="btn-primary text-sm mt-4 inline-flex">
+            <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-fig-paper border-[2.5px] border-fig-navy shadow-[4px_4px_0_0_#000] flex items-center justify-center">
+              <DoodleBottle className="w-12 h-auto" tone="coral" />
+            </div>
+            <p className="font-fig font-bold text-white/70">No products yet</p>
+            <p className="font-fig-body text-sm text-white/30 mt-1 mb-4">Add your first essential to get started.</p>
+            <Link href="/admin/products/new" className="btn-primary text-sm inline-flex">
               Add your first product
             </Link>
           </div>
