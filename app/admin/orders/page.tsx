@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Loader2, ArrowRight } from "lucide-react";
-import { WavingFig } from "@/components/doodles/Doodles";
+import { Loader2, ArrowRight, ShoppingBag } from "lucide-react";
 
 interface Order {
   _id: string; orderId: string; total: number; status: string;
@@ -75,9 +74,7 @@ export default function AdminOrders() {
           </div>
         ) : orders.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-fig-paper border-[2.5px] border-fig-navy shadow-[4px_4px_0_0_#000] flex items-center justify-center">
-              <WavingFig className="w-16 h-auto" tone="coral" />
-            </div>
+            <ShoppingBag size={32} className="text-white/[0.12] mx-auto mb-3" />
             <p className="font-fig font-bold text-white/70">No orders yet</p>
             <p className="font-fig-body text-sm text-white/30 mt-1">They&apos;ll show up here the moment they roll in.</p>
           </div>

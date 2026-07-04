@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2, Loader2, FolderOpen, Check, X, ToggleLeft, ToggleRight } from "lucide-react";
-import { DoodleSparkle } from "@/components/doodles/Doodles";
 
 interface Category {
   _id: string; name: string; slug: string; description: string;
@@ -190,9 +189,7 @@ export default function AdminCategories() {
           </div>
         ) : cats.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-fig-paper border-[2.5px] border-fig-navy shadow-[4px_4px_0_0_#000] flex items-center justify-center">
-              <DoodleSparkle className="w-12 h-12 animate-wiggle-slow" tone="lilac" />
-            </div>
+            <FolderOpen size={32} className="text-white/[0.12] mx-auto mb-3" />
             <p className="font-fig font-bold text-white/70">No categories yet</p>
             <p className="font-fig-body text-sm text-white/30 mt-1">Group your products to help shoppers browse.</p>
           </div>

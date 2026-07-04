@@ -6,7 +6,6 @@ import { ShoppingBag, Search, User, Menu, X, ChevronDown } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { DoodleSparkle } from "@/components/doodles/Doodles";
 
 const navLinks = [
   { label: "Shop",     href: "/shop"     },
@@ -74,7 +73,6 @@ export default function Header() {
 
             {/* Wordmark (no logo mark) */}
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-              <DoodleSparkle className="w-5 h-5 animate-wiggle" tone="coral" />
               <span className="flex flex-col leading-none">
                 <span className="font-fig font-bold text-[1.7rem] text-fig-navy tracking-tight group-hover:text-fig-terracotta transition-colors duration-200 leading-none">
                   fluno

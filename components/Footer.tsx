@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Instagram, Facebook, Youtube, ArrowRight, Mail, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DoodleSparkle } from "@/components/doodles/Doodles";
 
 const shop = [
   { label: "Hand Wash",         href: "/product/fluno-hand-wash-250ml"  },
@@ -108,7 +107,6 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-3 mb-5 group">
-              <DoodleSparkle className="w-6 h-6 animate-wiggle" tone="sunny" />
               <span>
                 <span className="font-fig font-bold text-4xl text-fig-cream tracking-tight group-hover:text-fig-terracotta transition-colors duration-200">
                   fluno

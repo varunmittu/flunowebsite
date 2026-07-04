@@ -200,38 +200,9 @@
   }
 }
 
-/* ── Doodle system ── */
-/* ink-outline default for hand-drawn SVGs */
-.doodle path,
-.doodle circle,
-.doodle ellipse,
-.doodle line,
-.doodle rect,
-.doodle polyline {
-  vector-effect: non-scaling-stroke;
-}
-/* draw-on: paths are VISIBLE by default (dashoffset 0); the reveal only
-   replays a draw-in animation. This guarantees doodles never disappear
-   even if the scroll reveal never fires. */
-.doodle-draw [data-draw] { stroke-dasharray: 1000; }
-.doodle-draw.is-in [data-draw]      { animation: drawOn 1.1s ease-out both; }
-.doodle-draw.is-in [data-draw="2"]  { animation: drawOn 1.1s ease-out 0.18s both; }
-.doodle-draw.is-in [data-draw="3"]  { animation: drawOn 1.1s ease-out 0.34s both; }
-
-/* marching-ants dashed connectors (scroll paths) */
-.doodle-march { stroke-dasharray: 6 10; animation: dashMarch 1.2s linear infinite; }
-
-/* underline squiggle used under headings */
-.doodle-underline { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
-.doodle-underline.is-in { animation: drawOn 0.9s ease-out 0.2s forwards; }
-
+/* ── Decorative motion (respects reduced-motion) ── */
 @media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .animate-wiggle, .animate-wiggle-slow, .animate-bob, .animate-bob-slow,
-  .animate-wave, .animate-pop-in, .animate-dash-march, .animate-draw-on,
-  .animate-blink, .animate-spin-slower, .doodle-march { animation: none !important; }
-  .doodle-draw [data-draw], .doodle-underline { stroke-dashoffset: 0 !important; }
-  .doodle-draw [data-fill] { opacity: 1 !important; }
+  .animate-float, .animate-bob, .animate-bob-slow { animation: none !important; }
 }
 
 /* ── Scrollbar ── */

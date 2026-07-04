@@ -5,7 +5,6 @@ import { Loader2, Grid3X3, LayoutList, Search } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { products as staticProducts } from "@/lib/products";
 import { autoAnimate } from "@formkit/auto-animate";
-import { DoodleSun, DoodleSparkle, DoodleDrop, DoodleReveal, WalkingPeople } from "@/components/doodles/Doodles";
 
 interface Product {
   id: string; slug: string; name: string; tagline: string; price: number;
@@ -93,9 +92,8 @@ export default function ShopPage() {
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute top-[8%] right-[6%] w-52 h-52 rounded-full bg-fig-terracotta/20 blur-[90px]" />
           <div className="absolute bottom-0 left-[10%] w-56 h-56 rounded-full bg-fig-sage/15 blur-[100px]" />
-          <DoodleSun className="absolute -top-6 right-[6%] w-24 h-24 opacity-90" />
-          <DoodleSparkle className="absolute bottom-10 left-[8%] w-8 h-8 animate-wiggle-slow" tone="mint" />
-          <DoodleDrop className="absolute top-14 right-[26%] w-8 h-11 animate-bob hidden md:block" tone="sky" />
+          <span className="absolute top-10 left-[12%] w-3.5 h-3.5 rounded-full bg-fig-mustard/70 animate-float" style={{ animationDelay: "0.2s" }} />
+          <span className="absolute bottom-12 right-[16%] w-5 h-5 rounded-full bg-fig-sage/60 animate-float" style={{ animationDelay: "1.3s" }} />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -124,13 +122,6 @@ export default function ShopPage() {
             />
           </div>
         </div>
-      </div>
-
-      {/* Walking strip */}
-      <div className="bg-fig-paper border-b-[3px] border-fig-navy py-6 overflow-hidden">
-        <DoodleReveal className="max-w-lg mx-auto px-4">
-          <WalkingPeople className="w-full h-auto" />
-        </DoodleReveal>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
