@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Plus, Trash2, Loader2, Tag, ToggleLeft, ToggleRight, X } from "lucide-react";
+import { DoodleStar } from "@/components/doodles/Doodles";
 
 interface Coupon {
   _id: string; code: string; type: "percent" | "fixed"; value: number;
@@ -189,8 +190,11 @@ export default function AdminCoupons() {
           </div>
         ) : coupons.length === 0 ? (
           <div className="text-center py-16">
-            <Tag size={32} className="text-white/[0.07] mx-auto mb-3" />
-            <p className="font-fig-body text-sm text-white/25">No coupons yet.</p>
+            <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-fig-paper border-[2.5px] border-fig-navy shadow-[4px_4px_0_0_#000] flex items-center justify-center">
+              <DoodleStar className="w-12 h-12" tone="sunny" />
+            </div>
+            <p className="font-fig font-bold text-white/70">No coupons yet</p>
+            <p className="font-fig-body text-sm text-white/30 mt-1">Create a code to reward your shoppers.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

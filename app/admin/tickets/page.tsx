@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Loader2, TicketCheck, RefreshCw, AlertCircle, Send, User, MessageSquare } from "lucide-react";
+import { ThumbsUp } from "@/components/doodles/Doodles";
 import { motion } from "framer-motion";
 
 interface TicketMessage {
@@ -176,8 +177,11 @@ export default function AdminTicketsPage() {
             </div>
           ) : tickets.length === 0 ? (
             <div className="card-dark p-8 text-center rounded-xl border border-white/8">
-              <TicketCheck size={28} className="text-white/20 mx-auto mb-2" />
-              <p className="text-white/40 font-fig-body text-sm">No tickets found.</p>
+              <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-fig-paper border-[2.5px] border-fig-navy shadow-[4px_4px_0_0_#000] flex items-center justify-center">
+                <ThumbsUp className="w-14 h-auto" tone="sunny" />
+              </div>
+              <p className="font-fig font-bold text-white/70">All caught up</p>
+              <p className="text-white/30 font-fig-body text-sm mt-1">No open tickets right now.</p>
             </div>
           ) : (
             tickets.map((t) => (

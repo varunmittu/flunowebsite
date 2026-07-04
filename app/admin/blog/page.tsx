@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, Loader2, FileText, ToggleLeft, ToggleRight } from "lucide-react";
+import { WavingFig } from "@/components/doodles/Doodles";
 
 interface Post {
   _id: string; title: string; slug: string; published: boolean;
@@ -60,9 +61,12 @@ export default function AdminBlog() {
           </div>
         ) : posts.length === 0 ? (
           <div className="text-center py-16">
-            <FileText size={32} className="text-white/[0.07] mx-auto mb-3" />
-            <p className="font-fig-body text-sm text-white/25">No blog posts yet.</p>
-            <Link href="/admin/blog/new" className="btn-primary text-sm mt-4 inline-flex">
+            <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-fig-sky border-[2.5px] border-fig-navy shadow-[4px_4px_0_0_#000] flex items-center justify-center">
+              <WavingFig className="w-16 h-auto" tone="coral" />
+            </div>
+            <p className="font-fig font-bold text-white/70">No blog posts yet</p>
+            <p className="font-fig-body text-sm text-white/30 mt-1 mb-4">Share a story or a skincare tip to get started.</p>
+            <Link href="/admin/blog/new" className="btn-primary text-sm inline-flex">
               Write your first post
             </Link>
           </div>

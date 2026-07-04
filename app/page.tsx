@@ -8,7 +8,7 @@ import HomeProductCard from "@/components/fig/HomeProductCard";
 import NotifyStrip from "@/components/fig/NotifyStrip";
 import AnimateIn from "@/components/AnimateIn";
 import {
-  DoodleReveal, WavingFig, WalkingPeople, HappyTeam, ThumbsUp,
+  DoodleReveal, DoodleCard, WavingFig, WalkingPeople, HappyTeam, ThumbsUp,
   DoodleBottle, DoodleSun, DoodleSparkle, DoodleHeart, DoodleDrop,
   DoodleStar, DoodleSquiggle, DoodleBlob,
 } from "@/components/doodles/Doodles";
@@ -110,16 +110,18 @@ export default async function HomePage() {
 
           <div className="flex-none basis-[300px] grow-0 mx-auto relative">
             <DoodleReveal>
-              <WavingFig className="w-[min(300px,72vw)] h-auto animate-bob-slow" tone="coral" />
+              <DoodleCard tone="mint" className="p-6 animate-bob-slow">
+                <WavingFig className="w-[min(230px,58vw)] h-auto" tone="coral" />
+              </DoodleCard>
             </DoodleReveal>
             <DoodleDrop className="absolute -left-6 top-10 w-9 h-12 animate-bob hidden sm:block" tone="sky" />
-            <DoodleStar className="absolute right-0 -top-2 w-8 h-8 animate-wiggle hidden sm:block" tone="sunny" />
+            <DoodleStar className="absolute -right-3 -top-3 w-9 h-9 animate-wiggle hidden sm:block" tone="sunny" />
           </div>
         </div>
       </section>
 
-      {/* ── WALKING STRIP (mint) ── */}
-      <section className="bg-fig-sage border-y-[3px] border-fig-navy py-8 overflow-hidden">
+      {/* ── WALKING STRIP (paper band, colourful figures pop) ── */}
+      <section className="bg-fig-paper border-y-[3px] border-fig-navy py-8 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-center">
           <DoodleReveal className="w-full max-w-2xl">
             <WalkingPeople className="w-full h-auto" />
@@ -229,7 +231,9 @@ export default async function HomePage() {
           </div>
           <div className="flex-none basis-[320px] grow-0 mx-auto">
             <DoodleReveal>
-              <HappyTeam className="w-[min(340px,80vw)] h-auto" />
+              <DoodleCard tone="paper" className="p-5">
+                <HappyTeam className="w-[min(300px,74vw)] h-auto" />
+              </DoodleCard>
             </DoodleReveal>
           </div>
         </div>
@@ -247,7 +251,9 @@ export default async function HomePage() {
             </p>
           </AnimateIn>
           <DoodleReveal className="mx-auto">
-            <ThumbsUp className="w-28 h-auto animate-bob" tone="coral" />
+            <DoodleCard tone="paper" className="p-5 animate-bob">
+              <ThumbsUp className="w-24 h-auto" tone="sunny" />
+            </DoodleCard>
           </DoodleReveal>
         </div>
       </section>

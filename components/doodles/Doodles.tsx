@@ -1,10 +1,11 @@
 "use client";
 
 /**
- * Fluno doodle system — hand-drawn ink-outline contour illustrations
+ * Fluno doodle system — hand-drawn ink-outline contour characters
  * with flat colour fills, in the "simple funny contour" style.
- * Fills use the bright fig palette; outlines are ink (#1E1E24).
- * Wrap any doodle in <DoodleReveal> to make its strokes draw on when scrolled into view.
+ * Outlines are ink (#1E1E24); heads are paper so faces read clearly.
+ * Characters should sit inside a <DoodleCard> (contrasting backing) so
+ * they stay visible on ANY section colour.
  * NOTE: spread {...stroke} always comes BEFORE any fill= override.
  */
 
@@ -30,7 +31,8 @@ const stroke = {
   fill: "none",
 };
 
-/** Reveal wrapper — adds the draw-on animation when the doodle scrolls into view. */
+/** Reveal wrapper — replays the draw-on when the doodle scrolls into view.
+ *  Doodles are fully visible by default (see globals); this only animates. */
 export function DoodleReveal({
   children,
   className = "",
@@ -41,7 +43,7 @@ export function DoodleReveal({
   draw?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const inView = useInView(ref, { once: true, margin: "-40px" });
   return (
     <div ref={ref} className={`${draw ? "doodle-draw" : ""} ${inView ? "is-in" : ""} ${className}`}>
       {children}
@@ -49,33 +51,89 @@ export function DoodleReveal({
   );
 }
 
-/** tiny happy face — reused across figures */
-function Face({ cx, cy, r = 18 }: { cx: number; cy: number; r?: number }) {
+const CARD_BG: Record<ToneKey, string> = {
+  coral: "bg-fig-terracotta",
+  sunny: "bg-fig-mustard",
+  sky: "bg-fig-sky",
+  mint: "bg-fig-sage",
+  lilac: "bg-fig-lilac",
+  paper: "bg-fig-paper",
+};
+
+/** Contrasting "sticker" backing so a character is always visible. */
+export function DoodleCard({
+  children,
+  tone = "sunny",
+  className = "",
+}: {
+  children: ReactNode;
+  tone?: ToneKey;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-flex items-center justify-center rounded-[2rem] border-[3px] border-fig-navy shadow-[6px_6px_0_0_#1E1E24] ${CARD_BG[tone]} ${className}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+/** Face with real character — big eyes, cheeks, smile. */
+function Face({ cx, cy, r }: { cx: number; cy: number; r: number }) {
+  const ex = r * 0.34;
   return (
     <>
-      <circle cx={cx - r * 0.34} cy={cy - r * 0.1} r={2.4} fill={INK} data-fill />
-      <circle cx={cx + r * 0.34} cy={cy - r * 0.1} r={2.4} fill={INK} data-fill />
-      <path d={`M ${cx - r * 0.4} ${cy + r * 0.28} Q ${cx} ${cy + r * 0.7}, ${cx + r * 0.4} ${cy + r * 0.28}`} {...stroke} strokeWidth={3} data-draw="2" />
+      <circle cx={cx - ex} cy={cy - r * 0.05} r={r * 0.12} fill={INK} data-fill />
+      <circle cx={cx + ex} cy={cy - r * 0.05} r={r * 0.12} fill={INK} data-fill />
+      <circle cx={cx - ex - r * 0.04} cy={cy - r * 0.1} r={r * 0.04} fill={TONE.paper} data-fill />
+      <circle cx={cx + ex - r * 0.04} cy={cy - r * 0.1} r={r * 0.04} fill={TONE.paper} data-fill />
+      <circle cx={cx - ex * 1.5} cy={cy + r * 0.3} r={r * 0.14} fill={TONE.coral} opacity={0.55} data-fill />
+      <circle cx={cx + ex * 1.5} cy={cy + r * 0.3} r={r * 0.14} fill={TONE.coral} opacity={0.55} data-fill />
+      <path
+        d={`M ${cx - r * 0.34} ${cy + r * 0.24} Q ${cx} ${cy + r * 0.6}, ${cx + r * 0.34} ${cy + r * 0.24}`}
+        fill="none"
+        stroke={INK}
+        strokeWidth={Math.max(2.5, r * 0.11)}
+        strokeLinecap="round"
+        data-draw="2"
+      />
     </>
   );
+}
+
+/** Head with a little hair tuft + face. */
+function Head({ cx, cy, r }: { cx: number; cy: number; r: number }) {
+  return (
+    <>
+      <path d={`M${cx - r * 0.45} ${cy - r * 0.82} q ${r * 0.15} ${-r * 0.4} ${r * 0.38} ${-r * 0.08}`} {...stroke} strokeWidth={r * 0.18} data-draw />
+      <path d={`M${cx + r * 0.02} ${cy - r * 0.98} q ${r * 0.22} ${-r * 0.22} ${r * 0.38} ${r * 0.12}`} {...stroke} strokeWidth={r * 0.18} data-draw />
+      <circle cx={cx} cy={cy} r={r} {...stroke} fill={TONE.paper} data-draw />
+      <Face cx={cx} cy={cy} r={r} />
+    </>
+  );
+}
+
+function Hand({ x, y, r = 5 }: { x: number; y: number; r?: number }) {
+  return <circle cx={x} cy={y} r={r} {...stroke} strokeWidth={3.5} fill={TONE.paper} data-draw="2" />;
 }
 
 /** Friendly figure with a waving arm. */
 export function WavingFig({ className = "", tone = "coral" }: { className?: string; tone?: ToneKey }) {
   return (
-    <svg viewBox="0 0 130 170" className={`doodle ${className}`} aria-hidden="true">
-      <path d="M56 120 L50 156" {...stroke} data-draw />
-      <path d="M74 120 L82 156" {...stroke} data-draw />
-      <path d="M44 158 L56 156" {...stroke} strokeWidth={6} data-draw />
-      <path d="M80 156 L92 160" {...stroke} strokeWidth={6} data-draw />
-      <path d="M42 74 Q65 62 88 74 L82 122 Q65 130 48 122 Z" {...stroke} fill={TONE[tone]} data-draw />
-      <path d="M46 82 Q34 100 40 118" {...stroke} data-draw />
-      <g style={{ transformOrigin: "86px 82px" }} className="animate-wave">
-        <path d="M86 82 Q104 70 104 50" {...stroke} data-draw />
-        <circle cx="104" cy="46" r="7" {...stroke} strokeWidth={4} fill={TONE.sunny} data-draw="2" />
+    <svg viewBox="0 0 140 180" className={`doodle ${className}`} aria-hidden="true">
+      <path d="M60 126 L54 162" {...stroke} data-draw />
+      <path d="M78 126 L86 162" {...stroke} data-draw />
+      <path d="M48 164 L60 162" {...stroke} strokeWidth={7} data-draw />
+      <path d="M84 162 L96 166" {...stroke} strokeWidth={7} data-draw />
+      <path d="M44 78 Q70 64 96 78 L88 128 Q70 136 52 128 Z" {...stroke} fill={TONE[tone]} data-draw />
+      <path d="M50 86 Q36 106 42 124" {...stroke} data-draw />
+      <Hand x={42} y={126} />
+      <g style={{ transformOrigin: "90px 86px" }} className="animate-wave">
+        <path d="M90 86 Q110 74 112 50" {...stroke} data-draw />
+        <Hand x={112} y={47} r={7} />
       </g>
-      <circle cx="65" cy="46" r="22" {...stroke} fill={TONE.paper} data-draw />
-      <Face cx={65} cy={46} r={22} />
+      <Head cx={70} cy={44} r={24} />
     </svg>
   );
 }
@@ -84,19 +142,18 @@ export function WavingFig({ className = "", tone = "coral" }: { className?: stri
 export function WalkingPeople({ className = "" }: { className?: string }) {
   const tones: ToneKey[] = ["coral", "sky", "mint"];
   return (
-    <svg viewBox="0 0 320 150" className={`doodle ${className}`} aria-hidden="true">
+    <svg viewBox="0 0 330 160" className={`doodle ${className}`} aria-hidden="true">
       {tones.map((t, i) => {
-        const x = 45 + i * 110;
+        const x = 50 + i * 115;
         const flip = i === 1 ? -1 : 1;
         return (
-          <g key={t} transform={`translate(${x},0)`}>
-            <path d={`M-8 96 L${-22 * flip} 132`} {...stroke} data-draw />
-            <path d={`M8 96 L${20 * flip} 130`} {...stroke} data-draw />
-            <path d="M-18 56 Q0 46 18 56 L14 98 Q0 104 -14 98 Z" {...stroke} fill={TONE[t]} data-draw />
-            <path d={`M-14 62 Q${-26 * flip} 76 ${-20 * flip} 92`} {...stroke} data-draw />
-            <path d={`M14 62 Q${26 * flip} 72 ${22 * flip} 88`} {...stroke} data-draw />
-            <circle cx="0" cy="34" r="17" {...stroke} fill={TONE.paper} data-draw />
-            <Face cx={0} cy={34} r={17} />
+          <g key={t} transform={`translate(${x},4)`}>
+            <path d={`M-8 100 L${-24 * flip} 138`} {...stroke} data-draw />
+            <path d={`M8 100 L${22 * flip} 136`} {...stroke} data-draw />
+            <path d="M-20 58 Q0 46 20 58 L16 102 Q0 108 -16 102 Z" {...stroke} fill={TONE[t]} data-draw />
+            <path d={`M-15 64 Q${-28 * flip} 80 ${-22 * flip} 96`} {...stroke} data-draw />
+            <path d={`M15 64 Q${28 * flip} 74 ${24 * flip} 92`} {...stroke} data-draw />
+            <Head cx={0} cy={34} r={18} />
           </g>
         );
       })}
@@ -107,37 +164,38 @@ export function WalkingPeople({ className = "" }: { className?: string }) {
 /** United happy team — a huddle of figures with raised hands. */
 export function HappyTeam({ className = "" }: { className?: string }) {
   const people = [
-    { x: 40, tone: "coral" as ToneKey, raise: true },
-    { x: 100, tone: "sunny" as ToneKey, raise: false },
-    { x: 160, tone: "sky" as ToneKey, raise: true },
-    { x: 220, tone: "lilac" as ToneKey, raise: false },
+    { x: 42, tone: "coral" as ToneKey, raise: true },
+    { x: 104, tone: "sunny" as ToneKey, raise: false },
+    { x: 166, tone: "sky" as ToneKey, raise: true },
+    { x: 228, tone: "lilac" as ToneKey, raise: false },
   ];
   return (
-    <svg viewBox="0 0 270 180" className={`doodle ${className}`} aria-hidden="true">
+    <svg viewBox="0 0 280 190" className={`doodle ${className}`} aria-hidden="true">
       {people.map((p, i) => (
-        <g key={i} transform={`translate(${p.x},${i % 2 ? 12 : 0})`}>
-          <path d="M-6 128 L-8 164" {...stroke} data-draw />
-          <path d="M8 128 L10 164" {...stroke} data-draw />
-          <path d="M-20 78 Q0 66 20 78 L16 130 Q0 136 -16 130 Z" {...stroke} fill={TONE[p.tone]} data-draw />
+        <g key={i} transform={`translate(${p.x},${i % 2 ? 14 : 0})`}>
+          <path d="M-6 132 L-8 168" {...stroke} data-draw />
+          <path d="M8 132 L10 168" {...stroke} data-draw />
+          <path d="M-22 82 Q0 68 22 82 L18 134 Q0 140 -18 134 Z" {...stroke} fill={TONE[p.tone]} data-draw />
           {p.raise ? (
             <>
-              <path d="M-16 84 Q-30 60 -24 40" {...stroke} data-draw />
-              <path d="M16 84 Q30 60 24 40" {...stroke} data-draw />
-              <circle cx="-24" cy="36" r="6" {...stroke} strokeWidth={4} fill={TONE.paper} data-draw="2" />
-              <circle cx="24" cy="36" r="6" {...stroke} strokeWidth={4} fill={TONE.paper} data-draw="2" />
+              <path d="M-17 88 Q-32 62 -26 42" {...stroke} data-draw />
+              <path d="M17 88 Q32 62 26 42" {...stroke} data-draw />
+              <Hand x={-26} y={40} />
+              <Hand x={26} y={40} />
             </>
           ) : (
             <>
-              <path d="M-16 84 Q-30 100 -24 118" {...stroke} data-draw />
-              <path d="M16 84 Q30 100 24 118" {...stroke} data-draw />
+              <path d="M-17 88 Q-32 106 -26 122" {...stroke} data-draw />
+              <path d="M17 88 Q32 106 26 122" {...stroke} data-draw />
+              <Hand x={-26} y={124} />
+              <Hand x={26} y={124} />
             </>
           )}
-          <circle cx="0" cy="50" r="20" {...stroke} fill={TONE.paper} data-draw />
-          <Face cx={0} cy={50} r={20} />
+          <Head cx={0} cy={52} r={21} />
         </g>
       ))}
-      <g className="animate-wiggle" style={{ transformOrigin: "135px 20px" }}>
-        <path d="M135 8 L135 26 M126 17 L144 17" {...stroke} strokeWidth={4} stroke={TONE.coral} data-draw="3" />
+      <g className="animate-wiggle" style={{ transformOrigin: "140px 22px" }}>
+        <path d="M140 8 L140 28 M129 18 L151 18" {...stroke} strokeWidth={5} stroke={TONE.coral} data-draw="3" />
       </g>
     </svg>
   );
@@ -154,9 +212,8 @@ export function ThumbsUp({ className = "", tone = "sunny" }: { className?: strin
   );
 }
 
-/* ─────────────── objects ─────────────── */
+/* ─────────────── objects (bright fills — visible on light OR dark) ─────────────── */
 
-/** Pump bottle (product). */
 export function DoodleBottle({ className = "", tone = "coral" }: { className?: string; tone?: ToneKey }) {
   return (
     <svg viewBox="0 0 80 120" className={`doodle ${className}`} aria-hidden="true">
@@ -170,7 +227,6 @@ export function DoodleBottle({ className = "", tone = "coral" }: { className?: s
   );
 }
 
-/** Sunburst that slowly spins. */
 export function DoodleSun({ className = "" }: { className?: string }) {
   const rays = Array.from({ length: 8 }, (_, i) => (i * 360) / 8);
   return (
@@ -190,11 +246,11 @@ export function DoodleSun({ className = "" }: { className?: string }) {
         ))}
       </g>
       <circle cx="50" cy="50" r="22" {...stroke} fill={TONE.sunny} data-draw />
+      <Face cx={50} cy={52} r={16} />
     </svg>
   );
 }
 
-/** 4-point sparkle. */
 export function DoodleSparkle({ className = "", tone = "sunny" }: { className?: string; tone?: ToneKey }) {
   return (
     <svg viewBox="0 0 60 60" className={`doodle ${className}`} aria-hidden="true">
@@ -203,7 +259,6 @@ export function DoodleSparkle({ className = "", tone = "sunny" }: { className?: 
   );
 }
 
-/** Heart. */
 export function DoodleHeart({ className = "", tone = "coral" }: { className?: string; tone?: ToneKey }) {
   return (
     <svg viewBox="0 0 64 60" className={`doodle ${className}`} aria-hidden="true">
@@ -212,7 +267,6 @@ export function DoodleHeart({ className = "", tone = "coral" }: { className?: st
   );
 }
 
-/** Water drop. */
 export function DoodleDrop({ className = "", tone = "sky" }: { className?: string; tone?: ToneKey }) {
   return (
     <svg viewBox="0 0 60 80" className={`doodle ${className}`} aria-hidden="true">
@@ -222,7 +276,6 @@ export function DoodleDrop({ className = "", tone = "sky" }: { className?: strin
   );
 }
 
-/** 5-point star. */
 export function DoodleStar({ className = "", tone = "sunny" }: { className?: string; tone?: ToneKey }) {
   const pts = Array.from({ length: 5 }, (_, i) => {
     const a = (i * 72 - 90) * (Math.PI / 180);
@@ -235,7 +288,7 @@ export function DoodleStar({ className = "", tone = "sunny" }: { className?: str
   );
 }
 
-/** Wavy squiggle — used as an animated underline under headings. */
+/** Wavy squiggle — animated underline under headings. */
 export function DoodleSquiggle({ className = "", color = TONE.coral }: { className?: string; color?: string }) {
   return (
     <svg viewBox="0 0 220 22" className={`doodle ${className}`} aria-hidden="true" preserveAspectRatio="none">

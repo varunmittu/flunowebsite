@@ -127,7 +127,7 @@ export default function ShopPage() {
       </div>
 
       {/* Walking strip */}
-      <div className="bg-fig-sage border-b-[3px] border-fig-navy py-6 overflow-hidden">
+      <div className="bg-fig-paper border-b-[3px] border-fig-navy py-6 overflow-hidden">
         <DoodleReveal className="max-w-lg mx-auto px-4">
           <WalkingPeople className="w-full h-auto" />
         </DoodleReveal>
