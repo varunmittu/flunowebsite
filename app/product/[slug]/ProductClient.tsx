@@ -207,7 +207,7 @@ function ReviewsSection({ product }: { product: Product }) {
     : product.rating;
 
   return (
-    <section className="mt-16">
+    <section className="reveal mt-16">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <MessageSquare size={20} className="text-fig-terracotta" />
@@ -487,7 +487,7 @@ export default function ProductClient({ product, related }: { product: Product; 
       <ReviewsSection product={product} />
 
       {related.length > 0 && (
-        <section className="mt-20">
+        <section className="reveal mt-20">
           <h2 className="font-fig font-bold text-2xl md:text-3xl text-fig-navy mb-8">You Might Also Like</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {related.map((p) => (
