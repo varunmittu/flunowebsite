@@ -5,7 +5,7 @@ import { Bell, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { subscribeToPush } from "@/lib/push";
-import { CONSENT_KEY, CONSENT_EVENT } from "./CookieConsent";
+import { AUTH_PROMPT_DONE } from "./AuthPromptModal";
 
 export default function NotificationPrompt() {
   const { data: session } = useSession();
@@ -24,20 +24,20 @@ export default function NotificationPrompt() {
     if (localStorage.getItem("push_dismissed")) return;
 
     let t: ReturnType<typeof setTimeout>;
+    const proceed = () => { t = setTimeout(() => setShow(true), 1800); };
 
-    // Don't overlap the cookie banner: only prompt once the cookie choice
-    // has been made (or was made on a previous visit).
-    if (localStorage.getItem(CONSENT_KEY)) {
-      t = setTimeout(() => setShow(true), 4000);
+    // Sequence LAST: cookie banner → sign-in modal → notification prompt.
+    // The auth modal fires this once it's resolved (or immediately if the
+    // visitor is already signed in / has seen it this session).
+    const w = window as unknown as { __authPromptDone?: boolean };
+    if (w.__authPromptDone) {
+      proceed();
       return () => clearTimeout(t);
     }
-
-    const onConsent = () => {
-      t = setTimeout(() => setShow(true), 1500);
-    };
-    window.addEventListener(CONSENT_EVENT, onConsent);
+    const onDone = () => proceed();
+    window.addEventListener(AUTH_PROMPT_DONE, onDone);
     return () => {
-      window.removeEventListener(CONSENT_EVENT, onConsent);
+      window.removeEventListener(AUTH_PROMPT_DONE, onDone);
       clearTimeout(t);
     };
   }, []);

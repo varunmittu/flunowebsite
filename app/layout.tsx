@@ -9,6 +9,7 @@ import NotificationPrompt   from "@/components/NotificationPrompt";
 import CookieConsent         from "@/components/CookieConsent";
 import Analytics             from "@/components/Analytics";
 import WhatsAppButton        from "@/components/WhatsAppButton";
+import AuthPromptModal       from "@/components/AuthPromptModal";
 import ScrollAnimator        from "@/components/ScrollAnimator";
 import { SpeedInsights }     from "@vercel/speed-insights/next";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
@@ -157,8 +158,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 },
               }}
             />
-            <NotificationPrompt />
             <CookieConsent />
+            <AuthPromptModal />
+            <NotificationPrompt />
             <Analytics />
             <WhatsAppButton />
             <ScrollAnimator />

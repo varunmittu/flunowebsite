@@ -17,7 +17,6 @@ const company = [
   { label: "Contact",      href: "/contact"                             },
   { label: "Support",      href: "/support"                             },
   { label: "FAQ",          href: "/faq"                                 },
-  { label: "Amazon Store", href: "https://www.amazon.in", external: true },
 ];
 
 const legal = [
