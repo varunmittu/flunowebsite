@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Bell, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { CONSENT_KEY, CONSENT_EVENT } from "./CookieConsent";
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -28,8 +29,23 @@ export default function NotificationPrompt() {
     if (Notification.permission !== "default") return;
     if (localStorage.getItem("push_dismissed")) return;
 
-    const t = setTimeout(() => setShow(true), 4000);
-    return () => clearTimeout(t);
+    let t: ReturnType<typeof setTimeout>;
+
+    // Don't overlap the cookie banner: only prompt once the cookie choice
+    // has been made (or was made on a previous visit).
+    if (localStorage.getItem(CONSENT_KEY)) {
+      t = setTimeout(() => setShow(true), 4000);
+      return () => clearTimeout(t);
+    }
+
+    const onConsent = () => {
+      t = setTimeout(() => setShow(true), 1500);
+    };
+    window.addEventListener(CONSENT_EVENT, onConsent);
+    return () => {
+      window.removeEventListener(CONSENT_EVENT, onConsent);
+      clearTimeout(t);
+    };
   }, []);
 
   async function handleAllow() {
@@ -79,7 +95,7 @@ export default function NotificationPrompt() {
         >
           <div
             className="rounded-2xl px-5 py-4 shadow-2xl border border-white/[0.08] flex items-start gap-3"
-            style={{ background: "rgba(12,5,24,0.95)", backdropFilter: "blur(20px)" }}
+            style={{ background: "rgba(44,42,39,0.96)", backdropFilter: "blur(20px)" }}
           >
             <div className="w-9 h-9 rounded-xl bg-fig-terracotta/20 flex items-center justify-center flex-shrink-0 mt-0.5">
               <Bell size={16} className="text-fig-terracotta" />

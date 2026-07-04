@@ -36,7 +36,7 @@ export default function CookieConsent() {
         >
           <div
             className="rounded-2xl px-5 py-4 shadow-2xl border border-white/[0.08]"
-            style={{ background: "rgba(12,5,24,0.96)", backdropFilter: "blur(20px)" }}
+            style={{ background: "rgba(44,42,39,0.96)", backdropFilter: "blur(20px)" }}
           >
             <div className="flex items-start gap-3">
               <div className="w-9 h-9 rounded-xl bg-fig-terracotta/20 flex items-center justify-center flex-shrink-0 mt-0.5">
