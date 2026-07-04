@@ -70,6 +70,19 @@ export default function EditProduct() {
   const [loading,  setLoading]  = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error,    setError]    = useState("");
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("/api/admin/categories")
+      .then(r => r.json())
+      .then(d => setCategories(
+        (d.categories ?? [])
+          .filter((c: { active?: boolean }) => c.active !== false)
+          .map((c: { name: string }) => c.name)
+          .filter(Boolean)
+      ))
+      .catch(() => {});
+  }, []);
 
   const [form, setForm] = useState({
     name: "", slug: "", tagline: "", description: "", price: "", originalPrice: "",
@@ -195,11 +208,20 @@ export default function EditProduct() {
             </div>
             <div>
               <label className={labelCls}>Category</label>
-              <input
+              <select
                 value={form.category}
                 onChange={e => set("category", e.target.value)}
                 className={inputCls}
-              />
+              >
+                <option value="">— Select category —</option>
+                {/* keep the product's current category selectable even if it's inactive/removed */}
+                {form.category && !categories.includes(form.category) && (
+                  <option value={form.category}>{form.category} (current)</option>
+                )}
+                {categories.map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
             </div>
             <div className="col-span-2">
               <label className={labelCls}>Tagline</label>

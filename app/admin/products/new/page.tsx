@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, X, Loader2, ArrowLeft, AlertCircle } from "lucide-react";
 import Link from "next/link";
@@ -69,6 +69,8 @@ export default function NewProduct() {
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState("");
 
+  const [categories, setCategories] = useState<string[]>([]);
+
   const [form, setForm] = useState({
     name: "", slug: "", tagline: "", description: "", price: "", originalPrice: "",
     size: "", category: "", images: [] as string[], ingredients: [] as string[],
@@ -77,6 +79,19 @@ export default function NewProduct() {
   });
 
   const set = (k: string, v: unknown) => setForm(f => ({ ...f, [k]: v }));
+
+  useEffect(() => {
+    fetch("/api/admin/categories")
+      .then(r => r.json())
+      .then(d => {
+        const names = (d.categories ?? [])
+          .filter((c: { active?: boolean }) => c.active !== false)
+          .map((c: { name: string }) => c.name)
+          .filter(Boolean);
+        setCategories(names);
+      })
+      .catch(() => {});
+  }, []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -161,12 +176,22 @@ export default function NewProduct() {
             </div>
             <div>
               <label className={labelCls}>Category</label>
-              <input
+              <select
                 value={form.category}
                 onChange={e => set("category", e.target.value)}
                 className={inputCls}
-                placeholder="Hand Care"
-              />
+              >
+                <option value="">— Select category —</option>
+                {categories.map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              {categories.length === 0 && (
+                <p className="font-mono text-[9px] text-white/30 mt-1.5">
+                  No categories yet —{" "}
+                  <Link href="/admin/categories" className="text-fig-terracotta/80 underline">add one first</Link>
+                </p>
+              )}
             </div>
             <div className="col-span-2">
               <label className={labelCls}>Tagline</label>

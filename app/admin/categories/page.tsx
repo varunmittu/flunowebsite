@@ -178,8 +178,10 @@ export default function AdminCategories() {
         </button>
       </div>
 
-      {adding  && <FormRow onSubmit={create} />}
-      {editing && <FormRow onSubmit={save} isEdit />}
+      {/* Rendered as a function call (not <FormRow/>) so typing doesn't remount
+          the form and steal focus from the inputs. */}
+      {adding  && FormRow({ onSubmit: create })}
+      {editing && FormRow({ onSubmit: save, isEdit: true })}
 
       {/* Table */}
       <div className="rounded-2xl border border-white/[0.07] overflow-hidden" style={PANEL}>

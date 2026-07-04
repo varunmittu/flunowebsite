@@ -6,6 +6,7 @@ const PushSubSchema = new Schema({
     p256dh: { type: String, required: true },
     auth:   { type: String, required: true },
   },
+  userEmail: { type: String, default: "" }, // linked customer email (if logged in when subscribing)
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Package, MapPin, Ticket, LogOut, User, Loader2,
-  Plus, Pencil, Trash2, Star, Check, X, KeyRound,
+  Plus, Pencil, Trash2, Star, Check, X, KeyRound, Bell,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import PushOptIn from "@/components/PushOptIn";
 
 interface Order {
   _id: string;
@@ -241,6 +242,7 @@ export default function AccountPage() {
               {[
                 { icon: Package,  label: "Orders",    href: "#orders"    },
                 { icon: MapPin,   label: "Addresses", href: "#addresses" },
+                { icon: Bell,     label: "Notifications", href: "#notifications" },
                 { icon: KeyRound, label: "Security",  href: "#security"  },
                 { icon: Ticket,   label: "Support",   href: "#support"   },
               ].map((item) => (
@@ -521,7 +523,12 @@ export default function AccountPage() {
             )}
           </section>
 
-          {/* ── Support ── */}
+          {/* ── Notifications ── */}
+          <section id="notifications">
+            <h2 className="font-fig font-bold text-2xl text-fig-navy mb-5">Notifications</h2>
+            <PushOptIn email={user.email} />
+          </section>
+
           {/* ── Security ── */}
           <section id="security">
             <h2 className="font-fig font-bold text-2xl text-fig-navy mb-5">Security</h2>

@@ -3,18 +3,12 @@
 import { useEffect, useState } from "react";
 import { Bell, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
+import { subscribeToPush } from "@/lib/push";
 import { CONSENT_KEY, CONSENT_EVENT } from "./CookieConsent";
 
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-  const rawData = window.atob(base64);
-  const arr = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; i++) arr[i] = rawData.charCodeAt(i);
-  return arr;
-}
-
 export default function NotificationPrompt() {
+  const { data: session } = useSession();
   const [show,   setShow]   = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
 
@@ -50,30 +44,11 @@ export default function NotificationPrompt() {
 
   async function handleAllow() {
     setStatus("loading");
-    try {
-      const permission = await Notification.requestPermission();
-      if (permission !== "granted") { setShow(false); return; }
-
-      const reg = await navigator.serviceWorker.register("/sw.js");
-      await navigator.serviceWorker.ready;
-
-      const existing = await reg.pushManager.getSubscription();
-      const sub = existing ?? await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(
-          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
-        ),
-      });
-
-      await fetch("/api/push/subscribe", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(sub),
-      });
-
+    const result = await subscribeToPush(session?.user?.email ?? "");
+    if (result === "ok") {
       setStatus("done");
       setTimeout(() => setShow(false), 2000);
-    } catch {
+    } else {
       setShow(false);
     }
   }

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
   IndianRupee, ShoppingBag, Package, Tag,
   FileText, TrendingUp, Loader2, Zap, ArrowRight, ArrowUpRight,
-  Bell, Send, Users,
+  Bell, Send, Users, Mail,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -71,6 +71,12 @@ export default function Dashboard() {
   const [sending,       setSending]       = useState(false);
   const [notifResult,   setNotifResult]   = useState<{ sent: number; failed: number } | null>(null);
 
+  const [subsCount,     setSubsCount]     = useState<number | null>(null);
+  const [emailSubject,  setEmailSubject]  = useState("");
+  const [emailBody,     setEmailBody]     = useState("");
+  const [emailSending,  setEmailSending]  = useState(false);
+  const [emailResult,   setEmailResult]   = useState<{ sent: number; failed: number; message?: string } | null>(null);
+
   useEffect(() => {
     fetch("/api/admin/stats")
       .then((r) => r.json())
@@ -79,7 +85,30 @@ export default function Dashboard() {
       .then((r) => r.json())
       .then((d) => { if (d.count !== undefined) setSubCount(d.count); })
       .catch(() => {});
+    fetch("/api/admin/newsletter/send")
+      .then((r) => r.json())
+      .then((d) => { if (d.count !== undefined) setSubsCount(d.count); })
+      .catch(() => {});
   }, []);
+
+  async function sendCampaign(e: React.FormEvent) {
+    e.preventDefault();
+    if (!emailSubject.trim() || !emailBody.trim()) return;
+    setEmailSending(true);
+    setEmailResult(null);
+    try {
+      const res  = await fetch("/api/admin/newsletter/send", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ subject: emailSubject, message: emailBody }),
+      });
+      const data = await res.json();
+      setEmailResult(data);
+      if (data.sent > 0) { setEmailSubject(""); setEmailBody(""); }
+    } finally {
+      setEmailSending(false);
+    }
+  }
 
   async function sendNotification(e: React.FormEvent) {
     e.preventDefault();
@@ -312,6 +341,82 @@ export default function Dashboard() {
           >
             {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
             {sending ? "Sending…" : "Send Notification"}
+          </button>
+        </form>
+      </motion.div>
+
+      {/* Email Newsletter */}
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={{ delay: 0.4 }}
+        className="rounded-2xl border border-white/[0.07] overflow-hidden mb-6"
+        style={PANEL}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-fig-sky/20 flex items-center justify-center">
+              <Mail size={15} className="text-fig-sky" />
+            </div>
+            <div>
+              <h2 className="font-fig font-bold text-sm font-semibold text-white">Email Newsletter</h2>
+              <p className="font-mono text-[10px] text-white/30 mt-0.5">Broadcast to email subscribers</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 bg-white/[0.05] px-3 py-1.5 rounded-xl">
+            <Users size={11} className="text-fig-sky/70" />
+            <span className="font-mono text-xs text-white/50">
+              {subsCount === null ? "…" : subsCount} subscriber{subsCount !== 1 ? "s" : ""}
+            </span>
+          </div>
+        </div>
+
+        <form onSubmit={sendCampaign} className="p-6 space-y-4">
+          {emailResult && (
+            <div
+              className={`rounded-xl px-4 py-3 text-sm font-fig-body border ${
+                emailResult.sent > 0
+                  ? "border-green-500/20 text-green-400"
+                  : "border-yellow-500/20 text-yellow-400"
+              }`}
+              style={{ background: emailResult.sent > 0 ? "rgba(34,197,94,0.08)" : "rgba(234,179,8,0.08)" }}
+            >
+              {emailResult.sent > 0
+                ? `✓ Sent to ${emailResult.sent} subscriber${emailResult.sent !== 1 ? "s" : ""}${emailResult.failed > 0 ? ` (${emailResult.failed} failed)` : ""}`
+                : (emailResult.message || "No email subscribers yet.")}
+            </div>
+          )}
+
+          <div>
+            <label className={labelCls}>Subject *</label>
+            <input
+              value={emailSubject}
+              onChange={(e) => setEmailSubject(e.target.value)}
+              className={inputCls}
+              placeholder="New at Fluno this month ✨"
+              required
+            />
+          </div>
+
+          <div>
+            <label className={labelCls}>Message *</label>
+            <textarea
+              value={emailBody}
+              onChange={(e) => setEmailBody(e.target.value)}
+              className={inputCls + " min-h-[120px] resize-y"}
+              placeholder="Write your update here. Leave a blank line to start a new paragraph."
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={emailSending || !emailSubject.trim() || !emailBody.trim()}
+            className="flex items-center gap-2 bg-fig-sky text-fig-navy font-fig-body text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-fig-sky/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {emailSending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+            {emailSending ? "Sending…" : "Send Email Campaign"}
           </button>
         </form>
       </motion.div>
