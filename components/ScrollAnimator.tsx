@@ -17,6 +17,12 @@ export default function ScrollAnimator() {
     const html = document.documentElement;
     html.classList.add("reveal-on");
 
+    // JS is running → cancel the pre-paint reveal-all failsafe so it never
+    // fires during normal use (it only exists to rescue a broken-JS load).
+    const w = window as unknown as { __revealReady?: boolean; __revealFailsafe?: number };
+    w.__revealReady = true;
+    if (w.__revealFailsafe) clearTimeout(w.__revealFailsafe);
+
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const noIO = !("IntersectionObserver" in window);
 
@@ -42,15 +48,16 @@ export default function ScrollAnimator() {
           }
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+      { rootMargin: "0px 0px -6% 0px", threshold: 0.04 }
     );
 
     const scan = () => {
       document.querySelectorAll<HTMLElement>(".reveal, .reveal-stagger").forEach((el) => {
         if (seen.has(el)) return;
         seen.add(el);
-        if (el.getBoundingClientRect().top < window.innerHeight * 0.94) {
-          reveal(el); // already in view → fade in now
+        // Clearly in view on load → fade in now; otherwise animate on scroll.
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.85) {
+          reveal(el);
         } else {
           io.observe(el);
         }

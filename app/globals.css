@@ -205,24 +205,23 @@
    so no-JS / failed hydration always shows content. */
 html.reveal-on .reveal {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translateY(16px);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 html.reveal-on .reveal.is-visible { opacity: 1; transform: none; }
 
 html.reveal-on .reveal-stagger > * {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(14px);
+  transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1), transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 html.reveal-on .reveal-stagger.is-visible > * { opacity: 1; transform: none; }
-html.reveal-on .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.06s; }
-html.reveal-on .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.12s; }
-html.reveal-on .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.18s; }
-html.reveal-on .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.24s; }
-html.reveal-on .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.30s; }
-html.reveal-on .reveal-stagger.is-visible > *:nth-child(n+7) { transition-delay: 0.34s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.05s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.10s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.15s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.20s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.24s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(n+7) { transition-delay: 0.28s; }
 
 /* ── Decorative motion (respects reduced-motion) ── */
 @media (prefers-reduced-motion: reduce) {

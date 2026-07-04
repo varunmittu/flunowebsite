@@ -72,11 +72,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${quicksand.variable} ${outfit.variable} ${publicSans.variable} ${ibmPlexMono.variable} ${inter.variable}`}
     >
       <body>
-        {/* Pre-paint: hide reveal elements before first paint (no flash); failsafe reveals if JS stalls */}
+        {/* Pre-paint: hide reveal elements before first paint (no flash). The failsafe
+            reveals everything ONLY if the ScrollAnimator never runs (broken JS) — it
+            sets __revealReady and clears this timer, so it never fires in normal use. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "document.documentElement.classList.add('reveal-on');setTimeout(function(){document.querySelectorAll('.reveal,.reveal-stagger').forEach(function(e){e.classList.add('is-visible')})},2600);",
+              "document.documentElement.classList.add('reveal-on');window.__revealFailsafe=setTimeout(function(){if(!window.__revealReady){document.querySelectorAll('.reveal,.reveal-stagger').forEach(function(e){e.classList.add('is-visible')})}},8000);",
           }}
         />
         <script
