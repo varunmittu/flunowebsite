@@ -3,6 +3,17 @@ import { google } from "googleapis";
 
 export const dynamic = "force-dynamic";
 
+// Cache the first tab's name per serverless instance so we don't fetch it on
+// every request. Robust to the analytics tab being named anything (e.g. "Untitled").
+let cachedTab: string | null = null;
+
+async function firstTabName(sheets: ReturnType<typeof google.sheets>, spreadsheetId: string) {
+  if (cachedTab) return cachedTab;
+  const meta = await sheets.spreadsheets.get({ spreadsheetId });
+  cachedTab = meta.data.sheets?.[0]?.properties?.title ?? "Sheet1";
+  return cachedTab;
+}
+
 export async function POST(req: NextRequest) {
   const sheetId = process.env.GOOGLE_ANALYTICS_SHEET_ID;
   if (!sheetId) return NextResponse.json({ ok: true });
@@ -24,10 +35,11 @@ export async function POST(req: NextRequest) {
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     const sheets = google.sheets({ version: "v4", auth });
+    const tab = await firstTabName(sheets, sheetId);
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
-      range: "Sheet1!A:J",
+      range: `${tab}!A:J`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [[
