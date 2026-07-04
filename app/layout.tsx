@@ -86,19 +86,59 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Fluno",
-              legalName: "Parvar Enterprises",
-              url: "https://myfluno.com",
-              logo: "https://myfluno.com/icon",
-              description: "Mid-premium personal care and hygiene brand from India.",
-              sameAs: ["https://instagram.com/myfluno", "https://threads.net/@myfluno"],
-              contactPoint: {
-                "@type": "ContactPoint",
-                email: "contact@myfluno.com",
-                contactType: "customer service",
-                areaServed: "IN",
-              },
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://myfluno.com/#organization",
+                  name: "Fluno",
+                  legalName: "Parvar Enterprise",
+                  alternateName: ["myfluno", "Fluno Personal Care"],
+                  url: "https://myfluno.com",
+                  logo: "https://myfluno.com/icon",
+                  image: "https://myfluno.com/opengraph-image",
+                  description:
+                    "Fluno is a mid-premium personal care and hygiene brand from India offering everyday essentials like hand wash and SPF 50+ sunscreen — thoughtfully formulated, cruelty-free, and honestly priced.",
+                  slogan: "Care that keeps up with you.",
+                  email: "contact@myfluno.com",
+                  areaServed: "IN",
+                  knowsAbout: [
+                    "personal care", "skincare", "sunscreen", "hand wash",
+                    "hygiene", "SPF 50", "cruelty-free cosmetics", "clean beauty",
+                  ],
+                  sameAs: [
+                    "https://instagram.com/myfluno",
+                    "https://threads.net/@myfluno",
+                    "https://www.facebook.com/myfluno",
+                    "https://www.youtube.com/@myfluno",
+                  ],
+                  contactPoint: {
+                    "@type": "ContactPoint",
+                    email: "contact@myfluno.com",
+                    contactType: "customer service",
+                    areaServed: "IN",
+                    availableLanguage: ["en", "hi"],
+                  },
+                },
+                {
+                  "@type": "Brand",
+                  "@id": "https://myfluno.com/#brand",
+                  name: "Fluno",
+                  logo: "https://myfluno.com/icon",
+                  slogan: "Care that keeps up with you.",
+                  description:
+                    "Fluno makes mid-premium, cruelty-free everyday personal care essentials — hand wash, SPF 50+ sunscreen and more — made in India.",
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://myfluno.com/#website",
+                  url: "https://myfluno.com",
+                  name: "Fluno",
+                  description:
+                    "Everyday personal care, thoughtfully formulated and honestly priced.",
+                  inLanguage: "en-IN",
+                  publisher: { "@id": "https://myfluno.com/#organization" },
+                },
+              ],
             }),
           }}
         />

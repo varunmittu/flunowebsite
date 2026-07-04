@@ -98,8 +98,22 @@ const SECTIONS: { title: string; faqs: { q: string; a: string }[] }[] = [
 ];
 
 export default function FAQPage() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    name: "Fluno — Frequently Asked Questions",
+    mainEntity: SECTIONS.flatMap((s) => s.faqs).map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <p className="font-fig-body text-xs text-fig-terracotta uppercase tracking-widest mb-2">Help Center</p>
       <h1 className="font-fig font-bold text-3xl md:text-4xl text-fig-navy leading-tight mb-3">Frequently Asked Questions</h1>
       <p className="font-fig-body text-fig-navy/55 mb-12">
