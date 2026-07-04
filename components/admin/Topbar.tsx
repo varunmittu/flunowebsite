@@ -28,7 +28,7 @@ export default function Topbar() {
   return (
     <header
       className="sticky top-0 z-30 h-14 flex items-center justify-between px-6 border-b border-white/[0.06] flex-shrink-0"
-      style={{ background: "rgba(17,21,39,0.88)", backdropFilter: "blur(16px)" }}
+      style={{ background: "rgba(32, 30, 27,0.88)", backdropFilter: "blur(16px)" }}
     >
       {/* Left */}
       <div className="flex items-center gap-2 min-w-0">

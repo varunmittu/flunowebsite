@@ -216,7 +216,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-fig-cream">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Progress */}
-      <nav className="flex items-center gap-2 text-sm font-fig-body mb-10 flex-wrap">
+      <nav className="reveal flex items-center gap-2 text-sm font-fig-body mb-10 flex-wrap">
         {(["address", "review", "payment"] as Step[]).map((s, i, arr) => (
           <div key={s} className="flex items-center gap-2">
             <span className={`font-fig font-semibold ${step === s ? "text-fig-terracotta" : i < arr.indexOf(step) ? "text-fig-ink-soft/50 line-through" : "text-fig-ink-soft/50"}`}>
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
         ))}
       </nav>
 
-      <div className="grid lg:grid-cols-3 gap-10">
+      <div className="reveal grid lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
           {step === "address" && (
             <div>

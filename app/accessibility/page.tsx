@@ -13,12 +13,12 @@ export default function Accessibility() {
       <p className="font-fig-body text-xs text-fig-navy/40 mb-10">Last updated: June 2025</p>
 
       <div className="prose prose-sm max-w-none font-fig-body text-fig-navy/80 space-y-8">
-        <section>
+        <section className="reveal">
           <h2 className="font-fig font-bold text-xl text-fig-navy mb-3">Our Commitment</h2>
           <p>Fluno is committed to making myfluno.com accessible to all users, including those with disabilities. We aim to conform to the <strong>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</strong>.</p>
         </section>
 
-        <section>
+        <section className="reveal">
           <h2 className="font-fig font-bold text-xl text-fig-navy mb-3">What We Do</h2>
           <ul className="list-disc pl-5 space-y-2">
             <li>Use semantic HTML for screen reader compatibility</li>
@@ -30,12 +30,12 @@ export default function Accessibility() {
           </ul>
         </section>
 
-        <section>
+        <section className="reveal">
           <h2 className="font-fig font-bold text-xl text-fig-navy mb-3">Known Limitations</h2>
           <p>We are a small team and are continuously improving. Some third-party components (such as payment gateways) may not fully conform to WCAG standards — these are managed by their respective providers.</p>
         </section>
 
-        <section>
+        <section className="reveal">
           <h2 className="font-fig font-bold text-xl text-fig-navy mb-3">Feedback</h2>
           <p>If you experience any accessibility barriers on our site, please contact us:</p>
           <p><strong>Email:</strong> <a href="mailto:contact@myfluno.com" className="text-fig-terracotta hover:underline">contact@myfluno.com</a><br />

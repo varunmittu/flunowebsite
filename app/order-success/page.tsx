@@ -11,7 +11,7 @@ function OrderSuccessContent() {
 
   return (
     <div className="min-h-screen bg-fig-cream">
-      <div className="max-w-lg mx-auto px-4 py-20 text-center">
+      <div className="reveal max-w-lg mx-auto px-4 py-20 text-center">
         <div className="w-20 h-20 rounded-full bg-fig-sage/20 flex items-center justify-center mx-auto mb-6">
           <CheckCircle size={40} className="text-fig-sage" />
         </div>

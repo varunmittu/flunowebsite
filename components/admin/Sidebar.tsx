@@ -36,7 +36,7 @@ const sections = [
   },
 ];
 
-const SIDEBAR_BG = "linear-gradient(165deg, #171B2E 0%, #1C2138 55%, #252B42 100%)";
+const SIDEBAR_BG = "linear-gradient(165deg, #23211E 0%, #23211E 55%, #2C2A27 100%)";
 
 export default function Sidebar() {
   const path   = usePathname();
@@ -160,7 +160,7 @@ export default function Sidebar() {
       <button
         onClick={() => setOpen(true)}
         className="lg:hidden fixed top-3.5 left-4 z-50 p-2 rounded-xl text-white/50 border border-white/[0.1] hover:border-white/[0.2] transition-colors"
-        style={{ background: "rgba(17,21,39,0.92)" }}
+        style={{ background: "rgba(32, 30, 27,0.92)" }}
         aria-label="Open menu"
       >
         <Menu size={18} />

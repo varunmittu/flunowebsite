@@ -153,8 +153,8 @@ export default function MessagesPage() {
                   transition={{ duration: 0.2 }}
                   className="rounded-2xl overflow-hidden"
                   style={{
-                    background: isOpen ? "rgba(217,129,79,0.08)" : PANEL,
-                    border: `1px solid ${isOpen ? "rgba(217,129,79,0.25)" : BORDER}`,
+                    background: isOpen ? "rgba(192, 120, 91,0.08)" : PANEL,
+                    border: `1px solid ${isOpen ? "rgba(192, 120, 91,0.25)" : BORDER}`,
                   }}
                 >
                   {/* Row header */}

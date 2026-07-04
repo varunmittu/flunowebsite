@@ -96,7 +96,7 @@ export default function ShopPage() {
           <span className="absolute bottom-12 right-[16%] w-5 h-5 rounded-full bg-fig-sage/60 animate-float" style={{ animationDelay: "1.3s" }} />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="reveal relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <p className="fig-eyebrow text-fig-mustard mb-3">
             The collection
           </p>
@@ -191,7 +191,7 @@ export default function ShopPage() {
         ) : filtered.length > 0 ? (
           <div
             ref={gridRef}
-            className={`grid gap-6 ${
+            className={`reveal grid gap-6 ${
               gridCols === 4
                 ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-4"
                 : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"

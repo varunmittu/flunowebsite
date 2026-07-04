@@ -9,6 +9,7 @@ import NotificationPrompt   from "@/components/NotificationPrompt";
 import CookieConsent         from "@/components/CookieConsent";
 import Analytics             from "@/components/Analytics";
 import WhatsAppButton        from "@/components/WhatsAppButton";
+import ScrollAnimator        from "@/components/ScrollAnimator";
 import { SpeedInsights }     from "@vercel/speed-insights/next";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { Toaster }           from "sonner";
@@ -71,6 +72,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${quicksand.variable} ${outfit.variable} ${publicSans.variable} ${ibmPlexMono.variable} ${inter.variable}`}
     >
       <body>
+        {/* Pre-paint: hide reveal elements before first paint (no flash); failsafe reveals if JS stalls */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.classList.add('reveal-on');setTimeout(function(){document.querySelectorAll('.reveal,.reveal-stagger').forEach(function(e){e.classList.add('is-visible')})},2600);",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -101,9 +109,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               position="bottom-right"
               toastOptions={{
                 style: {
-                  background: "#252B42",
+                  background: "#2C2A27",
                   color: "#F7F3EC",
-                  border: "1px solid rgba(217,129,79,0.35)",
+                  border: "1px solid rgba(192, 120, 91,0.35)",
                 },
               }}
             />
@@ -111,6 +119,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CookieConsent />
             <Analytics />
             <WhatsAppButton />
+            <ScrollAnimator />
             <ConditionalLayout>{children}</ConditionalLayout>
           </CartProvider>
         </SessionProvider>

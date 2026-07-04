@@ -18,7 +18,7 @@ export default function HomeProductCard({ product, index }: { product: Product; 
     : 0;
 
   return (
-    <article className="group bg-fig-paper border-[2.5px] border-fig-navy rounded-3xl overflow-hidden flex flex-col transition-all duration-200 shadow-[5px_5px_0_0_#1E1E24] hover:shadow-[2px_2px_0_0_#1E1E24] hover:translate-x-[3px] hover:translate-y-[3px]">
+    <article className="group bg-fig-paper border-[2.5px] border-fig-navy rounded-3xl overflow-hidden flex flex-col transition-all duration-200 shadow-[5px_5px_0_0_#2C2A27] hover:shadow-[2px_2px_0_0_#2C2A27] hover:translate-x-[3px] hover:translate-y-[3px]">
       <Link
         href={`/product/${product.slug}`}
         className={`relative flex items-end justify-center min-h-[250px] p-6 ${ART_BG[index % ART_BG.length]}`}

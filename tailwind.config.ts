@@ -25,18 +25,18 @@ const config: Config = {
         "fluno-teal-light":  "#9B5DE5",
         "fluno-blush":       "#DDB8FF",
         "fluno-stone":       "#EDE9FF",
-        // v3 bright "doodle" palette (fig-* names kept, values re-skinned)
-        "fig-terracotta":      "#FF6B5C", // coral (primary accent)
-        "fig-terracotta-deep": "#F0503F", // deep coral (hovers)
-        "fig-sage":            "#6FE0B0", // mint
-        "fig-mustard":         "#FFC94D", // sunny
-        "fig-sky":             "#5AB2FF", // sky blue
-        "fig-lilac":           "#B49BFF", // lilac
-        "fig-navy":            "#1E1E24", // ink (dark surfaces / outlines / text)
-        "fig-navy-soft":       "#33333D",
-        "fig-cream":           "#FFF9EC", // warm paper (light bg)
-        "fig-paper":           "#FFFDF7", // paper
-        "fig-ink-soft":        "#5A5A66", // muted ink text
+        // v5 muted/neutral palette (fig-* names kept, values re-skinned)
+        "fig-terracotta":      "#C0785B", // muted clay (primary accent)
+        "fig-terracotta-deep": "#A5613F", // deeper clay (hovers)
+        "fig-sage":            "#9FAE9A", // muted sage
+        "fig-mustard":         "#CBA35E", // muted ochre
+        "fig-sky":             "#92A6B3", // dusty blue
+        "fig-lilac":           "#ACA0B0", // muted mauve
+        "fig-navy":            "#2C2A27", // warm charcoal (dark surfaces / text / borders)
+        "fig-navy-soft":       "#45423D",
+        "fig-cream":           "#F1EBE1", // light sand (light bg)
+        "fig-paper":           "#FAF7F2", // warm off-white
+        "fig-ink-soft":        "#6E695F", // muted taupe text
       },
       fontFamily: {
         brand:   ["var(--font-quicksand)", "sans-serif"],

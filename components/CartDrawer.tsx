@@ -40,7 +40,7 @@ export default function CartDrawer() {
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 280 }}
             className="fixed right-0 top-0 h-full w-full max-w-sm z-50 flex flex-col shadow-2xl"
-            style={{ background: "linear-gradient(160deg, #252B42 0%, #1C2138 100%)" }}
+            style={{ background: "linear-gradient(160deg, #2C2A27 0%, #23211E 100%)" }}
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-fig-cream/10">

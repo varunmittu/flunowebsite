@@ -37,7 +37,7 @@
 
   *:focus-visible { @apply outline-2 outline-offset-2 outline-fig-terracotta; }
 
-  ::selection { background-color: #FF6B5C33; }
+  ::selection { background-color: #C0785B33; }
 }
 
 @layer components {
@@ -122,17 +122,17 @@
     @apply inline-flex items-center justify-center gap-2
            bg-fig-terracotta hover:bg-fig-terracotta-deep text-fig-navy
            border-[2.5px] border-fig-navy font-fig font-semibold px-6 py-3 rounded-full
-           shadow-[3px_3px_0_0_#1E1E24] hover:shadow-[1px_1px_0_0_#1E1E24]
+           shadow-[3px_3px_0_0_#2C2A27] hover:shadow-[1px_1px_0_0_#2C2A27]
            hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px]
            transition-all duration-100
            disabled:opacity-50 disabled:cursor-not-allowed
-           disabled:shadow-[3px_3px_0_0_#1E1E24] disabled:translate-x-0 disabled:translate-y-0;
+           disabled:shadow-[3px_3px_0_0_#2C2A27] disabled:translate-x-0 disabled:translate-y-0;
   }
   .fig-btn-navy {
     @apply inline-flex items-center justify-center gap-2
            bg-fig-navy hover:bg-fig-navy-soft text-fig-cream
            border-[2.5px] border-fig-navy font-fig font-semibold px-6 py-3 rounded-full
-           shadow-[3px_3px_0_0_#FF6B5C] hover:shadow-[1px_1px_0_0_#FF6B5C]
+           shadow-[3px_3px_0_0_#C0785B] hover:shadow-[1px_1px_0_0_#C0785B]
            hover:translate-x-[2px] hover:translate-y-[2px]
            transition-all duration-100
            disabled:opacity-50 disabled:cursor-not-allowed;
@@ -141,14 +141,14 @@
     @apply inline-flex items-center justify-center gap-2
            border-[2.5px] border-fig-navy text-fig-navy font-fig font-semibold
            px-6 py-3 rounded-full bg-fig-paper
-           shadow-[3px_3px_0_0_#1E1E24] hover:bg-fig-mustard
-           hover:shadow-[1px_1px_0_0_#1E1E24] hover:translate-x-[2px] hover:translate-y-[2px]
+           shadow-[3px_3px_0_0_#2C2A27] hover:bg-fig-mustard
+           hover:shadow-[1px_1px_0_0_#2C2A27] hover:translate-x-[2px] hover:translate-y-[2px]
            transition-all duration-100;
   }
   .fig-card {
     @apply bg-fig-paper rounded-3xl overflow-hidden border-[2.5px] border-fig-navy
-           shadow-[5px_5px_0_0_#1E1E24] transition-all duration-150
-           hover:shadow-[2px_2px_0_0_#1E1E24] hover:translate-x-[3px] hover:translate-y-[3px];
+           shadow-[5px_5px_0_0_#2C2A27] transition-all duration-150
+           hover:shadow-[2px_2px_0_0_#2C2A27] hover:translate-x-[3px] hover:translate-y-[3px];
   }
   .fig-input {
     @apply w-full border-2 border-fig-navy/25 bg-fig-paper text-fig-navy px-4 py-3 rounded-xl
@@ -166,10 +166,10 @@
 
   /* ── Glow utilities ── */
   .glow-purple {
-    box-shadow: 0 0 40px rgba(217,129,79,0.35), 0 0 80px rgba(217,129,79,0.12);
+    box-shadow: 0 0 40px rgba(192, 120, 91,0.35), 0 0 80px rgba(192, 120, 91,0.12);
   }
   .text-glow {
-    text-shadow: 0 0 60px rgba(217,129,79,0.55), 0 0 120px rgba(217,129,79,0.18);
+    text-shadow: 0 0 60px rgba(192, 120, 91,0.55), 0 0 120px rgba(192, 120, 91,0.18);
   }
 
   /* ── Prose blog content ── */
@@ -200,16 +200,46 @@
   }
 }
 
+/* ── Scroll reveal (opt-in via .reveal / .reveal-stagger) ── */
+/* Hidden state only applies once JS adds .reveal-on to <html> (pre-paint),
+   so no-JS / failed hydration always shows content. */
+html.reveal-on .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+html.reveal-on .reveal.is-visible { opacity: 1; transform: none; }
+
+html.reveal-on .reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.reveal-on .reveal-stagger.is-visible > * { opacity: 1; transform: none; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.06s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.12s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.18s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.24s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.30s; }
+html.reveal-on .reveal-stagger.is-visible > *:nth-child(n+7) { transition-delay: 0.34s; }
+
 /* ── Decorative motion (respects reduced-motion) ── */
 @media (prefers-reduced-motion: reduce) {
   .animate-float, .animate-bob, .animate-bob-slow { animation: none !important; }
+  html.reveal-on .reveal,
+  html.reveal-on .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar             { width: 6px; }
-::-webkit-scrollbar-track       { background: #FFF9EC; }
-::-webkit-scrollbar-thumb       { background: #FF6B5C66; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #FF6B5C; }
+::-webkit-scrollbar-track       { background: #F1EBE1; }
+::-webkit-scrollbar-thumb       { background: #C0785B66; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #C0785B; }
 
 /* ── Keyframes ── */
 @keyframes orb4 {

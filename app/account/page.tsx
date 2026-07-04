@@ -219,7 +219,7 @@ export default function AccountPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="grid lg:grid-cols-4 gap-8">
+      <div className="reveal grid lg:grid-cols-4 gap-8">
         {/* Sidebar */}
         <aside className="lg:col-span-1">
           <div className="bg-fig-paper border border-fig-navy/10 rounded-2xl p-6 mb-4">

@@ -216,7 +216,7 @@ export default function SupportPage() {
           <div className="absolute top-0 left-[20%] w-[350px] h-[350px] rounded-full bg-fig-terracotta/10 blur-[100px]" />
           <div className="absolute bottom-0 right-[15%] w-[250px] h-[250px] rounded-full bg-fig-terracotta/8 blur-[80px]" />
         </div>
-        <div className="relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
+        <div className="reveal relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <p className="fig-eyebrow text-fig-terracotta mb-4 flex items-center gap-2 justify-center">
             <Headphones size={12} /> Customer Support
           </p>

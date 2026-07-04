@@ -15,7 +15,7 @@ export default function OGImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#252B42",
+          background: "#2C2A27",
           position: "relative",
           overflow: "hidden",
         }}
@@ -30,7 +30,7 @@ export default function OGImage() {
             width: 600,
             height: 400,
             borderRadius: 300,
-            background: "rgba(217,129,79,0.20)",
+            background: "rgba(192, 120, 91,0.20)",
           }}
         />
         {/* Soft purple glow — bottom right */}
@@ -53,8 +53,8 @@ export default function OGImage() {
             alignItems: "center",
             padding: "8px 22px",
             borderRadius: 100,
-            border: "1px solid rgba(217,129,79,0.35)",
-            background: "rgba(217,129,79,0.12)",
+            border: "1px solid rgba(192, 120, 91,0.35)",
+            background: "rgba(192, 120, 91,0.12)",
             marginBottom: 28,
           }}
         >
@@ -126,7 +126,7 @@ export default function OGImage() {
             bottom: 36,
             right: 48,
             fontSize: 16,
-            color: "rgba(217,129,79,0.6)",
+            color: "rgba(192, 120, 91,0.6)",
             fontFamily: "sans-serif",
             letterSpacing: "0.05em",
           }}

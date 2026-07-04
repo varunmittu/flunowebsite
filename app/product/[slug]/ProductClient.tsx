@@ -378,7 +378,7 @@ export default function ProductClient({ product, related }: { product: Product; 
         <span className="text-fig-navy">{product.name}</span>
       </nav>
 
-      <div className="grid lg:grid-cols-2 gap-12">
+      <div className="reveal grid lg:grid-cols-2 gap-12">
         {/* Gallery */}
         <div>
           <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-fig-sage/20 to-fig-terracotta/10 relative">

@@ -62,7 +62,7 @@ export default function WishlistPage() {
   return (
     <div className="min-h-screen bg-fig-cream">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 min-h-[60vh]">
-      <p className="fig-eyebrow text-fig-terracotta mb-2 flex items-center gap-1.5">
+      <p className="reveal fig-eyebrow text-fig-terracotta mb-2 flex items-center gap-1.5">
         <Heart size={12} /> Saved for later
       </p>
       <h1 className="font-fig font-bold text-3xl md:text-4xl text-fig-navy mb-3">Your Wishlist</h1>
@@ -90,7 +90,7 @@ export default function WishlistPage() {
           <Link href="/shop" className="fig-btn">Browse Products</Link>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="reveal grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {products.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

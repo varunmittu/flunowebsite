@@ -40,7 +40,7 @@ export default function ForgotPasswordPage() {
         <div className="absolute bottom-[10%] right-[15%] w-[280px] h-[280px] rounded-full bg-fig-terracotta/8 blur-[90px]" />
       </div>
 
-      <div className="relative w-full max-w-md">
+      <div className="reveal relative w-full max-w-md">
         <div className="rounded-3xl border border-white/[0.08] p-8 sm:p-10" style={{ background: "rgba(255,255,255,0.03)", backdropFilter: "blur(20px)" }}>
           {sent ? (
             <div className="text-center py-4">

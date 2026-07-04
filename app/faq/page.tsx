@@ -111,7 +111,7 @@ export default function FAQPage() {
 
       <div className="space-y-10">
         {SECTIONS.map((section) => (
-          <section key={section.title}>
+          <section key={section.title} className="reveal">
             <h2 className="font-fig font-bold text-lg font-semibold text-fig-navy mb-4">{section.title}</h2>
             <div className="space-y-2.5">
               {section.faqs.map((faq) => (

@@ -96,10 +96,10 @@ export default async function HomePage() {
           <div className="flex-none basis-[320px] grow-0 mx-auto w-full max-w-sm">
             <AnimateIn direction="left">
               <div className="grid grid-cols-2 gap-4">
-                <div className="aspect-square rounded-[2rem] bg-fig-terracotta border-[2.5px] border-fig-navy shadow-[5px_5px_0_0_#1E1E24] animate-float" style={{ animationDelay: "0s" }} />
-                <div className="aspect-square rounded-[2rem] bg-fig-mustard border-[2.5px] border-fig-navy shadow-[5px_5px_0_0_#1E1E24] animate-float" style={{ animationDelay: "0.7s" }} />
-                <div className="aspect-square rounded-[2rem] bg-fig-sky border-[2.5px] border-fig-navy shadow-[5px_5px_0_0_#1E1E24] animate-float" style={{ animationDelay: "1.4s" }} />
-                <div className="aspect-square rounded-[2rem] bg-fig-sage border-[2.5px] border-fig-navy shadow-[5px_5px_0_0_#1E1E24] animate-float" style={{ animationDelay: "2.1s" }} />
+                <div className="aspect-square rounded-[2rem] bg-fig-terracotta border-[2.5px] border-fig-navy shadow-[5px_5px_0_0_#2C2A27] animate-float" style={{ animationDelay: "0s" }} />
+                <div className="aspect-square rounded-[2rem] bg-fig-mustard border-[2.5px] border-fig-navy shadow-[5px_5px_0_0_#2C2A27] animate-float" style={{ animationDelay: "0.7s" }} />
+                <div className="aspect-square rounded-[2rem] bg-fig-sky border-[2.5px] border-fig-navy shadow-[5px_5px_0_0_#2C2A27] animate-float" style={{ animationDelay: "1.4s" }} />
+                <div className="aspect-square rounded-[2rem] bg-fig-sage border-[2.5px] border-fig-navy shadow-[5px_5px_0_0_#2C2A27] animate-float" style={{ animationDelay: "2.1s" }} />
               </div>
             </AnimateIn>
           </div>
@@ -127,7 +127,7 @@ export default async function HomePage() {
               </AnimateIn>
             ))}
             <AnimateIn delay={0.16}>
-              <article className="bg-fig-paper border-[2.5px] border-fig-navy rounded-3xl overflow-hidden flex flex-col h-full shadow-[5px_5px_0_0_#1E1E24]">
+              <article className="bg-fig-paper border-[2.5px] border-fig-navy rounded-3xl overflow-hidden flex flex-col h-full shadow-[5px_5px_0_0_#2C2A27]">
                 <div className="flex-1 flex flex-col justify-center gap-2 p-7">
                   <span className="font-fig font-semibold text-[11px] tracking-[0.12em] uppercase text-fig-terracotta">Next up</span>
                   <h3 className="font-fig font-bold text-2xl text-fig-navy leading-tight">The third essential</h3>
@@ -159,7 +159,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-11">
             {rules.map((r, i) => (
               <AnimateIn key={r.title} delay={i * 0.08}>
-                <div className="bg-fig-paper border-[2.5px] border-fig-navy rounded-3xl p-7 h-full shadow-[5px_5px_0_0_#1E1E24]">
+                <div className="bg-fig-paper border-[2.5px] border-fig-navy rounded-3xl p-7 h-full shadow-[5px_5px_0_0_#2C2A27]">
                   <span className={`w-14 h-14 rounded-2xl ${r.tone} border-[2.5px] border-fig-navy flex items-center justify-center mb-4`}>
                     <r.Icon size={24} className="text-fig-navy" />
                   </span>
@@ -191,7 +191,7 @@ export default async function HomePage() {
             <AnimateIn direction="left">
               <ul className="grid gap-3.5">
                 {promises.map((s) => (
-                  <li key={s} className="flex gap-3 items-center bg-fig-paper border-[2.5px] border-fig-navy rounded-2xl px-4 py-3 shadow-[3px_3px_0_0_#1E1E24]">
+                  <li key={s} className="flex gap-3 items-center bg-fig-paper border-[2.5px] border-fig-navy rounded-2xl px-4 py-3 shadow-[3px_3px_0_0_#2C2A27]">
                     <span className="flex-none w-7 h-7 rounded-full bg-fig-sage border-[2.5px] border-fig-navy flex items-center justify-center">
                       <Check size={14} className="text-fig-navy" strokeWidth={3} />
                     </span>
